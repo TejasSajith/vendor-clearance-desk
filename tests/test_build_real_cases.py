@@ -31,9 +31,14 @@ def test_director_signals_without_probe_are_not_found():
     assert not b.director_signals(pd, 2, "Acme Freight")["found"]
 
 def test_hit_flags_never_claim_confirmation():
-    h = b.hit_from_result({"title": "Acme blacklisted", "snippet": "10 April 2024 — x", "url": "https://news.example/a"}, "Acme Freight")
+    h = b.hit_from_result({"title": "Acme Freight blacklisted", "snippet": "10 April 2024 — x", "url": "https://news.example/a"}, "Acme Freight")
     assert h["severity"] == 3 and h["dated"] and h["names_target"] and h["url_host"] == "news.example"
     assert h["discriminator"] is False and h["source_ok"] is False
+
+def test_stale_first_word_matcher_is_gone():
+    assert b.hit_from_result({"title": "Acme scam", "snippet": "", "url": "https://n.example"}, "Acme Freight") is None   # first word only
+    assert b.hit_from_result({"title": "x", "snippet": "", "url": "https://www.acme.in/a"}, "Other Name", "acme.in") is not None   # domain rule
+    assert not hasattr(b, "SEVERE") and not hasattr(b, "DATE_PREFIX")
 
 REAL = json.loads((ROOT / "evaluation" / "cases_real.json").read_text())
 

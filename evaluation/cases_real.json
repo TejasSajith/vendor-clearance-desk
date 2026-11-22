@@ -44,6 +44,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 1,
+    "results_scanned": 10,
     "hits": [
      {
       "dated": false,
@@ -177,6 +178,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 1,
+    "results_scanned": 9,
     "hits": [
      {
       "dated": false,
@@ -278,23 +280,8 @@
    "adverse": {
     "state": "searched",
     "searches_run": 2,
+    "results_scanned": 6,
     "hits": [
-     {
-      "dated": false,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 2,
-      "url_host": "www.google.com"
-     },
-     {
-      "dated": true,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 2,
-      "url_host": "www.google.com"
-     },
      {
       "dated": false,
       "names_target": true,
@@ -355,40 +342,8 @@
    "adverse": {
     "state": "searched",
     "searches_run": 1,
-    "hits": [
-     {
-      "dated": true,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 2,
-      "url_host": "www.google.com"
-     },
-     {
-      "dated": true,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 1,
-      "url_host": "www.pacermonitor.com"
-     },
-     {
-      "dated": false,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 1,
-      "url_host": "www.google.com"
-     },
-     {
-      "dated": false,
-      "names_target": true,
-      "discriminator": false,
-      "source_ok": false,
-      "severity": 2,
-      "url_host": "www.google.com"
-     }
-    ],
+    "results_scanned": 7,
+    "hits": [],
     "sources": [
      "crustdata:/web/search/live"
     ]
@@ -438,6 +393,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 0,
+    "results_scanned": 0,
     "hits": [],
     "sources": []
    }
@@ -488,6 +444,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 0,
+    "results_scanned": 0,
     "hits": [],
     "sources": []
    }
@@ -536,6 +493,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 0,
+    "results_scanned": 0,
     "hits": [],
     "sources": []
    }
@@ -586,6 +544,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 1,
+    "results_scanned": 1,
     "hits": [],
     "sources": [
      "crustdata:/web/search/live"
@@ -636,6 +595,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 0,
+    "results_scanned": 0,
     "hits": [],
     "sources": []
    }
@@ -684,6 +644,7 @@
    "adverse": {
     "state": "searched",
     "searches_run": 0,
+    "results_scanned": 0,
     "hits": [],
     "sources": []
    }

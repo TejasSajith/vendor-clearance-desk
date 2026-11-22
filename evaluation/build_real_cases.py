@@ -10,13 +10,12 @@ from datetime import date, datetime
 from difflib import SequenceMatcher
 from pathlib import Path
 from urllib.parse import urlparse
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from checks import adverse
 
 ROOT = Path(__file__).resolve().parent.parent
 AS_OF = date(2026, 11, 22)          # probe date; keeps the output deterministic
 TREND_DAYS = 180
-SEVERE = re.compile(r"\b(fir|blacklist\w*|default\w*|arrest\w*|insolven\w*|fraudster)\b", re.I)
-MILD = re.compile(r"\b(fraud|scam)\b", re.I)
-DATE_PREFIX = re.compile(r"^\s*(\d{1,2}\s+\S+\s+\d{4}|\d+\s+\S+\s+(?:पहले|ago))\s+[—-]")
 
 def _norm(s): return re.sub(r"[^a-z0-9 ]", "", (s or "").lower()).strip()
 def name_similarity(a, b): return round(SequenceMatcher(None, _norm(a), _norm(b)).ratio(), 3)
@@ -74,19 +73,17 @@ def director_signals(person_data, company_id, company_name, same_name=None, as_o
             "contradicted": False,                                             # no dated record contradicts, in any case
             "sources": ["crustdata:/person/enrich"]}
 
-def hit_from_result(res, company_name):
-    text = f"{res.get('title','')} {res.get('snippet','')}"
-    sev = 3 if SEVERE.search(text) else 2 if MILD.search(text) else 1
-    return {"dated": bool(DATE_PREFIX.match(res.get("snippet", ""))), "names_target": token(company_name) in _norm(text),
-            "discriminator": False,     # nothing here separates the target from namesakes
-            "source_ok": False,         # page text was not retrieved and quote-checked
-            "severity": sev, "url_host": urlparse(res.get("url", "")).hostname}
+def hit_from_result(res, company_name, domain=""):
+    """One search result -> a hit, using the SAME relevance rule as the pipeline (checks/adverse.py): the full normalised company name
+    as a phrase, or the supplied domain. Returns None when the result does not name the target."""
+    hs = adverse.build_hits([res], company_name, domain)
+    return hs[0] if hs else None
 
-def adverse_signals(search_responses, company_name):
-    if not search_responses: return {"state": "searched", "searches_run": 0, "hits": [], "sources": []}
-    hits = [hit_from_result(r, company_name) for s in search_responses for r in (s.get("results") or [])]
-    hits = [h for h in hits if h["names_target"]]
-    return {"state": "searched", "searches_run": len(search_responses), "hits": hits, "sources": ["crustdata:/web/search/live"]}
+def adverse_signals(search_responses, company_name, domain=""):
+    if not search_responses: return {"state": "searched", "searches_run": 0, "results_scanned": 0, "hits": [], "sources": []}
+    results = [r for s in search_responses for r in (s.get("results") or [])]
+    return {"state": "searched", "searches_run": len(search_responses), "results_scanned": len(results),
+            "hits": adverse.build_hits(results, company_name, domain), "sources": ["crustdata:/web/search/live"]}
 
 # Hand-written suggestions for Tejas to confirm or overturn. NOT labels; "expected" stays empty.
 PROPOSED = {
@@ -123,7 +120,7 @@ def build(raw=ROOT / "probe" / "raw", sample=ROOT / "probe" / "sample.json"):
                                              load(f"step2_identify_domain_{k}.json"), (enrich.get("basic_info") or {}).get("status")),
                 "profile": profile_signals(enrich, (jobs or {}).get("total_count")),
                 "director": director_signals(pdata, k, c["name"], same_name=372 if k == 3917119 else None),
-                "adverse": adverse_signals(searches, c["name"]),
+                "adverse": adverse_signals(searches, c["name"], c["domain"] or ""),
             }})
     return cases
 
