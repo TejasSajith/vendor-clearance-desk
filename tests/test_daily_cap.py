@@ -9,7 +9,7 @@ REQ = {"vendor_name": "Acme Logistics Pvt Ltd", "website": "acme.in"}
 def db(tmp_path): return core.connect(str(tmp_path / "t.db"))
 
 def test_daily_cap_is_in_config_and_marked_proposed():
-    raw = json.loads(ops.PATH.read_text())
+    raw = json.loads(ops.PATH.read_text(encoding="utf-8"))
     assert isinstance(raw["max_cost_credits_per_day"], (int, float)) and "PROPOSED" in raw["_max_cost_credits_per_day_status"]
 
 def test_daily_cap_stops_new_paid_calls_and_alerts(db, capsys):

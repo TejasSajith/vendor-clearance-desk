@@ -38,7 +38,7 @@ PROPOSED_PARAMS = {
 def load_params(path=None):
     p = dict(PROPOSED_PARAMS)
     if path:
-        p.update({k: v for k, v in json.loads(Path(path).read_text()).items() if not k.startswith("_")})
+        p.update({k: v for k, v in json.loads(Path(path).read_text(encoding="utf-8")).items() if not k.startswith("_")})
     return p
 
 def _r(status, reason, sources=None):

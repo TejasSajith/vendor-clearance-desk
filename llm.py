@@ -21,7 +21,7 @@ class LLMUnavailable(Exception):
 
 def load_dotenv(path=ROOT / ".env"):
     """Minimal .env reader (KEY=VALUE lines). Never overrides a variable already set. .env is gitignored."""
-    try: lines = Path(path).read_text().splitlines()
+    try: lines = Path(path).read_text(encoding="utf-8").splitlines()
     except OSError: return
     for line in lines:
         line = line.strip()

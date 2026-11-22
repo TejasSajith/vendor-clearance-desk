@@ -4,7 +4,7 @@ import core, pipeline, policy
 from checks import adverse
 from tests.fakes import FakeSources
 
-WEB = json.loads((Path(__file__).parent / "fixtures" / "web_zentrovia.json").read_text())
+WEB = json.loads((Path(__file__).parent / "fixtures" / "web_zentrovia.json").read_text(encoding="utf-8"))
 
 def test_scam_checker_pages_for_lookalike_domains_are_not_hits_for_the_invented_vendor():
     assert len(WEB["results"]) == 10

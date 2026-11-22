@@ -45,9 +45,9 @@ def test_wrong_password_is_a_clear_401(tmp_path, monkeypatch):
     assert c.get("/api/status").status_code == 401
 
 def test_login_page_says_who_sets_the_password():
-    html = (ROOT / "app" / "static" / "index.html").read_text()
+    html = (ROOT / "app" / "static" / "index.html").read_text(encoding="utf-8")
     assert "Enter the access password" in html and "set by the person who runs the server" in html
-    js = (ROOT / "app" / "static" / "app.js").read_text()
+    js = (ROOT / "app" / "static" / "app.js").read_text(encoding="utf-8")
     assert "e.status === 401" in js   # wrong password gets its own message, not a generic error
 
 def test_startup_note_names_the_source_and_never_the_value(monkeypatch):

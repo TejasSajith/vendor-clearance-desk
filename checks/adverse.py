@@ -47,7 +47,7 @@ _rules_cache = {}
 
 def load_rules(path=None):
     p = str(path or RULES_FILE)
-    if p not in _rules_cache: _rules_cache[p] = json.loads(Path(p).read_text())
+    if p not in _rules_cache: _rules_cache[p] = json.loads(Path(p).read_text(encoding="utf-8"))
     return _rules_cache[p]
 
 def host_of(url):

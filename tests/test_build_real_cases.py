@@ -40,12 +40,12 @@ def test_stale_first_word_matcher_is_gone():
     assert b.hit_from_result({"title": "x", "snippet": "", "url": "https://www.acme.in/a"}, "Other Name", "acme.in") is not None   # domain rule
     assert not hasattr(b, "SEVERE") and not hasattr(b, "DATE_PREFIX")
 
-REAL = json.loads((ROOT / "evaluation" / "cases_real.json").read_text())
+REAL = json.loads((ROOT / "evaluation" / "cases_real.json").read_text(encoding="utf-8"))
 
 def test_real_cases_shape_and_no_personal_data():
     assert len(REAL) == 10 and all(c["synthetic"] is False and c["expected"] == "" for c in REAL)
     assert all(c["proposed_expected"] and c["basis"] for c in REAL)
-    text = (ROOT / "evaluation" / "cases_real.json").read_text().lower()
+    text = (ROOT / "evaluation" / "cases_real.json").read_text(encoding="utf-8").lower()
     assert "linkedin" not in text and "http" not in text and "snippet" not in text
 
 def test_real_cases_run_through_policy():

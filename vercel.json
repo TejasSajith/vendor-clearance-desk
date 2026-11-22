@@ -5,7 +5,7 @@
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
-        "includeFiles": "{config.json,core.py,decision.py,policy.py,pipeline.py,nl.py,llm.py,checks/**,app/**,tests/fixtures/**}"
+        "includeFiles": "{*.py,*.json,checks/**,app/**,tests/fixtures/**}"
       }
     }
   ],

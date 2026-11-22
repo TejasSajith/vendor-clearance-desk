@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vendor Clearance Desk</title>
-<meta name="description" content="Clear a new logistics vendor: exists, active, run by the claimed director, no adverse media — a sourced recommendation held for a person's approval.">
+<title>Unmask — Vendor Trust Check</title>
+<meta name="description" content="Unmask: check a logistics vendor — exists, active, run by the claimed director, no adverse media — a sourced recommendation held for a person's approval.">
 <link rel="stylesheet" href="/app.css">
 <script>
   /* Apply the saved theme before first paint (no flash). */
@@ -16,8 +16,8 @@
   <div class="topbar-in">
     <div class="brand">
       <span class="mark" aria-hidden="true"></span>
-      <h1>Vendor Clearance Desk</h1>
-      <span class="tag" aria-hidden="true">clearance console</span>
+      <h1>Unmask</h1>
+      <span class="tag" aria-hidden="true">vendor trust check</span>
     </div>
     <div class="topbar-right">
       <div id="badges"></div>
@@ -49,7 +49,7 @@
         <fieldset class="modes">
           <legend>Mode</legend>
           <label class="radio"><input type="radio" name="mode" value="demo" checked> Demo (recorded)</label>
-          <label class="radio"><input type="radio" name="mode" value="live" id="mode-live"> Live</label>
+          <label class="radio"><input type="radio" name="mode" value="live" id="mode-live"> Live <small id="live-note" class="note"></small></label>
         </fieldset>
         <p id="live-info" class="note" hidden></p>
         <label for="text">Describe the vendor in plain English</label>
@@ -69,6 +69,23 @@
           <button type="button" id="confirm-yes" class="approve">Spend credits and run</button>
           <button type="button" id="confirm-no" class="secondary">Cancel</button>
         </div>
+      </form>
+    </section>
+
+    <section class="card" id="keys-card">
+      <span class="eyebrow">Settings</span>
+      <h2>API keys for live checks</h2>
+      <p class="note">Live mode needs a Google Gemini key (for parsing and the memo) and a Crustdata key (for the real
+        registry, activity, director and adverse-media checks). Keys are sent to this server for your session and used
+        only to call those providers — they are never shown in the page, written to history, or logged. On the hosted
+        demo, storage is temporary, so live history clears when the server restarts.</p>
+      <form id="keys-form" autocomplete="off">
+        <label for="gemini-key">Google Gemini API key <span id="gemini-state" class="keystate"></span></label>
+        <input id="gemini-key" type="password" autocomplete="off" spellcheck="false" placeholder="AIza…">
+        <label for="crustdata-key">Crustdata API key <span id="crustdata-state" class="keystate"></span></label>
+        <input id="crustdata-key" type="password" autocomplete="off" spellcheck="false" placeholder="Crustdata token">
+        <button type="submit" id="keys-btn">Save keys</button>
+        <p id="keys-msg" class="note" role="status"></p>
       </form>
     </section>
 

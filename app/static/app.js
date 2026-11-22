@@ -56,14 +56,46 @@ function badges() {
   } else li.hidden = true;
 }
 
+function refreshModeAvailability() {
+  const live = STATUS.modes.live;
+  $("mode-live").disabled = !live.available;
+  $("mode-live").parentElement.title = live.available ? "" : (live.reason || "");
+  $("live-note").textContent = live.available ? "" : ` (off: ${live.reason || "unavailable"})`;
+  if (!live.available && mode() === "live") document.querySelector('input[name="mode"][value="demo"]').checked = true;
+  else if (STATUS.default_mode === "live" && live.available) $("mode-live").checked = true;
+}
+
+function keyStates() {
+  const k = STATUS.keys || {};
+  for (const [id, set] of [["gemini-state", k.gemini], ["crustdata-state", k.crustdata]]) {
+    const s = $(id); if (!s) continue;
+    s.textContent = set ? "set" : "not set"; s.className = "keystate " + (set ? "on" : "off");
+  }
+}
+
+$("keys-form").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const btn = $("keys-btn"), msg = $("keys-msg");
+  btn.disabled = true; msg.className = "note"; msg.textContent = "Saving…";
+  try {
+    const out = await api("/api/keys", { method: "POST", body: JSON.stringify({
+      gemini_key: $("gemini-key").value, crustdata_key: $("crustdata-key").value }) });
+    $("gemini-key").value = ""; $("crustdata-key").value = "";
+    STATUS = await api("/api/status");                     // refresh live availability + key states
+    refreshModeAvailability(); keyStates(); badges();
+    msg.textContent = out.updated.length
+      ? `Saved the ${out.updated.join(" and ")} key${out.updated.length > 1 ? "s" : ""}. ` +
+        (out.live.available ? "Live mode is ready — choose Live above." : (out.live.reason || ""))
+      : "Enter at least one key.";
+  } catch (e) { msg.className = "error"; msg.textContent = e.message; }
+  finally { btn.disabled = false; }
+});
+
 async function start() {
   STATUS = await api("/api/status");
   $("login").hidden = true; $("main").hidden = false;
-  const live = STATUS.modes.live;
-  $("mode-live").disabled = !live.available;
-  if (!live.available) $("mode-live").parentElement.title = live.reason;
-  $("mode-live").parentElement.append(live.available ? "" : el("small", { class: "note" }, ` (off: ${live.reason})`));
-  if (STATUS.default_mode === "live" && live.available) $("mode-live").checked = true;
+  refreshModeAvailability();
+  keyStates();
   for (const [k, o] of Object.entries(STATUS.controls)) {
     const s = $(k); s.replaceChildren();
     for (const c of o.choices) { const opt = el("option", { value: c }, (CONTROL_LABELS[k] || {})[c] || c); if (c === o.default) opt.selected = true; s.append(opt); }

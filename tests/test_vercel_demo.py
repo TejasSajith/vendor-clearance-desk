@@ -37,11 +37,11 @@ def test_six_cases_cover_the_required_outcomes():
     assert c.get("/api/demo/cases/../../.env").status_code == 404 and c.get("/api/demo/cases/nope").status_code == 404
 
 def test_fixtures_hold_no_placeholder_names_or_secrets():
-    blob = "".join(p.read_text() for p in (ROOT / "vercel_demo" / "fixtures").glob("*.json"))
+    blob = "".join(p.read_text(encoding="utf-8") for p in (ROOT / "vercel_demo" / "fixtures").glob("*.json"))
     for bad in ("Test Director", "SECRET", "api_key", "CRUSTDATA_API_KEY", "GEMINI"): assert bad not in blob
 
 def test_demo_function_has_no_storage_or_network_code(tmp_path, monkeypatch):
-    src = (ROOT / "vercel_demo" / "main.py").read_text()
+    src = (ROOT / "vercel_demo" / "main.py").read_text(encoding="utf-8")
     for bad in ("sqlite3", "import requests", "httpx", "import core", "write_text", "open("): assert bad not in src
     monkeypatch.chdir(tmp_path)
     c = TestClient(demo.app)
@@ -49,7 +49,7 @@ def test_demo_function_has_no_storage_or_network_code(tmp_path, monkeypatch):
     assert list(tmp_path.iterdir()) == []
 
 def test_vercelignore_is_an_allowlist():
-    lines = [l.strip() for l in (ROOT / ".vercelignore").read_text().splitlines() if l.strip() and not l.startswith("#")]
+    lines = [l.strip() for l in (ROOT / ".vercelignore").read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
     assert lines[0] == "/*"
     assert {l for l in lines if l.startswith("!")} == {"!public", "!vercel_demo", "!vercel.json", "!pyproject.toml"}
     for must in (".env", "*.db", "**/raw/"): assert must in lines

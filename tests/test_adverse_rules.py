@@ -95,4 +95,4 @@ def test_established_threshold_is_a_parameter():
 def test_no_code_relies_on_people_cxos():
     import pathlib
     for p in list(pathlib.Path("checks").glob("*.py")) + [pathlib.Path("pipeline.py"), pathlib.Path("policy.py"), pathlib.Path("decision.py")]:
-        assert "cxos" not in p.read_text(), p
+        assert "cxos" not in p.read_text(encoding="utf-8"), p

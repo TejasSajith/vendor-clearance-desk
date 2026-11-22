@@ -18,7 +18,7 @@ LABEL = ("DEMO MODE: replayed fixtures, not a live check. Recorded Crustdata res
          "elsewhere. No credits spent.")
 ENDPOINT = "/demo/replay"
 
-def _load(name): return json.loads((FIX / name).read_text())
+def _load(name): return json.loads((FIX / name).read_text(encoding="utf-8"))
 
 _GOOD_PROFILE = {"headcount_total": 420, "headcount_trend_pct": 3.0, "series_age_days": 9, "jobs_90d": 6, "traffic_present": True,
                  "status": "active", "sources": ["demo:synthetic/company/enrich"]}

@@ -5,8 +5,8 @@ from checks import exists
 from tests.fakes import FakeSources
 
 FIX = Path(__file__).parent / "fixtures"
-ECOM = json.loads((FIX / "identify_ecom_express.json").read_text())
-ZEN = json.loads((FIX / "identify_zentrovia.json").read_text())
+ECOM = json.loads((FIX / "identify_ecom_express.json").read_text(encoding="utf-8"))
+ZEN = json.loads((FIX / "identify_zentrovia.json").read_text(encoding="utf-8"))
 FLOOR = policy.PROPOSED_PARAMS["candidate_name_sim_floor"]
 
 @pytest.fixture

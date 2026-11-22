@@ -4,7 +4,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "evaluation"))
 import policy, run_eval
 
-CASES = json.loads((Path(__file__).resolve().parent.parent / "evaluation" / "cases_synthetic.json").read_text())
+CASES = json.loads((Path(__file__).resolve().parent.parent / "evaluation" / "cases_synthetic.json").read_text(encoding="utf-8"))
 
 def test_all_synthetic_cases_pass_with_proposed_params():
     m = run_eval.run(CASES, policy.PROPOSED_PARAMS)

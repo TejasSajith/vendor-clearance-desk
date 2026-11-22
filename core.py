@@ -3,7 +3,7 @@ All state lives in SQLite so a killed process resumes where it stopped."""
 import hashlib, json, sqlite3, threading, time, uuid
 from pathlib import Path
 
-CONFIG = json.loads((Path(__file__).parent / "config.json").read_text())
+CONFIG = json.loads((Path(__file__).parent / "config.json").read_text(encoding="utf-8"))
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY, request TEXT, status TEXT, started REAL);

@@ -9,16 +9,25 @@ no-cost replays. This is option (a) of DECISIONS.md **D46**.
 - **Jobs run inline** inside each request (`app/server.py` sees `VERCEL=1` and switches to inline mode) because a
   serverless function cannot keep a background worker. The per-run time cap (`config.json` `max_seconds_per_run`,
   300 s) stays within Vercel's function limit.
-- **Live mode is OFF on Vercel by design.** Vercel's only writable path is `/tmp`, which is wiped between
+- **Live mode is OFF on Vercel by default.** Vercel's only writable path is `/tmp`, which is wiped between
   invocations and not shared across instances. That would break the cost ledger, once-only approvals, the
-  duplicate check and history — all of which the event rules require. Live runs belong on a host with a real
-  disk (Render, Fly, Railway, a VM) or a hosted database (Turso/Neon); see D46.
+  duplicate check and history — all of which the event rules require. For a durable deployment, live runs belong
+  on a host with a real disk (Render, Fly, Railway, a VM) or a hosted database (Turso/Neon); see D46.
+- **Bring-your-own keys (Settings → API keys):** a visitor can paste their own Gemini and Crustdata keys in the
+  page. The keys are posted to `POST /api/keys`, kept only in the process environment (never in a cookie, the
+  page, history or the log), and used only to call the providers. Pasting a Crustdata key also opts that process
+  into Vercel's ephemeral `/tmp` storage so live runs can proceed for the demo. Set `APP_PASSWORD` if you don't
+  want anonymous visitors enabling live calls. Note the keys live in the warm instance's environment, so prefer a
+  durable host (above) for anything beyond a demo.
 - History shown on Vercel is **per-instance and ephemeral** (it lives in `/tmp`). That is fine for a demo.
 
 ## Files
 - `api/index.py` — the serverless entry. Exposes `app = create_app(require_password=False)`.
-- `vercel.json` — routes every path to the function and bundles the data files the app reads at runtime
-  (`config.json`, `app/static/**`, `tests/fixtures/**`, the check modules).
+- `vercel.json` — routes every path to the function and bundles everything it imports or reads at runtime
+  via `includeFiles` (`{*.py,*.json,checks/**,app/**,tests/fixtures/**}`): all top-level modules (`controls.py`,
+  `display.py`, …), the config/`source_classes.json` data, the check package, the web page under `app/static/**`,
+  and the demo fixtures. A module or data file left out of this glob makes the function 500 with
+  `FUNCTION_INVOCATION_FAILED` (`ModuleNotFoundError` / missing file) on every route.
 
 ## Deploy (needs a Vercel login — run these yourself)
 ```bash

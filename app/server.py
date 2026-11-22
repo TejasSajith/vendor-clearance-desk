@@ -45,6 +45,10 @@ class AskIn(BaseModel):
 class LoginIn(BaseModel):
     password: str = Field(max_length=200)
 
+class KeysIn(BaseModel):
+    gemini_key: str = Field("", max_length=400)
+    crustdata_key: str = Field("", max_length=400)
+
 def on_vercel(): return bool(os.environ.get("VERCEL"))
 
 def executor(db):
@@ -95,14 +99,18 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
         from .demo import DemoSources
         demo_sources = DemoSources()
 
-    # Live mode: available only with a key (or injected sources), set caps, and a durable store (not Vercel's /tmp, D46)
-    live_reason = None
-    if allow_live is False: live_reason = "Live mode is switched off on this server."
-    elif live_sources is None and not os.environ.get("CRUSTDATA_API_KEY"): live_reason = "Live mode needs CRUSTDATA_API_KEY on the server."
-    elif allow_live is None and on_vercel() and os.environ.get("APP_ALLOW_LIVE_EPHEMERAL") != "1":
-        live_reason = ("Live mode is off on Vercel until a durable database is chosen (D46): /tmp storage would lose the "
-                       "ledger, the approvals and the duplicate check between requests.")
-    elif not live_caps()[0]: live_reason = "Live mode refuses to run: the credit cap and time cap are not set in config.json."
+    # Live mode: available only with a key (or injected sources), set caps, and a durable store (not Vercel's /tmp, D46).
+    # Re-evaluated on every request because keys can be supplied at runtime via POST /api/keys; runtime["allow_ephemeral"]
+    # lets a person who pastes their own key opt into Vercel's temporary /tmp storage for the demo.
+    runtime = {"allow_ephemeral": os.environ.get("APP_ALLOW_LIVE_EPHEMERAL") == "1"}
+    def live_status():
+        if allow_live is False: return "Live mode is switched off on this server."
+        if live_sources is None and not os.environ.get("CRUSTDATA_API_KEY"): return "Live mode needs CRUSTDATA_API_KEY on the server."
+        if allow_live is None and on_vercel() and not runtime["allow_ephemeral"]:
+            return ("Live mode is off on Vercel until a durable database is chosen (D46): /tmp storage would lose the "
+                    "ledger, the approvals and the duplicate check between requests.")
+        if not live_caps()[0]: return "Live mode refuses to run: the credit cap and time cap are not set in config.json."
+        return None
     _live = {"sources": live_sources}
     def get_live_sources():
         if _live["sources"] is None:
@@ -110,9 +118,11 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
             _live["sources"] = live.LiveSources()
         return _live["sources"]
 
-    # demo never calls a model (zero live calls); live uses the configured one
-    live_provider = llm.get_provider() if llm_provider == "config" else llm_provider
-    provider = {"demo": None, "live": live_provider}
+    # demo never calls a model (zero live calls); live uses the configured one. For the "config" default the provider is
+    # resolved per request so a Gemini key pasted at runtime takes effect without a restart; an injected provider stays fixed.
+    def current_provider(mode):
+        if mode != "live": return None
+        return llm.get_provider() if llm_provider == "config" else llm_provider
     _, per_run_cap, seconds_cap = live_caps()
     session_cap = core.CONFIG.get("session_credit_cap", per_run_cap)
     sessions, lock, fails = {}, threading.RLock(), []
@@ -156,7 +166,7 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
 
     @app.get("/api/health")
     def health():
-        return {"ok": True, "modes": {"demo": True, "live": live_reason is None}, "inline": inline,
+        return {"ok": True, "modes": {"demo": True, "live": live_status() is None}, "inline": inline,
                 "queue": len(order), "login_required": bool(password)}
 
     @app.post("/api/login")
@@ -175,18 +185,38 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
                             secure=on_vercel() or os.environ.get("APP_SECURE_COOKIE") == "1")
         return {"ok": True}
 
+    @app.post("/api/keys")
+    def set_keys(body: KeysIn, request: Request):
+        """Accept the user's own provider keys for this server process so live checks can run on the hosted demo.
+        Keys are kept only in the process environment (never in a cookie, the page, history or the log) and used only to
+        call Gemini and Crustdata. Pasting a Crustdata key also opts this demo into Vercel's temporary /tmp storage."""
+        session(request)
+        updated = []
+        g, x = body.gemini_key.strip(), body.crustdata_key.strip()
+        if g: os.environ["GEMINI_API_KEY"] = g; updated.append("Gemini")
+        if x:
+            os.environ["CRUSTDATA_API_KEY"] = x; runtime["allow_ephemeral"] = True; updated.append("Crustdata")
+            if live_sources is None: _live["sources"] = None     # rebuild LiveSources so the new key is used
+        log.info("api keys updated: %s", ", ".join(updated) or "none")   # names only, never the key itself
+        lr = live_status()
+        return {"ok": True, "updated": updated, "live": {"available": lr is None, "reason": lr},
+                "keys": {"gemini": bool(os.environ.get("GEMINI_API_KEY")), "crustdata": bool(os.environ.get("CRUSTDATA_API_KEY"))}}
+
     @app.get("/api/status")
     def status(request: Request):
         s = session(request)
         opts, notes = controls.options(candidate_path)
-        model = (f"{live_provider.model}; templates if it fails or is slow" if hasattr(live_provider, "model") else "on") if live_provider \
+        lr = live_status()
+        lp = current_provider("live")
+        model = (f"{lp.model}; templates if it fails or is slow" if hasattr(lp, "model") else "on") if lp \
             else "off (template parsing and memos)"
         return {"modes": {"demo": {"available": True, "label": _demo_label()},
-                          "live": {"available": live_reason is None, "reason": live_reason}},
-                "default_mode": os.environ.get("APP_MODE", "demo") if live_reason is None else "demo",
+                          "live": {"available": lr is None, "reason": lr}},
+                "default_mode": os.environ.get("APP_MODE", "demo") if lr is None else "demo",
                 "model": {"demo": "off in demo (templates)", "live": model}, "inline": inline, "login_required": bool(password),
                 "caps": {"credits_per_run": per_run_cap, "seconds_per_run": seconds_cap, "credits_per_session": session_cap,
                          "session_spent": round(s["spent"], 4)},
+                "keys": {"gemini": bool(os.environ.get("GEMINI_API_KEY")), "crustdata": bool(os.environ.get("CRUSTDATA_API_KEY"))},
                 "controls": opts, "control_notes": notes}
 
     # ---------- jobs ----------
@@ -203,7 +233,8 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
         if body.mode not in MODES: raise HTTPException(400, "Mode must be demo or live")
         if not body.text.strip(): raise HTTPException(400, "Please describe the vendor first, for example: Check Acme Logistics Pvt Ltd, acmelogistics.in, low risk.")
         if body.mode == "live":
-            if live_reason: raise HTTPException(409, live_reason)
+            lr = live_status()
+            if lr: raise HTTPException(409, lr)
             if not body.confirm_spend:
                 raise HTTPException(428, f"Live mode spends Crustdata credits (up to {per_run_cap:g} credits and {seconds_cap:g} s for this run). Confirm to continue.")
             with lock:
@@ -266,7 +297,7 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
         t_request = time.time()
         ledger = llm.ledger_run(d, "ui")
         prog["parse"] = "running"
-        parsed = nl.parse_request(body.text, db=d, run_id=ledger, provider=provider[mode])
+        parsed = nl.parse_request(body.text, db=d, run_id=ledger, provider=current_provider(mode))
         prog["parse"] = "done"
         req = parsed["request"]
         job["request"] = {"vendor_name": req["vendor_name"], "domain": req["domain"], "risk_tier": req["risk_tier"] or "low",
@@ -320,7 +351,7 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
             return {"status": res.get("status", "in_progress"), "run_id": run_id, "mode": mode, "verdict": None, "overall": "In progress", "checks": []}
         m = d.execute("SELECT memo, writer, seconds FROM app_memos WHERE run_id=?", (run_id,)).fetchone()
         if m is None or res.get("status") == "held":        # a held run may be retried: write a fresh memo
-            mm = nl.write_memo(res, db=d, run_id=ledger or llm.ledger_run(d, "ui"), provider=provider[mode], retrieved=retrieved, seconds=seconds)
+            mm = nl.write_memo(res, db=d, run_id=ledger or llm.ledger_run(d, "ui"), provider=current_provider(mode), retrieved=retrieved, seconds=seconds)
             # view: the last result, so a held run (no cached final step, so it can be retried) can still be reopened from history
             d.execute("INSERT OR REPLACE INTO app_memos VALUES(?,?,?,?,?)", (run_id, mm["memo"], mm["writer"], seconds, json.dumps(res)))
             m = (mm["memo"], mm["writer"], seconds)

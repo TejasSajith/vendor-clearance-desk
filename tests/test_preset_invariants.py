@@ -7,7 +7,7 @@ PRESET_FILE = Path("evaluation/presets_candidate.json")
 def all_presets():
     ps = {n: tuning.preset_params(n) for n in ("lenient", "balanced", "strict")}
     if PRESET_FILE.exists():
-        for n, p in json.loads(PRESET_FILE.read_text())["presets"].items(): ps[f"file:{n}"] = {**policy.PROPOSED_PARAMS, **p["params_changed"]}
+        for n, p in json.loads(PRESET_FILE.read_text(encoding="utf-8"))["presets"].items(): ps[f"file:{n}"] = {**policy.PROPOSED_PARAMS, **p["params_changed"]}
     return ps
 PRESETS = all_presets()
 
@@ -66,7 +66,7 @@ def test_no_rejection_on_one_undated_source(name):
 
 def test_presets_file_is_unapproved_and_descriptions_name_no_parameters():
     if not PRESET_FILE.exists(): pytest.skip("presets_candidate.json is written by phase 6")
-    doc = json.loads(PRESET_FILE.read_text())
+    doc = json.loads(PRESET_FILE.read_text(encoding="utf-8"))
     assert doc["approved"] is False and set(doc["presets"]) == {"lenient", "balanced", "strict"}
     names = set(policy.PROPOSED_PARAMS)
     for n, p in doc["presets"].items():
@@ -77,7 +77,7 @@ def test_presets_file_is_unapproved_and_descriptions_name_no_parameters():
 def test_presets_file_works_through_controls_when_approved(tmp_path):
     if not PRESET_FILE.exists(): pytest.skip("presets_candidate.json is written by phase 6")
     import controls
-    doc = json.loads(PRESET_FILE.read_text()); doc["approved"] = True
+    doc = json.loads(PRESET_FILE.read_text(encoding="utf-8")); doc["approved"] = True
     f = tmp_path / "approved.json"; f.write_text(json.dumps(doc))
     for name in ("lenient", "balanced", "strict"):
         r = controls.resolve({"strictness": name}, candidate_path=str(f))
@@ -99,7 +99,7 @@ def test_no_preset_passes_an_invented_or_shut_down_vendor(name):
 
 def test_file_presets_report_zero_bad_vendor_passes_and_the_metrics():
     if not PRESET_FILE.exists(): pytest.skip("presets_candidate.json is written by the scoring step")
-    doc = json.loads(PRESET_FILE.read_text())
+    doc = json.loads(PRESET_FILE.read_text(encoding="utf-8"))
     if doc.get("blocked"): assert doc["presets"] == {} and doc["reason"]; return
     for n, p in doc["presets"].items():
         assert p["bad_vendor_passes"] == 0, n

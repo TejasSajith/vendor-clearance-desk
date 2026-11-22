@@ -30,7 +30,7 @@ def presets(candidate_path=None):
     table = json.loads(json.dumps(core.CONFIG.get("control_presets") or {}))
     notes = []
     if path.exists():
-        try: cand = json.loads(path.read_text())
+        try: cand = json.loads(path.read_text(encoding="utf-8"))
         except ValueError: cand = {}; notes.append(f"{path.name} is not valid JSON; ignored")
         if cand.get("approved") is True:
             for k in CONTROLS:

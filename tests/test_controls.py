@@ -5,7 +5,7 @@ import controls, core, decision, pipeline, policy
 from tests.fakes import FakeSources
 
 EVAL = Path("evaluation")
-CASES = json.loads((EVAL / "cases_synthetic.json").read_text()) + json.loads((EVAL / "cases_real.json").read_text())
+CASES = json.loads((EVAL / "cases_synthetic.json").read_text(encoding="utf-8")) + json.loads((EVAL / "cases_real.json").read_text(encoding="utf-8"))
 REQUIRED = ["exists", "active", "director_match", "adverse_media"]
 
 # A hostile "approved" candidate: tries to loosen hard rules and push floors to zero.
