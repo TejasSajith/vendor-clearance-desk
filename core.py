@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS calls(id INTEGER PRIMARY KEY, run_id TEXT, endpoint T
   status TEXT, credits REAL, ms INTEGER, ts REAL);
 CREATE UNIQUE INDEX IF NOT EXISTS facts_uniq ON facts(run_id,subject,claim,source_url,passage);
 CREATE TABLE IF NOT EXISTS cache(key TEXT PRIMARY KEY, response TEXT, ts REAL);
+CREATE TABLE IF NOT EXISTS request_keys(key TEXT PRIMARY KEY, run_id TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS actions(key TEXT PRIMARY KEY, run_id TEXT, kind TEXT, payload TEXT,
   status TEXT, created REAL);  -- pending -> approved -> executing -> done | rejected
 """
@@ -37,6 +38,13 @@ def start_run(db, request, run_id=None):
     run_id = run_id or uuid.uuid4().hex[:12]
     db.execute("INSERT OR IGNORE INTO runs VALUES(?,?,?,?)", (run_id, request, "running", time.time()))
     return run_id
+
+def claim_request(db, key, run_id):
+    """Idempotency: the first run to claim a key owns it. Returns the owning run id (== run_id if we just claimed it)."""
+    db.execute("INSERT OR IGNORE INTO request_keys VALUES(?,?)", (key, run_id))
+    return db.execute("SELECT run_id FROM request_keys WHERE key=?", (key,)).fetchone()[0]
+
+def set_run_status(db, run_id, status): db.execute("UPDATE runs SET status=? WHERE id=?", (status, run_id))
 
 def run_step(db, run_id, name, fn):
     """Run fn once per (run, step). On restart a finished step returns its saved result."""
