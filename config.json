@@ -32,5 +32,38 @@
     "_status": "PROPOSED (D36). Model from the Gemini API docs model list (ai.google.dev/gemini-api/docs/models, stable, GA 2026-09-02); confirm with `python llm.py models`. Timeout 20 s and one retry as instructed; /llm/generate rate limit 30/min proposed."
   },
   "inr_per_credit": null,
-  "_inr_per_credit_status": "OPEN (D16): rupees per Crustdata credit; memos say 'not set' until decided"
+  "_inr_per_credit_status": "OPEN (D16): rupees per Crustdata credit; memos say 'not set' until decided",
+  "control_presets": {
+    "strictness": {
+      "lenient": {},
+      "balanced": {},
+      "strict": {}
+    },
+    "rejection_evidence": {
+      "standard": {},
+      "high": {
+        "reject_min_sources": 2
+      }
+    },
+    "freshness_days": {
+      "policy": {},
+      "30": {
+        "max_series_age_days": 30
+      },
+      "90": {
+        "max_series_age_days": 90
+      },
+      "180": {
+        "max_series_age_days": 180
+      }
+    },
+    "defaults": {
+      "strictness": "balanced",
+      "rejection_evidence": "standard",
+      "freshness_days": "policy"
+    },
+    "_status": "PROPOSED (D38). Strictness levels all equal the policy defaults until Tejas sets approved:true in evaluation/presets_candidate.json. rejection_evidence high = 2 distinct sources. freshness 'policy' = current max_series_age_days (60)."
+  },
+  "session_credit_cap": 100,
+  "_session_credit_cap_status": "PROPOSED (D39): hard cap per UI session; a run starts only if the full per-run cap still fits"
 }

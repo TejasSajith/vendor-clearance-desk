@@ -46,12 +46,20 @@ def _existing_result(db, run_id):
     row = db.execute("SELECT result FROM steps WHERE run_id=? AND name='final'", (run_id,)).fetchone()
     return json.loads(row[0]) if row else {"run_id": run_id, "status": "in_progress"}
 
-def run_request(db, req, sources):
+def params_tag(params):
+    """'' for the policy defaults; otherwise a short hash, so a run under other control settings is its own run (not a duplicate)."""
+    if params is None or params == policy.PROPOSED_PARAMS: return ""
+    import hashlib
+    return "|p:" + hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest()[:10]
+
+def run_request(db, req, sources, params=None):
+    """params: a full policy parameter set (controls.resolve); None = policy.PROPOSED_PARAMS."""
+    p = params or policy.PROPOSED_PARAMS
     try: v = validate_request(req)
     except ValidationError as e:                           # a clean result, not a crash
         return {"status": "invalid", "verdict": None, "field": e.field, "message": str(e)}
     name, domain, tier, claimed = v["vendor_name"], v["domain"], v["risk_tier"], v["claimed_director"]
-    fp = core.salted_hash(db, claimed)[:16] if claimed else ""     # the claimed name itself is never stored, logged or keyed
+    fp = (core.salted_hash(db, claimed)[:16] if claimed else "") + params_tag(params)   # the claimed name itself is never stored, logged or keyed
     pk = normalize.request_key(KIND, name, domain, extra=fp)
     run = "r_" + pk[:12]
     existed = db.execute("SELECT 1 FROM runs WHERE id=?", (run,)).fetchone() is not None
@@ -66,7 +74,7 @@ def run_request(db, req, sources):
         except core.LimitExceeded: state[n] = "not_run"; return None                # stop cleanly, never raise out of the run
 
     ident = stage("identify", lambda: sources.identify(ctx, name, domain))
-    sig = {"identify": identify_signals(name, domain, ident) if ident is not None else {}}
+    sig = {"identify": identify_signals(name, domain, ident, p) if ident is not None else {}}
     cid = sig["identify"].get("company_id")
     if cid is not None:
         owner = core.claim_request(db, normalize.request_key(KIND, company_id=cid, extra=fp), run)
@@ -83,7 +91,7 @@ def run_request(db, req, sources):
 
     CHECK_OF = {"identify": "exists", "profile": "active", "director": "director_match", "adverse": "adverse_media"}
     def final():
-        checks = policy.evaluate(sig, policy.PROPOSED_PARAMS, tier)
+        checks = policy.evaluate(sig, p, tier)
         for st, c in CHECK_OF.items():
             if state.get(st) == "unreachable":
                 checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}
