@@ -32,20 +32,21 @@ class CollectSources(live.LiveSources):
                (" insolvency OR struck off OR closed down OR shut down", "web"), (" complaint OR lawsuit OR court case OR NCLT", "web"))
 
     def adverse(self, ctx, name, domain="", repeat=0):
-        per, hits, scanned = [], [], 0
+        """4 distinct searches. Returns per-result FEATURES (checks/adverse.py); the rules are applied at scoring time."""
+        per = []
         for suffix, src in self.QUERIES:
             body = {"query": f"{name}{suffix}", "sources": [src], "location": "IN"}
             key = {**body, "_repeat": repeat} if repeat else body            # repeats get their own cache entry; the API never sees the marker
             res = ctx.call("/web/search/live", key, lambda b=body: live._post("/web/search/live", b), credits_from=lambda o: o["credits"])["body"]
-            rs = res.get("results") or []; scanned += len(rs); sh = []
-            for r in rs:
-                hs = adverse.build_hits([r], name, domain)
-                if hs:
-                    h = hs[0]; m = adverse.DATE_PREFIX.match(r.get("snippet", ""))
-                    h.update({"date_text": m.group(1) if m else None, "rank": r.get("position"), "url_id": hashlib.sha256(r.get("url", "").encode()).hexdigest()[:10]})
-                    sh.append(h)
-            per.append({"source": src, "n_results": len(rs), "hits": sh}); hits += sh
-        return {"state": "searched", "searches_run": len(per), "results_scanned": scanned, "hits": hits, "per_search": per, "sources": ["crustdata:/web/search/live"]}
+            rs = res.get("results") or []
+            per.append({"source": src, "n_results": len(rs), "results": [adverse.result_features(r, name, domain) for r in rs]})
+        return {"state": "searched", "searches_run": len(per), "results_scanned": sum(p["n_results"] for p in per), "per_search": per, "sources": ["crustdata:/web/search/live"]}
+
+def strip_urls(adv):
+    """Stored signals keep no URLs (they can carry names): only host, class and a url id."""
+    for ps in (adv or {}).get("per_search", []):
+        for f in ps.get("results", []): f.pop("url", None)
+    return adv
 
 def spent(db=None):
     c = core.connect(str(DB))              # a short-lived connection: safe to call from any thread
@@ -72,7 +73,7 @@ def collect_row(db, row, sources):
     sig_id = pipeline.identify_signals(row["vendor_name"], domain, ident) if ident else {}
     return {"case_id": row["case_id"], "stratum": row["stratum"], "split": row["split"], "state": state_of(res, sig_id), "run_status": res["status"],
             "input_domain": domain or None, "identify": {"candidates": ident.get("candidates", []), "domain_candidate_ids": ident.get("domain_candidate_ids")},
-            "profile": steps.get("profile"), "adverse": steps.get("adverse"), "credits": round(spent(db) - before, 4), "seconds": round(time.time() - t0, 1)}
+            "profile": steps.get("profile"), "adverse": strip_urls(steps.get("adverse")), "credits": round(spent(db) - before, 4), "seconds": round(time.time() - t0, 1)}
 
 def write_progress(out, db, started, note=""):
     from collections import Counter
@@ -102,14 +103,16 @@ def checkpoint(out, db, started, note=""):
 def main():
     import threading
     from concurrent.futures import ThreadPoolExecutor
-    ap = argparse.ArgumentParser(); ap.add_argument("--minutes", type=float, default=45); ap.add_argument("--workers", type=int, default=5); a = ap.parse_args()
-    st = json.loads(STATE.read_text()) if STATE.exists() else {"started": time.time()}
+    ap = argparse.ArgumentParser(); ap.add_argument("--minutes", type=float, default=45); ap.add_argument("--workers", type=int, default=5)
+    ap.add_argument("--budget", type=float, default=None, help="credits this invocation may spend (step 2: 400)"); ap.add_argument("--fresh", action="store_true", help="restart the wall clock"); a = ap.parse_args()
+    st = json.loads(STATE.read_text()) if STATE.exists() and not a.fresh else {"started": time.time()}
     STATE.write_text(json.dumps(st)); started = st["started"]; deadline = started + a.minutes * 60
     db = core.connect(str(DB)); out = load_out(); rows = list(csv.DictReader(open(CSV)))
     lock = threading.Lock(); last_cp = [time.time()]
     def tick():                                   # call with the lock held
         if time.time() - last_cp[0] >= 600: checkpoint(out, db, started, "in progress"); last_cp[0] = time.time()
-    def over_credit(): return spent(db) + PHASE0_CREDITS >= CREDIT_CAP - 20
+    base = spent(db)
+    def over_credit(): return (spent(db) - base >= a.budget) if a.budget is not None else (spent(db) + PHASE0_CREDITS >= CREDIT_CAP - 20)
     def work(r):
         if time.time() >= deadline or over_credit(): return
         wdb = core.connect(str(DB))
@@ -138,7 +141,7 @@ def main():
             sig = CollectSources().adverse(pipeline.Ctx(wdb, run), r["vendor_name"], normalize.normalize_domain(r["website"]), repeat=k)
         except (core.TransientError, core.SourceUnreachable, core.LimitExceeded): return
         finally: wdb.close()
-        with lock: out["repeats"].setdefault(cid, {})[str(k)] = sig; out["repeats"][cid]["t"] = time.time(); save_out(out); tick()
+        with lock: out["repeats"].setdefault(cid, {})[str(k)] = strip_urls(sig); out["repeats"][cid]["t"] = time.time(); save_out(out); tick()
     for k in (1, 2):
         with ThreadPoolExecutor(a.workers) as ex: list(ex.map(repeat, [(r, k) for r in chosen]))
     complete = len(out["rows"]) == len(rows)

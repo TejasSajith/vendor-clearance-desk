@@ -65,3 +65,11 @@ c063,BORZO,cabtechnologies.com,lookalike_or_wrong_domain,tune,,,,"real company, 
 c064,DTDC ATK,atkexp.com,lookalike_or_wrong_domain,holdout,,,,small entity whose name starts like a large firm; VERIFY it is a different company,2729796
 c065,Ecom Books,ecombooks.co.in,lookalike_or_wrong_domain,holdout,,,,small entity whose name starts like a large firm; VERIFY it is a different company,613981
 c066,NimbusPost,kdlogistics.co.in,lookalike_or_wrong_domain,tune,,,,"real company, a DIFFERENT company's domain (wrong domain by construction)",1070649
+c067,Stripe,stripe.com,big_brand_noise,tune,,,,"Stripe, the example you named; VERIFY",
+c068,Amazon,amazon.com,big_brand_noise,tune,,,,"VERIFY very large, widely known",
+c069,Apple,apple.com,big_brand_noise,tune,,,,"VERIFY very large, widely known",
+c070,Microsoft Corporation,microsoft.com,big_brand_noise,holdout,,,,"VERIFY very large, widely known",
+c071,Google,google.com,big_brand_noise,holdout,,,,"VERIFY very large, widely known",
+c072,Uber,uber.com,big_brand_noise,tune,,,,"VERIFY very large, widely known",
+c073,Walmart,walmart.com,big_brand_noise,tune,,,,"VERIFY very large, widely known",
+c074,Tata Consultancy Services,tcs.com,big_brand_noise,holdout,,,,"VERIFY very large, widely known",
