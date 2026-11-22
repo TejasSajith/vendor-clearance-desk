@@ -28,3 +28,15 @@ All from Crustdata (`probe/REPORT.md`, `probe/REPORT_registry_news.md`):
 ## Architecture
 
 ## Approaches tried (what worked / didn't)
+
+## Limitations
+
+- **Registry gap:** Crustdata has no CIN, GSTIN or director IDs. A vendor with no Crustdata record is `CANNOT_VERIFY`, naming "independent registry evidence (CIN/GSTIN/incorporation certificate)" as missing. It is never a rejection.
+- **Adverse media is weak:** result URLs are often redirects, many snippets have no date, and namesakes are common. A rejection needs a dated, resolved, sourced, severe report (`reject_*` parameters, PROPOSED); anything weaker is `CANNOT_VERIFY`.
+- **"Director" means listed at the company:** Person Enrich shows a person's own profile data, not a director of record.
+- **Timeouts are not answers:** a source that stays unreachable after retries holds the case for a person; it is never read as "nothing found".
+- **Caps stop the run:** at the credit or time cap the run stops cleanly, marks the remaining checks `not_run` and returns `CANNOT_VERIFY` listing them and the spend. A failure already found is shown as evidence for a person, not as a rejection.
+- **Conflicting sources are not averaged:** when two sources disagree, the check is `unknown` and both sides are named.
+- **Duplicates:** the same vendor submitted under different spellings returns the existing run and creates no second approval.
+- **Names and domains:** non-Latin names are searched as given (no transliteration); a weak match is `unknown`. A missing website or director makes those checks `unknown`, named as missing.
+- **Tuning:** all thresholds are PROPOSED until decided in `DECISIONS.md`; real-vendor labels are still empty, so nothing is tuned on real data yet.
