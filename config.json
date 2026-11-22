@@ -2,5 +2,12 @@
   "max_cost_credits_per_run": 50,
   "max_seconds_per_run": 300,
   "price_inr_per_check": 0,
-  "min_match_confidence": 0.9
+  "min_match_confidence": 0.9,
+  "rate_limits_per_min": {
+    "company": 5,
+    "person": 5,
+    "job": 5,
+    "web": 10,
+    "default": 5
+  }
 }

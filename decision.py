@@ -1,4 +1,4 @@
-"""Decision schema + abstain rules. Wrong answers cost more than CANNOT_VERIFY, so abstain when unsure."""
+"""Decision schema (verdicts are RECOMMENDATIONS; clearing or rejecting waits for a person) + abstain rules. Wrong answers cost more than CANNOT_VERIFY, so abstain when unsure."""
 from dataclasses import dataclass, field, asdict
 from core import CONFIG
 
@@ -13,6 +13,14 @@ class Decision:
     def to_dict(self): return asdict(self)
 
 def decide(checks):
+    # A source that timed out is not an answer: hold for retry or a person, never read as "clean".
+    unreachable = [c for c, v in checks.items() if v.get("status") == "unreachable"]
+    if unreachable:
+        return Decision(HOLD, [{"text": f"{c}: source unreachable", "sources": []} for c in unreachable],
+                        [f"{c} (source unreachable, retry or person)" for c in unreachable])
+    return _decide(checks)
+
+def _decide(checks):
     """checks: dict name -> {"status": "pass"|"fail"|"unknown", "reason": str, "sources": [url], "confidence": float}
     Required checks: exists, active, director_match, adverse_media."""
     required = ["exists", "active", "director_match", "adverse_media"]

@@ -43,3 +43,37 @@ def test_decisions():
     assert d.decide({**all_ok, "director_match": {"status": "unknown", "reason": ""}}).verdict == d.CANNOT_VERIFY
     low = {**all_ok, "exists": {**ok(), "confidence": 0.5}}
     assert d.decide(low).verdict == d.CANNOT_VERIFY
+
+def test_unreachable_is_hold_not_clean():
+    all_ok = {c: ok() for c in ["exists", "active", "director_match", "adverse_media"]}
+    r = d.decide({**all_ok, "adverse_media": {"status": "unreachable", "reason": "timeout"}})
+    assert r.verdict == d.HOLD
+
+def test_reject_and_clear_wait_for_approval(db):
+    rid = core.start_run(db, "x")
+    all_ok = {c: ok() for c in ["exists", "active", "director_match", "adverse_media"]}
+    k = core.finalize(db, rid, d.decide(all_ok))
+    assert db.execute("SELECT status FROM actions WHERE key=?", (k,)).fetchone()[0] == "pending"
+    assert core.finalize(db, rid, d.decide({})) is None   # cannot verify => no action
+
+def test_cost_from_response(db):
+    rid = core.start_run(db, "x")
+    core.tracked_call(db, rid, "company/enrich", {}, lambda: {"credits": 0.5}, credits_from=lambda o: o["credits"])
+    assert core.run_cost(db, rid) == 0.5
+
+def test_cache_hit_costs_nothing(db):
+    rid = core.start_run(db, "x"); n = []
+    f = lambda: n.append(1) or {"credits": 2}
+    core.cached_call(db, rid, "/company/enrich", {"id": 1}, f, credits_from=lambda o: o["credits"])
+    core.cached_call(db, rid, "/company/enrich", {"id": 1}, f, credits_from=lambda o: o["credits"])
+    assert len(n) == 1 and core.run_cost(db, rid) == 2
+
+def test_throttle_waits_at_limit(monkeypatch):
+    t = {"v": 1000.0}; slept = []
+    monkeypatch.setitem(core._clock, "now", lambda: t["v"])
+    monkeypatch.setitem(core._clock, "sleep", lambda s: (slept.append(s), t.__setitem__("v", t["v"] + s)))
+    core._windows.clear()
+    for _ in range(5): core.throttle("/person/enrich")
+    assert not slept
+    core.throttle("/person/enrich")          # 6th call within a minute must wait
+    assert slept and slept[0] > 59

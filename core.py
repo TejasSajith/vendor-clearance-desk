@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS facts(id INTEGER PRIMARY KEY, run_id TEXT, subject TE
   source_date TEXT, retrieved_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS calls(id INTEGER PRIMARY KEY, run_id TEXT, endpoint TEXT, params TEXT,
   status TEXT, credits REAL, ms INTEGER, ts REAL);
+CREATE TABLE IF NOT EXISTS cache(key TEXT PRIMARY KEY, response TEXT, ts REAL);
 CREATE TABLE IF NOT EXISTS actions(key TEXT PRIMARY KEY, run_id TEXT, kind TEXT, payload TEXT,
   status TEXT, created REAL);  -- pending -> approved -> done | rejected
 """
@@ -58,13 +59,16 @@ def facts(db, run_id, subject=None):
 def run_cost(db, run_id):
     return db.execute("SELECT COALESCE(SUM(credits),0) FROM calls WHERE run_id=?", (run_id,)).fetchone()[0]
 
-def tracked_call(db, run_id, endpoint, params, fn, credits=0.0):
+def tracked_call(db, run_id, endpoint, params, fn, credits=0.0, credits_from=None):
     """Wrap every external call: enforce limits, then log cost and time."""
     started = db.execute("SELECT started FROM runs WHERE id=?", (run_id,)).fetchone()[0]
     if time.time() - started > CONFIG["max_seconds_per_run"]: raise LimitExceeded("time limit")
     if run_cost(db, run_id) + credits > CONFIG["max_cost_credits_per_run"]: raise LimitExceeded("cost limit")
     t0, status = time.time(), "ok"
-    try: return fn()
+    try:
+        out = fn()
+        if credits_from: credits = credits_from(out)   # use the cost the API response reports
+        return out
     except Exception: status = "error"; raise
     finally:
         db.execute("INSERT INTO calls(run_id,endpoint,params,status,credits,ms,ts) VALUES(?,?,?,?,?,?,?)",
@@ -89,3 +93,44 @@ def execute_action(db, key, executor):
     kind, payload = db.execute("SELECT kind,payload FROM actions WHERE key=?", (key,)).fetchone()
     executor(kind, json.loads(payload))
     return True
+
+
+def finalize(db, run_id, decision):
+    """Turn a recommendation into a held action. Clearing and rejecting both need a person's approval."""
+    kind = {"CLEARED": "onboard_vendor", "REJECTED": "reject_vendor"}.get(decision.verdict)
+    if not kind: return None   # CANNOT_VERIFY / HOLD go to a person as-is, nothing to execute
+    return propose_action(db, run_id, kind, {"verdict": decision.verdict, "reasons": decision.reasons})
+
+
+# ---------- per-endpoint throttle + response cache ----------
+import collections
+_windows = collections.defaultdict(collections.deque)
+_clock = {"now": time.time, "sleep": time.sleep}   # replaceable in tests
+
+def _group(endpoint):
+    for g in ("company", "person", "job", "web"):
+        if endpoint.startswith("/" + g): return g
+    return "other"
+
+def throttle(endpoint):
+    """Sliding 60s window per endpoint group, using the account's real limits (5/min company, person, job; 10/min web)."""
+    g = _group(endpoint)
+    limit = CONFIG["rate_limits_per_min"].get(g, CONFIG["rate_limits_per_min"]["default"])
+    w = _windows[g]
+    while True:
+        now = _clock["now"]()
+        while w and now - w[0] >= 60: w.popleft()
+        if len(w) < limit: w.append(now); return
+        _clock["sleep"](60 - (now - w[0]) + 0.05)
+
+def cached_call(db, run_id, endpoint, params, fn, credits_from=None):
+    """Same request is never paid for twice (also survives restarts). Misses are throttled, limit-checked and logged."""
+    key = hashlib.sha256(json.dumps([endpoint, params], sort_keys=True).encode()).hexdigest()
+    row = db.execute("SELECT response FROM cache WHERE key=?", (key,)).fetchone()
+    if row: return json.loads(row[0])
+    def go():
+        throttle(endpoint)
+        return fn()
+    out = tracked_call(db, run_id, endpoint, params, go, credits_from=credits_from)
+    db.execute("INSERT OR REPLACE INTO cache VALUES(?,?,?)", (key, json.dumps(out), time.time()))
+    return out
