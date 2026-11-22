@@ -1,0 +1,69 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Clearance engine: dev console</title>
+<style>
+body{font:14px system-ui,sans-serif;margin:0;background:#111;color:#e8e8e8}
+header{padding:10px 16px;background:#1b1b1b;border-bottom:1px solid #333}
+.tabs button{background:#222;color:#ddd;border:1px solid #333;padding:6px 12px;margin-right:4px;cursor:pointer}
+.tabs button.on{background:#3a5ea8;color:#fff}
+main{padding:16px;display:none}main.on{display:block}
+.row{display:flex;gap:16px;flex-wrap:wrap}.col{flex:1;min-width:320px}
+textarea{width:100%;height:340px;background:#181818;color:#ddd;border:1px solid #333;font:12px monospace}
+input,select{background:#181818;color:#ddd;border:1px solid #333;padding:3px}
+button.go{background:#2e7d32;color:#fff;border:0;padding:7px 14px;cursor:pointer;margin:6px 6px 6px 0}
+button.sm{background:#333;color:#ddd;border:1px solid #555;padding:3px 8px;cursor:pointer}
+table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #2a2a2a;padding:4px 6px;text-align:left;vertical-align:top}
+.b{padding:1px 8px;border-radius:9px;font-size:12px}.pass,.CLEARED{background:#1b5e20}.fail,.REJECTED{background:#8e1c1c}
+.unknown,.CANNOT_VERIFY{background:#7a5c00}.unreachable,.HOLD_FOR_APPROVAL{background:#5b3a8c}
+.note{color:#9aa;font-size:12px}.params div{display:flex;justify-content:space-between;margin:2px 0}.params input{width:70px}
+h3{margin:14px 0 6px}
+</style></head><body>
+<header><b>Clearance engine: dev console</b> <span class="note">localhost only. Runs use SIMULATED data from the signals you give. Parameter edits here change nothing in the repo.</span></header>
+<div class="tabs" style="padding:10px 16px"><button id="t1" class="on" onclick="tab(1)">1 Evaluate signals</button><button id="t2" onclick="tab(2)">2 Evaluate all cases</button><button id="t3" onclick="tab(3)">3 Run, approve, crash</button></div>
+
+<main id="m1" class="on"><div class="row">
+ <div class="col"><div>Case: <select id="case" onchange="loadCase()"></select> Risk tier: <select id="tier"><option>low</option><option>medium</option><option>high</option></select></div>
+  <h3>Signals (JSON)</h3><textarea id="sig"></textarea>
+  <button class="go" onclick="evalNow()">Evaluate</button><span class="note" id="exp"></span></div>
+ <div class="col"><h3>Parameters (PROPOSED defaults, editable here only)</h3><div class="params" id="params"></div><button class="sm" onclick="resetParams()">Reset to defaults</button>
+  <h3>Result</h3><div id="out" class="note">Press Evaluate.</div></div></div></main>
+
+<main id="m2"><button class="go" onclick="runAll()">Run all labelled cases with the parameters from tab 1</button><div id="all" class="note"></div></main>
+
+<main id="m3"><button class="go" onclick="startRun()">Start a run from the case and signals in tab 1</button><button class="sm" onclick="post('/api/reset',{}).then(()=>{show(null)})">Clear console database</button>
+ <div class="note">A run stores facts and a call ledger (simulated costs), then creates a pending action if the verdict is CLEARED or REJECTED. Approve it, then press "Execute" or "Crash during execute" and "Recover after restart": the effect must appear exactly once.</div><div id="run"></div></main>
+
+<script>
+let CASES=[],DEFAULTS={},RUN=null;
+const $=id=>document.getElementById(id);
+const post=(u,b)=>fetch(u,{method:'POST',body:JSON.stringify(b)}).then(r=>r.json());
+function tab(n){for(let i=1;i<=3;i++){$('m'+i).className=i==n?'on':'';$('t'+i).className=i==n?'on':'';}}
+function badge(s){return '<span class="b '+s+'">'+s+'</span>';}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function params(){const o={};document.querySelectorAll('#params input').forEach(i=>o[i.name]=i.value);return o;}
+function resetParams(){drawParams(DEFAULTS);}
+function drawParams(p){$('params').innerHTML=Object.keys(p).map(k=>'<div><label>'+k+'</label><input name="'+k+'" value="'+p[k]+'"></div>').join('');}
+function loadCase(){const c=CASES[$('case').value];if(!c)return;$('sig').value=JSON.stringify(c.signals,null,1);$('tier').value=c.risk_tier||'low';
+  $('exp').textContent=c.expected?('  expected: '+c.expected+' ('+(c.basis||'')+')'):'  no label yet';}
+async function init(){CASES=await (await fetch('/api/cases')).json();DEFAULTS=await (await fetch('/api/params')).json();drawParams(DEFAULTS);
+  $('case').innerHTML=CASES.map((c,i)=>'<option value="'+i+'">'+esc(c.id)+(c.synthetic?' (synthetic)':'')+'</option>').join('');loadCase();}
+function body(){return {signals:JSON.parse($('sig').value),risk_tier:$('tier').value,params:params(),label:(CASES[$('case').value]||{}).id};}
+async function evalNow(){let b;try{b=body();}catch(e){$('out').textContent='Signals are not valid JSON: '+e;return;}
+  const r=await post('/api/evaluate',b);if(r.error){$('out').textContent=r.error;return;}
+  $('out').innerHTML='<p>Verdict: '+badge(r.verdict)+'</p><table><tr><th>check</th><th>status</th><th>reason</th><th>sources</th></tr>'+
+   Object.entries(r.checks).map(([k,v])=>'<tr><td>'+k+'</td><td>'+badge(v.status)+'</td><td>'+esc(v.reason)+'</td><td class="note">'+esc((v.sources||[]).join(', '))+'</td></tr>').join('')+'</table>'+
+   (r.missing.length?'<h3>Missing evidence</h3><ul>'+r.missing.map(m=>'<li>'+esc(m)+'</li>').join('')+'</ul>':'');}
+async function runAll(){const r=await post('/api/eval',{params:params()});if(r.error){$('all').textContent=r.error;return;}const m=r.metrics;
+  $('all').innerHTML='<p>correct '+m.correct+'/'+m.n+' | wrong definitive '+m.wrong_definitive+' (false-clear '+m.false_clear+', false-reject '+m.false_reject+') | abstained when an answer existed '+m.abstained+' | paraphrase groups consistent '+m.groups_consistent+'/'+m.groups+' | loss '+m.loss+'</p>'+
+   (r.changed_vs_default.length?'<h3>Changed vs default parameters (report-only)</h3><ul>'+r.changed_vs_default.map(c=>'<li>'+esc(c.id)+': '+c.default+' to '+c.now+' (expected '+c.expected+')</li>').join('')+'</ul>':'<p>No verdict differs from the default parameters.</p>')+
+   '<table><tr><th>case</th><th>expected</th><th>got</th></tr>'+r.results.map(x=>'<tr><td>'+esc(x.id)+'</td><td>'+x.expected+'</td><td>'+badge(x.got)+(x.got==x.expected?'':' wrong')+'</td></tr>').join('')+'</table>';}
+async function startRun(){let b;try{b=body();}catch(e){alert('Signals are not valid JSON');return;}show(await post('/api/run/start',b));}
+async function act(key,op){show(await post('/api/action',{key:key,op:op}));}
+function show(r){RUN=r;if(!r){$('run').innerHTML='';return;}if(r.error){$('run').textContent=r.error;return;}
+  $('run').innerHTML='<h3>Run '+r.run+'</h3><div class="note">steps done: '+r.steps.map(s=>s[0]).join(', ')+' | credits (simulated) '+r.credits.toFixed(2)+'</div>'+
+  '<h3>Decision</h3>'+r.steps.filter(s=>s[0]=='decide').map(s=>{const d=JSON.parse(s[1]);return badge(d.verdict)+(d.missing.length?' missing: '+esc(d.missing.join('; ')):'');}).join('')+
+  '<h3>Actions</h3>'+(r.actions.length?'<table>'+r.actions.map(a=>'<tr><td>'+a[0]+'</td><td>'+a[1]+'</td><td>'+a[2]+'</td><td>'+
+   '<button class="sm" onclick="act(\''+a[0]+'\',\'approve\')">Approve</button> <button class="sm" onclick="act(\''+a[0]+'\',\'reject\')">Reject</button> <button class="sm" onclick="act(\''+a[0]+'\',\'execute\')">Execute</button> <button class="sm" onclick="act(\''+a[0]+'\',\'crash\')">Crash during execute</button> <button class="sm" onclick="act(\''+a[0]+'\',\'recover\')">Recover after restart</button></td></tr>').join('')+'</table>':'<span class="note">none: this verdict goes to a person as it is (CANNOT_VERIFY or HOLD)</span>')+
+  '<h3>Effects (must be at most one per action)</h3>'+(r.effects.length?r.effects.map(e=>'<div>'+e[1]+' '+e[0]+'</div>').join(''):'<span class="note">none yet</span>')+
+  '<h3>Facts ledger</h3><table><tr><th>claim</th><th>source</th><th>passage</th><th>type</th></tr>'+r.facts.map(f=>'<tr><td>'+esc(f.claim)+'</td><td>'+esc(f.source_url)+'</td><td class="note">'+esc(f.passage)+'</td><td>'+esc(f.source_type)+'</td></tr>').join('')+'</table>'+
+  '<h3>Call ledger</h3><table><tr><th>endpoint</th><th>status</th><th>credits</th><th>ms</th></tr>'+r.calls.map(c=>'<tr><td>'+c[0]+'</td><td>'+c[1]+'</td><td>'+c[2]+'</td><td>'+c[3]+'</td></tr>').join('')+'</table>';}
+init();
+</script></body></html>
