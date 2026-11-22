@@ -14,10 +14,11 @@
 <div id="demo-banner" class="banner" hidden></div>
 
 <section id="login" class="card" hidden>
-  <h2>Sign in</h2>
+  <h2>Enter the access password</h2>
   <form id="login-form">
     <label for="pw">Access password</label>
-    <input id="pw" type="password" autocomplete="current-password" required>
+    <p id="pw-hint" class="note">The password is set by the person who runs the server (APP_PASSWORD).</p>
+    <input id="pw" type="password" autocomplete="current-password" aria-describedby="pw-hint" required>
     <button type="submit">Sign in</button>
     <p id="login-error" class="error" role="alert"></p>
   </form>
@@ -27,25 +28,38 @@
   <section class="card">
     <h2>New request</h2>
     <form id="run-form">
+      <fieldset class="modes">
+        <legend>Mode</legend>
+        <label class="radio"><input type="radio" name="mode" value="demo" checked> Demo (recorded)</label>
+        <label class="radio"><input type="radio" name="mode" value="live" id="mode-live"> Live</label>
+      </fieldset>
+      <p id="live-info" class="note" hidden></p>
       <label for="text">Describe the vendor in plain English</label>
       <textarea id="text" rows="3" maxlength="2000" required
-        placeholder="Check Acme Logistics Pvt Ltd, website acmelogistics.in, director Rahul Mehta, high risk."></textarea>
+        placeholder="Check Delhivery, delhivery.com, director <name>, high risk"></textarea>
+      <p class="note">Demo vendors: Acme Logistics Pvt Ltd (all pass), Zentrovia Cargo Solutions Pvt Ltd (possible adverse reports),
+        Slowpoke Freight Pvt Ltd (a source times out), Ecom Express Ltd (recorded record).</p>
       <div class="controls">
         <label>Strictness <select id="strictness"></select></label>
-        <label>Evidence to reject <select id="rejection_evidence"></select></label>
+        <label>Rejection evidence <select id="rejection_evidence"></select></label>
         <label>Data freshness (days) <select id="freshness_days"></select></label>
       </div>
       <p id="control-notes" class="note"></p>
       <button type="submit" id="run-btn">Run</button>
-      <span id="running" class="note" hidden>Running checks…</span>
+      <div id="confirm" class="confirm" hidden role="alertdialog" aria-labelledby="confirm-text">
+        <p id="confirm-text"></p>
+        <button type="button" id="confirm-yes" class="approve">Spend credits and run</button>
+        <button type="button" id="confirm-no" class="secondary">Cancel</button>
+      </div>
     </form>
   </section>
 
+  <section id="progress" class="card" hidden aria-live="polite"></section>
   <section id="result" class="card" hidden aria-live="polite"></section>
 
   <section class="card">
-    <h2>Past runs</h2>
-    <table id="runs"><thead><tr><th>Started (UTC)</th><th>Vendor</th><th>Result</th><th>Approval</th><th>Credits</th></tr></thead><tbody></tbody></table>
+    <h2>History</h2>
+    <table id="runs"><thead><tr><th>Started (UTC)</th><th>Mode</th><th>Vendor</th><th>Result</th><th>Approval</th><th>Credits</th></tr></thead><tbody></tbody></table>
   </section>
 </main>
 <script src="/app.js"></script>

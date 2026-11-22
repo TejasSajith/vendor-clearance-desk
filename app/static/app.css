@@ -1,41 +1,17 @@
-:root {
-  --bg: #f6f7f9; --card: #ffffff; --text: #1d2430; --muted: #5d6675; --line: #dde1e7; --accent: #2457c5;
-  --pass: #1d7a46; --pass-bg: #e3f4ea; --fail: #b3261e; --fail-bg: #fbe5e3; --warn: #8a5a00; --warn-bg: #fdf0d5;
-  --unk: #4a5260; --unk-bg: #eceef2;
-}
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #14171c; --card: #1d2128; --text: #e7eaef; --muted: #a0a8b5; --line: #323843; --accent: #7aa2ff;
-    --pass: #7fd6a2; --pass-bg: #1d3a2a; --fail: #ff9b93; --fail-bg: #45201d; --warn: #f5c56b; --warn-bg: #3d3018;
-    --unk: #c3c8d1; --unk-bg: #2a2f38; }
-}
-* { box-sizing: border-box; }
-body { margin: 0; padding: 0 16px 40px; background: var(--bg); color: var(--text);
-  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; max-width: 960px; margin: 0 auto; padding: 18px 0 8px; }
-h1 { font-size: 20px; margin: 0; } h2 { font-size: 16px; margin: 0 0 12px; } h3 { font-size: 14px; margin: 16px 0 6px; }
-.card, .banner { max-width: 960px; margin: 12px auto; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
-.banner { background: var(--warn-bg); color: var(--warn); border-color: transparent; font-size: 14px; }
-label { display: block; font-weight: 600; margin-bottom: 4px; }
-textarea, input, select { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
-.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 12px 0 4px; }
-.controls label { font-weight: 500; font-size: 14px; }
-button { font: inherit; font-weight: 600; border: 0; border-radius: 6px; padding: 8px 16px; background: var(--accent); color: #fff; cursor: pointer; margin-top: 8px; }
-button:disabled { opacity: .5; cursor: default; }
-button.reject { background: var(--fail); } button.approve { background: var(--pass); }
-.note { color: var(--muted); font-size: 13px; } .error { color: var(--fail); }
-.badge { display: inline-block; font-size: 12px; padding: 3px 8px; border-radius: 99px; background: var(--unk-bg); color: var(--unk); margin-left: 6px; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-.chip { border-radius: 6px; padding: 6px 10px; font-size: 13px; font-weight: 600; }
-.chip small { display: block; font-weight: 400; }
-.st-Passed { background: var(--pass-bg); color: var(--pass); }
-.st-Failed { background: var(--fail-bg); color: var(--fail); }
-.st-Suspicious, .st-Couldn { background: var(--warn-bg); color: var(--warn); }
-.st-Can { background: var(--unk-bg); color: var(--unk); }
-.verdict { font-size: 20px; font-weight: 700; margin: 0 0 4px; }
-pre.memo { white-space: pre-wrap; font: inherit; background: var(--bg); border-radius: 6px; padding: 12px; margin: 8px 0; }
-ul { margin: 4px 0; padding-left: 20px; }
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
-tbody tr { cursor: pointer; } tbody tr:hover { background: var(--bg); }
-#runs { display: block; overflow-x: auto; }
-.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+button.secondary { background: var(--unk-bg); color: var(--text); }
+fieldset.modes { border: 0; padding: 0; margin: 0 0 12px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+fieldset.modes legend { font-weight: 600; float: left; margin-right: 8px; padding: 0; }
+label.radio { display: inline-flex; gap: 6px; align-items: center; font-weight: 500; margin: 0; }
+label.radio input { width: auto; }
+.confirm { margin-top: 12px; padding: 12px; border-radius: 6px; background: var(--warn-bg); color: var(--warn); }
+.confirm button { margin-right: 8px; }
+.notice { background: var(--warn-bg); color: var(--warn); border-radius: 6px; padding: 8px 10px; font-size: 14px; }
+ul.steps { list-style: none; padding: 0; }
+.step { display: flex; gap: 8px; align-items: center; padding: 2px 0; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); flex: none; }
+.s-running .dot { background: var(--accent); }
+.s-fetched .dot, .s-done .dot { background: var(--pass); }
+.s-unreachable .dot, .s-error .dot, .s-stoppedatcap .dot { background: var(--fail); }
+.src { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.src a { color: var(--accent); }
+code { font-size: 12px; }
