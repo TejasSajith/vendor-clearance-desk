@@ -128,8 +128,10 @@ def _adverse(s, p):
         n = len(relevant)
         return _r("unknown", f"{n} possible adverse report{'s' if n != 1 else ''}, not enough to reject; rejection needs a dated, resolved report: missing "
                   + "; ".join(missing), src)
-    if a.get("searches_run", 0) < p["min_searches"]: return _r("unknown", "too few searches run", src)
-    return _r("pass", "searched, no relevant adverse report", src)
+    n, scanned = a.get("searches_run", 0), a.get("results_scanned")
+    if n < p["min_searches"]: return _r("unknown", f"too few searches run ({n} of the {p['min_searches']} needed)", src)
+    seen = f"{scanned} results scanned" if scanned is not None else "results scanned: not recorded"
+    return _r("pass", f"no adverse reports found in {n} searches (limited coverage); {seen}", src)   # absence of evidence, never "clean" or "verified"
 
 def _conflicts(s, checks, p):
     """Two sources that disagree never average out: the affected check becomes unknown and names both sides."""
