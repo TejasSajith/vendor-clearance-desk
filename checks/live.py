@@ -6,7 +6,7 @@ from datetime import date, timedelta
 from pathlib import Path
 import requests
 import core
-from checks import normalize
+from checks import normalize, adverse
 
 BASE = "https://api.crustdata.com"
 RAW = Path(__file__).resolve().parent.parent / "probe" / "raw" / "live"
@@ -65,17 +65,10 @@ class LiveSources:
     def director(self, ctx, cid, claimed):
         raise NotImplementedError("director check is not part of this validation (no claimed director is supplied)")
 
-    def adverse(self, ctx, name):
-        import re
-        from urllib.parse import urlparse
-        hits, ran = [], 0
+    def adverse(self, ctx, name, domain=""):
+        hits, ran, scanned = [], 0, 0
         for q, src in ((f"{name} fraud OR scam OR default OR FIR OR blacklisted", "web"), (f"{name} fraud OR default OR FIR", "news")):
             res = call(ctx, "/web/search/live", {"query": q, "sources": [src], "location": "IN"}); ran += 1
-            tok = normalize.normalize_name(name).split()[0] if normalize.normalize_name(name) else ""
-            for r in res.get("results") or []:
-                text = f"{r.get('title','')} {r.get('snippet','')}"
-                sev = 3 if re.search(r"\b(fir|blacklist\w*|default\w*|arrest\w*|insolven\w*)\b", text, re.I) else 2 if re.search(r"\b(fraud|scam)\b", text, re.I) else 1
-                if tok and tok in normalize.normalize_name(text):
-                    hits.append({"dated": bool(re.match(r"^\s*\d{1,2}\s+\S+\s+\d{4}\s+[—-]", r.get("snippet", ""))), "names_target": True,
-                                 "discriminator": False, "source_ok": False, "severity": sev, "url_host": urlparse(r.get("url", "")).hostname})
-        return {"state": "searched", "searches_run": ran, "hits": hits, "sources": ["crustdata:/web/search/live"]}
+            rs = res.get("results") or []; scanned += len(rs)
+            hits += adverse.build_hits(rs, name, domain)
+        return {"state": "searched", "searches_run": ran, "results_scanned": scanned, "hits": hits, "sources": ["crustdata:/web/search/live"]}

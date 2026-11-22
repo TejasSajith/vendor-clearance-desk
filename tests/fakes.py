@@ -25,4 +25,4 @@ class FakeSources:
         return v
     def profile(self, ctx, cid): return self._call(ctx, "/company/enrich", {"id": cid}, self.profile_sig)
     def director(self, ctx, cid, claimed): return self._call(ctx, "/person/enrich", {"id": cid, "claimed": claimed}, self.director_sig)
-    def adverse(self, ctx, name): return self._call(ctx, "/web/search/live", {"q": name}, self.adverse_sig)
+    def adverse(self, ctx, name, domain=None): return self._call(ctx, "/web/search/live", {"q": name}, self.adverse_sig)

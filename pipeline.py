@@ -76,7 +76,7 @@ def run_request(db, req, sources):
         if sig["profile"] and sig["profile"].get("status"): sig["identify"]["status"] = sig["profile"]["status"]   # company status comes from enrich
         sig["director"] = (stage("director", lambda: sources.director(ctx, cid, claimed)) if claimed
                            else {"not_requested": True, "sources": []})
-    sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name))
+    sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name, domain))
     sig = {k: v for k, v in sig.items() if v is not None}
 
     CHECK_OF = {"identify": "exists", "profile": "active", "director": "director_match", "adverse": "adverse_media"}
