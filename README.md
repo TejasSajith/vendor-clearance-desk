@@ -1,135 +1,155 @@
-# Vendor Clearance Desk
+# Unmask
 
-## 1. What it is
+**Know who you're doing business with.**
 
-A Vendor Clearance Desk for a mid-size Indian 3PL (third-party logistics company). It replaces the manual check that staff or a KYC firm do before a new carrier or supplier is onboarded and paid.
+Unmask helps businesses make more informed decisions about the suppliers and carriers they work with. It brings together company information, activity checks, people searches and negative news reports to help assess a vendor before onboarding.
 
-## 2. Input and output
+Built for the **Trust and Compliance** track at ContextCon 05, in collaboration with Crustdata.
 
-**In:** one plain-English sentence with the vendor, its website, the claimed director if there is one, and a risk level. For example:
+## 1. The service
 
-> Check LorryCare, website lorrycare.com, low risk.
+A mid-sized Indian logistics company works with multiple carriers, transport partners and suppliers. Before onboarding a new vendor, its procurement and compliance teams need to establish whether the business is genuine, whether it is still operating, who is associated with it and whether there are any concerning reports about it.
 
-**Out:** a memo with the verdict, the reason for each check with its source and dates, what is missing, and the cost. Here is the memo from that recorded live run (from the live validation), as the template writer produces it:
+Today, this often means jumping between company databases, people searches, job listings and news articles, trying to piece together information that may be incomplete or inconsistent. The process takes time, depends heavily on manual research and can lead to important details being overlooked.
 
+Unmask brings these checks together in one place. A team member enters a vendor's details, and the system gathers information from Crustdata, evaluates the findings using fixed rules and produces a recommendation with supporting reasons.
+
+The aim is to reduce repetitive research, make vendor screening more consistent and give procurement teams a clearer basis for their decisions. Unmask is designed for organisations with recurring screening requirements, with a focus on logistics companies and their supplier networks.
+
+## 2. What it does now
+
+![Unmask workflow](<Unmask_ Vendor Trust Check.png>)
+
+A user enters a vendor name. They can also provide a website, a claimed director and a risk level.
+
+Unmask uses Crustdata to run four checks:
+
+| Check | API / data | What it looks for |
+|---|---|---|
+| **Find the company** | Company Identify | Finds and matches the right company using its name and website |
+| **Check the vendor** | Company Enrich + Job Search | Looks at company status, employee numbers, hiring and other signs of activity |
+| **Check the claimed director** | Person Search / Enrich | Checks whether the person's profile is linked to the company |
+| **Look for negative reports** | Web Search API | Searches for reports about fraud, legal issues and compliance concerns |
+
+The findings are combined using fixed rules to produce one of four recommendations:
+
+- `CLEARED` — available information supports clearing the vendor.
+- `REJECTED` — evidence supports rejecting the vendor.
+- `CANNOT_VERIFY` — there isn't enough information to reach a conclusion.
+- `HOLD_FOR_APPROVAL` — a source could not be reached or the case needs review.
+
+Each check can pass, fail, remain uncertain or be marked unreachable. Missing information is not automatically treated as a negative finding. If a source fails, the system holds the case rather than assuming everything is fine.
+
+A person reviews and approves recommendations before any resulting action is carried out. This gives procurement teams a structured starting point for their decision, along with the ability to review uncertain or concerning findings.
+
+## 3. What we're building
+
+We're building Unmask into a service that helps organisations screen suppliers and carriers whenever they need to bring a new business partner onboard.
+
+Our current priorities are:
+
+- **Company records:** Add independent records to check company registration details, including CIN and GSTIN.
+- **Evidence behind decisions:** Make it easier for reviewers to trace findings back to their original sources.
+- **Reliable checks:** Ensure runs can recover from interruptions, actions aren't repeated and API usage stays within limits.
+
+The intended business model is to offer vendor screening as a service, through per-screening or subscription-based pricing. Actual API costs, additional verification costs and the time spent by reviewers will help determine viable pricing.
+
+## 4. How it runs
+
+Unmask is built in Python. A central pipeline coordinates Crustdata API calls, collects the returned information and passes it through the decision rules.
+
+```text
+Vendor request
+      |
+      v
+  pipeline.py
+      |
+      +-- Company Identify
+      +-- Company Enrich + Job Search
+      +-- Optional Person Search
+      +-- Web Search
+      |
+      v
+   policy.py
+      |
+      v
+  decision.py
+      |
+      v
+ Recommendation
+      |
+      v
+ Human approval
 ```
-Verdict: Can't verify.
 
-Reasons:
-- Company exists: Passed. single matching record. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).
-- Company is active: Passed. 2 activity signals: headcount, traffic. Source: crustdata:/company/enrich, crustdata:/job/search (record date not stated by the source; retrieved 2026-11-22).
-- Claimed director: Can't verify. no claimed director in the request. Source: no source (record date not stated by the source; retrieved 2026-11-22).
-- Adverse media: Passed. searched, no relevant adverse report. Source: crustdata:/web/search/live (record date not stated by the source; retrieved 2026-11-22).
+The code is organised into a few main components:
 
-What is missing:
-- director_match
-- claimed_director (not supplied in the request)
-
-Cost: 3.4 credits (rupee cost not set yet).
-```
-
-The data source states no record date for these fields, so the memo says so and gives the date we retrieved the data. Rupee cost is not shown yet: the credit-to-rupee rate is still open.
-
-## 3. How it works
-
-1. **Request:** someone types the request in plain English. The language model picks out the vendor name, website and risk level. Code removes the director's name before the model sees the text.
-2. **Match:** code matches the vendor to one company record in Crustdata. If several records fit and the website does not settle it, the answer is "can't verify". The system never picks one at random.
-3. **Four checks:** the company exists, it is active (staff numbers, job posts, web traffic), the claimed director is listed at the company, and there is no adverse media.
-4. **Rules decide:** fixed, written rules turn the check results into one of four verdicts: Cleared, Rejected, Can't verify, Held for approval. The language model never decides anything; it only reads the request and writes the memo in plain English. Code checks every figure and source in the memo against the decision, and uses a template if anything does not match.
-5. **A person approves:** Cleared and Rejected are only recommendations until a person clicks Approve or Reject.
-6. **Logged and costed:** every data call and model call goes into a ledger with its cost, and every run is saved.
-
-## 4. Features built in
-
-- **Plain English in and out:** a sentence goes in and a readable memo comes out. If something needed is unclear, the page asks instead of guessing.
-- **Sourced reasons with dates:** each reason names the record it came from, the record's date (or "not stated by the source") and the date it was retrieved.
-- **"Can't verify" instead of a guess:** when the evidence does not settle a check, the memo says so and lists exactly what is missing. A rejection needs dated, sourced, serious evidence; anything weaker stays "can't verify".
-- **Credit and time caps per run:** a run stops cleanly at its cap, which is currently proposed as 50 credits and 300 seconds. The memo names the checks that did not run. The web page also caps credits per signed-in session.
-- **A ledger of every call:** every Crustdata call and every model call is recorded with the cost the API reports. In the live validation the ledger matched the account balance exactly.
-- **Safe restart:** if the process is killed mid-run and restarted, the run picks up where it stopped. Paid calls that already finished are not repeated, and each approval action happens exactly once.
-- **Human approval:** nothing irreversible happens without a person. Approving only records the decision; nothing is sent outside the app.
-- **Duplicate requests merged:** "Delhivery", "Delhivery Ltd" and "M/s Delhivery Limited" become one run and one approval.
-- **A source that does not answer is not a clean result:** if a source stays unreachable after retries, the case is held for a person.
-- **Sensitivity controls:** three settings on the page. *Strictness* sets how much evidence a check needs before it passes. *Evidence to reject* is standard or high; high needs two sources. *Data freshness* sets how recent staff-number data must be (30, 90 or 180 days, or the default of 60). Until strictness presets are approved, the three strictness choices give the same result, and the page says so. The hard rules cannot be changed from the page.
-- **Director privacy:** the claimed director's name is used only while the check runs. It is never stored, logged or sent to the model. Only a salted hash and the match result are kept.
-
-## 5. Tech stack
-
-| Part | Why |
+| Component | What it does |
 |---|---|
-| Python | One language for the checks, rules, tests and web server; quick to read and change. |
-| SQLite | One file holds run state, the ledger, the cache and approvals. No database server to run, and it is easy to inspect. |
-| FastAPI (with uvicorn) | A small web server for the single-page approval screen, with input checking built in. |
-| Plain HTML and JavaScript | One page with no framework and no build step. |
-| Crustdata APIs | Company records, staff numbers, job posts, people profiles and web search, all from one provider. |
-| Gemini (`gemini-3.8-flash`) | Language only: reads the request and drafts the memo. If it is off or slow, templates are used. |
-| Docker | One container image to host the service; keys come from environment variables, never from the image. |
+| `pipeline.py` | Validates the request and runs the checks |
+| `checks/` | Connects to Crustdata and processes the returned information |
+| `policy.py` | Applies fixed rules to each check |
+| `decision.py` | Produces the final recommendation |
+| `core.py` | Manages saved data, API usage, retries, recovery and approvals |
+| `evaluation/` | Contains test cases and evaluation tools |
 
-## 6. Infrastructure
+**Keeping runs reliable**
 
-```mermaid
-flowchart LR
-    B[Browser: one page] -->|password sign-in| S[Backend service<br/>FastAPI in Docker]
-    S --> D[(SQLite file<br/>runs, ledger, cache, approvals)]
-    S -->|live mode| C[Crustdata APIs]
-    S -->|language only| G[Gemini model]
-    S -.->|demo mode: recorded fixtures,<br/>no Crustdata or Gemini calls| B
+SQLite stores the progress of each request, allowing a run to continue from where it stopped after an interruption. API calls are tracked, cached and rate-limited. Each run has a limit of 50 Crustdata credits and 300 seconds.
+
+Actions are also tracked to prevent the same action from being carried out twice. The core includes an evidence ledger that requires a source link and passage when recording a fact, providing the foundation for traceable recommendations.
+
+### Run locally
+
+**Requirements:** Python and a Crustdata API key.
+
+```bash
+git clone https://github.com/prishasinghal1/contextcon.git
+cd contextcon
+pip install -r requirements.txt
+export CRUSTDATA_API_KEY="your_api_key"
 ```
 
-Demo mode is served by the same backend service (`APP_MODE=demo`, the default). It replays recorded results and spends nothing. It is not hosted anywhere public yet.
+Run the tests:
 
-## 7. Key design choices
-
-Most of these are still marked PROPOSED in DECISIONS.md until the owner signs them off.
-
-- **Rules decide, not a score:** each verdict can be traced to a written rule, so a person can see why it came out that way.
-- **No machine-learning model for the verdict:** there are too few labelled cases to train one honestly, and its decisions would be harder to explain to a person.
-- **Fixed checks:** the same input and the same data always give the same verdict.
-- **"Can't verify" over a guess:** a wrong answer costs more than an honest "can't verify", so the system says what is missing.
-- **A person approves:** clearing and rejecting a vendor cannot be taken back, so neither happens without a person.
-- **SQLite:** one file, no server, and it survives a crash. That is enough for one desk.
-- **Privacy by keeping less:** only the data a check needs is taken in, and the director's name is never kept.
-- **Caps and a ledger:** every run has a ceiling, and every call is counted, so cost is known and bounded.
-
-## 8. What it does not do
-
-- No sanctions or watch-list screening.
-- No court, FIR or regulator records.
-- No GST status and no company-registry IDs (CIN, GSTIN, DIN): Crustdata does not provide them.
-- No check of who really owns the company (beneficial ownership).
-- No continuous monitoring: each check is one point in time.
-- Small and new firms more often end at "can't verify", because they have little data in the source. The memo then names the registry evidence to ask for.
-- "Director" means listed at the company in profile data, not a director of record.
-
-## 9. Run it
-
-Install once: `pip install -r requirements.txt`. Then start the web UI:
-
-```
-python -m app                # http://127.0.0.1:8000  (another port: python -m app --port 8001)
+```bash
+python -m pytest -q
 ```
 
-Open http://127.0.0.1:8000 and stop it with Ctrl+C. If the port is busy (an earlier server left running), the start command
-says so: free the port with `lsof -ti tcp:8000 | xargs kill`. The server binds to 127.0.0.1 only.
+Start the local development console:
 
-- **Demo (recorded)**, chosen on the page: replays recorded results with template parsing and memos. Zero live calls, zero credits.
-  Try Acme Logistics Pvt Ltd (all pass), Zentrovia Cargo Solutions Pvt Ltd (possible adverse reports), Slowpoke Freight Pvt Ltd
-  (a source times out) or Ecom Express Ltd (recorded record).
-- **Live**, chosen on the page: needs `CRUSTDATA_API_KEY` (environment or the gitignored `.env`) and the caps in `config.json`.
-  The page shows the credit and time caps and asks you to confirm before it spends anything. `GEMINI_API_KEY` is optional.
-- `APP_PASSWORD` (optional locally) turns on a sign-in. `APP_DATA_DIR` sets where `demo.db` and `clearance.db` live.
-- Runs queue up and one background worker runs them one at a time; the page shows each check's progress. API: `POST /api/ask`,
-  `GET /api/run/{id}`, `GET /api/runs`, `POST /api/action/{key}/approve|reject`, `GET /api/health`.
-- **Vercel:** see D46 in `DECISIONS.md` (proposed: Vercel serves the page and the recorded demo; live runs need a host with a disk).
-  On Vercel the server runs each job inside the request, requires `APP_PASSWORD` and keeps live mode off.
+```bash
+python devconsole/app.py
+```
 
-**What the web UI stubs or limits:** Approve only records the decision locally; nothing is sent anywhere. Strictness levels
-give the same result until presets are approved (D38), and the page says so. Freshness also offers the policy default (60).
-Record dates show "not stated by the source". Sessions and the job queue live in memory, so a restart signs people out and
-forgets queued jobs. Finished runs stay in SQLite. Progress is shown per data fetch; Passed or Failed comes from the policy at the end.
+Open `http://127.0.0.1:8765`.
 
-From the command line: `python pipeline.py run --vendor "NAME" --website DOMAIN --tier low`.
+The development console lets you experiment with decision rules, test cases and approval/recovery scenarios. It uses simulated information; live vendor checks run through the Python pipeline.
 
-**Tests:** `python -m pytest -q`.
+## 5. What we tried
 
-**More detail:** ARCHITECTURE_TECHNICAL and ARCHITECTURE_BUSINESS (in `docs/`), UNIT_ECONOMICS (in `finance/`), DECISIONS, and NOTES (approaches tried).
+We tested Crustdata against 10 Indian logistics companies of different sizes, including businesses with similar names.
+
+- **Company search:** The correct company appeared as the top name match in 9 out of 10 cases. Similar names, tied results and incorrect domain matches required additional matching logic.
+- **Company activity:** Employee history was available across the sample, but smaller companies often had no recent job postings. Missing job postings cannot establish that a company is inactive.
+- **People search:** Person data provided employment titles, start dates and company IDs, allowing us to check employment links. These links do not establish legal directorship.
+- **Web search:** We found potentially relevant reports alongside unrelated companies, redirect URLs and missing publication dates.
+
+These experiments helped us understand the strengths and limitations of the available data and shaped how each check is evaluated.
+
+## 6. Why this way
+
+A vendor screening decision can have real financial and operational consequences. A wrong rejection can cost a business a supplier, while a false clearance can expose it to risk.
+
+Our design choices reflect this:
+
+- **Fixed rules:** Recommendations follow explicit conditions and remain consistent and inspectable.
+- **Source tracking:** Findings are designed to be traceable to the information they came from.
+- **Explicit uncertainty:** Missing, conflicting or inconclusive information has its own outcome.
+- **Human approval:** A person remains responsible for consequential decisions.
+- **Recovery:** SQLite persistence, retries and tracked actions help runs recover without repeating completed work.
+- **Cost limits:** Every API call is tracked, with a fixed time and credit budget for each run.
+
+Unmask aims to reduce the time teams spend gathering information, so they can focus on reviewing findings and making better decisions.
+
+---
