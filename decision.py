@@ -12,12 +12,23 @@ class Decision:
     cost_credits: float = 0.0
     def to_dict(self): return asdict(self)
 
-def decide(checks):
+def decide(checks, cost_credits=0.0, seconds=None):
+    """cost_credits / seconds: what the run spent so far (used in the message when a cap stopped it)."""
     # A source that timed out is not an answer: hold for retry or a person, never read as "clean".
     unreachable = [c for c, v in checks.items() if v.get("status") == "unreachable"]
+    not_run = [c for c, v in checks.items() if v.get("status") == "not_run"]
     if unreachable:
         return Decision(HOLD, [{"text": f"{c}: source unreachable", "sources": []} for c in unreachable],
-                        [f"{c} (source unreachable, retry or person)" for c in unreachable])
+                        [f"{c} (source unreachable, retry or person)" for c in unreachable]
+                        + [f"{c} (not run: cap reached)" for c in not_run], cost_credits)
+    if not_run:      # a cap stopped the run: never a definitive answer, even if a finished check already failed
+        spent = f"{cost_credits:g} credits" + (f", {seconds:.1f} s" if seconds is not None else "")
+        reasons = [{"text": f"run stopped at its cost or time cap after {spent}; not run: {', '.join(not_run)}", "sources": []}]
+        for c, v in checks.items():
+            if v.get("status") in ("pass", "fail", "unknown"):
+                tag = "FAIL, evidence for a person to judge (not a final rejection)" if v["status"] == "fail" else v["status"]
+                reasons.append({"text": f"{c} [{tag}]: {v.get('reason', '')}", "sources": v.get("sources", [])})
+        return Decision(CANNOT_VERIFY, reasons, [f"{c} (not run: cap reached)" for c in not_run], cost_credits)
     return _decide(checks)
 
 def _decide(checks):

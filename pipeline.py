@@ -40,10 +40,12 @@ def run_request(db, req, sources):
     core.start_run(db, json.dumps({"vendor_name": name, "website": domain, "risk_tier": tier}), run_id=run)
     core.claim_request(db, pk, run)
     ctx = Ctx(db, run)
-    state = {}                                             # stage -> "ok" | "unreachable"
+    state = {}                                             # stage -> "ok" | "unreachable" | "not_run"
     def stage(n, fn):
+        if "not_run" in state.values(): state[n] = "not_run"; return None          # a cap already stopped this run
         try: out = core.run_step(db, run, n, fn); state[n] = "ok"; return out
         except (core.TransientError, core.SourceUnreachable): state[n] = "unreachable"; return None   # a timeout is never "nothing found"
+        except core.LimitExceeded: state[n] = "not_run"; return None                # stop cleanly, never raise out of the run
 
     ident = stage("identify", lambda: sources.identify(ctx, name, domain))
     sig = {"identify": identify_signals(name, domain, ident) if ident is not None else {}}
@@ -64,9 +66,13 @@ def run_request(db, req, sources):
         for st, c in CHECK_OF.items():
             if state.get(st) == "unreachable":
                 checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}
-        d = decision.decide(checks); d.cost_credits = core.run_cost(db, run)
+            elif state.get(st) == "not_run":
+                checks[c] = {"status": "not_run", "reason": "cost or time cap reached before this check ran", "sources": []}
+        started = db.execute("SELECT started FROM runs WHERE id=?", (run,)).fetchone()[0]
+        d = decision.decide(checks, core.run_cost(db, run), time.time() - started); d.cost_credits = core.run_cost(db, run)
         key = core.finalize(db, run, d)
-        return {"run_id": run, "status": "held" if d.verdict == decision.HOLD else "done", "verdict": d.verdict,
+        status = "stopped_at_cap" if "not_run" in state.values() else "held" if d.verdict == decision.HOLD else "done"
+        return {"run_id": run, "status": status, "verdict": d.verdict,
                 "decision": d.to_dict(), "checks": checks, "action_key": key}
     if "unreachable" in state.values():                    # do not cache: a later retry must be able to re-run the stage
         res = final()
