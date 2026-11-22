@@ -36,6 +36,7 @@ Defaults in code marked `PROPOSED` are placeholders, not decisions.
 - **Personal data:** collect only what a check needs, record why, keep none in commits or fixtures (pseudonymise). `probe/raw/` is gitignored. Never name a private person in a log or doc.
 - **Secrets only from environment variables** (`CRUSTDATA_API_KEY`, model keys). Never commit keys, `.env` or `*.db`.
 - Tests: `python -m pytest -q` must pass before every commit. Add a test for every rule you add.
+- Executors passed to `core.execute_action` must be idempotent per key; call `core.recover_actions` at start-up. Functions passed to `core.cached_call` must raise `core.RateLimited` or `core.TransientError` for 429 and timeouts, and return only successful responses.
 
 ## 4. Git
 Small commits at logical points, pushed right away. Prefixes: `docs:`, `core:`, `policy:`, `eval:`, `checks:`, `pipeline:`, `approval:`, `test:`, `fix:`. Commit after each of: a module with its tests, a new rule, a fixture set, a docs update, each decision implemented. Never commit secrets, raw responses, databases or personal data. Do not force-push.
