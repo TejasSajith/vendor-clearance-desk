@@ -31,7 +31,7 @@ REGISTRY_PATTERNS = {
 _DOMAIN = re.compile(r"\b(?:https?://)?(?:www\.)?((?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z]{2,})(?:/\S*)?", re.I)
 _TIER = [re.compile(r"\b(low|medium|high)[\s\-]*(?:risk|tier)\b", re.I),
          re.compile(r"\b(?:risk(?:\s+tier)?|tier)\s*(?:is|of|:|=)?\s*(low|medium|high)\b", re.I)]
-_STOP = r"(?=\s*(?:[,;.(]\s|[,;(]|\.$|$|\s+(?:with|at|whose|website|site|domain|web|director|claimed|risk|tier|cin|gstin|llpin|for|as|-)\b))"
+_STOP = r"(?=\s*(?:[,;.(?!]\s|[,;(?!]|\.$|$|\s+(?:with|at|whose|website|site|domain|web|director|claimed|risk|tier|cin|gstin|llpin|for|as|-)\b))"
 _VENDOR = [
     re.compile(r"(?i:vendor|supplier|carrier|company)(?:\s+(?i:name|called|named))?\s*[:=]\s*(.+?)" + _STOP),
     re.compile(r"(?i:\b(?:please\s+)?(?:check|clear|verify|vet|screen|onboard|assess|review|evaluate|run(?:\s+a\s+check\s+on)?))"
@@ -112,8 +112,8 @@ def parse_request(sentence, db=None, run_id=None, provider="config"):
     if provider is not None and db is not None and scrubbed.strip():
         try:
             got = llm.extract(scrubbed, REQUEST_SCHEMA, PARSE_SYSTEM, db, run_id or llm.ledger_run(db, "nl"), provider=provider, task="parse_request")
-            got = {k: (v.replace(PLACEHOLDER, director) if isinstance(v, str) and director else v) for k, v in got.items()}   # restore by code
-            clean, dropped = _validate(got, sentence)
+            clean, dropped = _validate(got, sentence)     # a field holding a placeholder is dropped; the director is restored by code below
+            if director: clean = {k: v for k, v in clean.items() if director.lower() not in v.lower()}
             fields = {**base, **clean}            # the model fills or corrects a field only with text that is in the sentence
             parser = "gemini"
         except llm.LLMUnavailable:
@@ -177,8 +177,9 @@ def verify_memo(memo, f):
     """True only if the memo states the right verdict and every figure, source and missing item comes from the fact sheet."""
     if not isinstance(memo, str) or not memo.strip() or len(memo) > 6000: return False
     if f["verdict"] not in memo: return False
-    for other in set(display.OVERALL.values()) - {f["verdict"]}:
-        if re.search(rf"(?<!\w){re.escape(other)}(?!\w)", memo, re.I) and other not in f["verdict"]: return False
+    check_labels = {c["result"] for c in f["checks"]}
+    for other in set(display.OVERALL.values()) - {f["verdict"]} - check_labels:
+        if re.search(rf"(?<!\w){re.escape(other)}(?!\w)", memo, re.I): return False
     for code in set(display.OVERALL) - {f["verdict_code"]}:
         if code in memo: return False
     blob = json.dumps(f, ensure_ascii=False)
