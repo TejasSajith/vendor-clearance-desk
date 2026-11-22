@@ -108,9 +108,17 @@ function renderProgress(job) {
   box.append(ul);
 }
 
+function verdictState(s) {
+  const t = (s || "").toLowerCase();
+  if (/clear|onboard|\bpass/.test(t)) return "pass";
+  if (/reject|fail/.test(t)) return "fail";
+  if (/hold|held|suspicious|review|approval/.test(t)) return "warn";
+  return "unknown";                                  // Cannot verify / in progress
+}
+
 function render(r) {
   const box = $("result"); box.hidden = false; box.replaceChildren();
-  box.append(el("p", { class: "verdict" }, r.overall || "In progress"));
+  box.append(el("p", { class: `verdict v-${verdictState(r.overall)}` }, r.overall || "In progress"));
   if (r.demo_label) box.append(el("p", { class: "note" }, "DEMO: replayed fixtures, not a live check."));
   for (const n of r.notices || []) box.append(el("p", { class: "notice", role: "status" }, n));
   const chips = el("div", { class: "chips" });

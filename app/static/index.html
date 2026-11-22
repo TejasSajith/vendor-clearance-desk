@@ -4,64 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vendor Clearance Desk</title>
+<meta name="description" content="Clear a new logistics vendor: exists, active, run by the claimed director, no adverse media — a sourced recommendation held for a person's approval.">
 <link rel="stylesheet" href="/app.css">
+<script>
+  /* Apply the saved theme before first paint (no flash). */
+  try { var t = localStorage.getItem("vcd-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+</script>
 </head>
 <body>
-<header>
-  <h1>Vendor Clearance Desk</h1>
-  <div id="badges"></div>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <h1>Vendor Clearance Desk</h1>
+      <span class="tag" aria-hidden="true">clearance console</span>
+    </div>
+    <div class="topbar-right">
+      <div id="badges"></div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch light or dark theme" title="Switch theme">◐</button>
+    </div>
+  </div>
 </header>
-<div id="demo-banner" class="banner" hidden></div>
 
-<section id="login" class="card" hidden>
-  <h2>Enter the access password</h2>
-  <form id="login-form">
-    <label for="pw">Access password</label>
-    <p id="pw-hint" class="note">The password is set by the person who runs the server (APP_PASSWORD).</p>
-    <input id="pw" type="password" autocomplete="current-password" aria-describedby="pw-hint" required>
-    <button type="submit">Sign in</button>
-    <p id="login-error" class="error" role="alert"></p>
-  </form>
-</section>
+<div class="shell">
+  <div id="demo-banner" class="banner" hidden></div>
 
-<main id="main" hidden>
-  <section class="card">
-    <h2>New request</h2>
-    <form id="run-form">
-      <fieldset class="modes">
-        <legend>Mode</legend>
-        <label class="radio"><input type="radio" name="mode" value="demo" checked> Demo (recorded)</label>
-        <label class="radio"><input type="radio" name="mode" value="live" id="mode-live"> Live</label>
-      </fieldset>
-      <p id="live-info" class="note" hidden></p>
-      <label for="text">Describe the vendor in plain English</label>
-      <textarea id="text" rows="3" maxlength="2000" required
-        placeholder="Check Delhivery, delhivery.com, director <name>, high risk"></textarea>
-      <p class="note">Demo vendors: Acme Logistics Pvt Ltd (all pass), Zentrovia Cargo Solutions Pvt Ltd (possible adverse reports),
-        Slowpoke Freight Pvt Ltd (a source times out), Ecom Express Ltd (recorded record).</p>
-      <div class="controls">
-        <label>Strictness <select id="strictness"></select></label>
-        <label>Rejection evidence <select id="rejection_evidence"></select></label>
-        <label>Data freshness (days) <select id="freshness_days"></select></label>
-      </div>
-      <p id="control-notes" class="note"></p>
-      <button type="submit" id="run-btn">Run</button>
-      <div id="confirm" class="confirm" hidden role="alertdialog" aria-labelledby="confirm-text">
-        <p id="confirm-text"></p>
-        <button type="button" id="confirm-yes" class="approve">Spend credits and run</button>
-        <button type="button" id="confirm-no" class="secondary">Cancel</button>
-      </div>
+  <section id="login" class="card" hidden>
+    <span class="eyebrow">Access</span>
+    <h2>Enter the access password</h2>
+    <form id="login-form">
+      <label for="pw">Access password</label>
+      <p id="pw-hint" class="note">The password is set by the person who runs the server (APP_PASSWORD).</p>
+      <input id="pw" type="password" autocomplete="current-password" aria-describedby="pw-hint" required>
+      <button type="submit">Sign in</button>
+      <p id="login-error" class="error" role="alert"></p>
     </form>
   </section>
 
-  <section id="progress" class="card" hidden aria-live="polite"></section>
-  <section id="result" class="card" hidden aria-live="polite"></section>
+  <main id="main" hidden>
+    <section class="card">
+      <span class="eyebrow">New request</span>
+      <h2>Check a vendor</h2>
+      <form id="run-form">
+        <fieldset class="modes">
+          <legend>Mode</legend>
+          <label class="radio"><input type="radio" name="mode" value="demo" checked> Demo (recorded)</label>
+          <label class="radio"><input type="radio" name="mode" value="live" id="mode-live"> Live</label>
+        </fieldset>
+        <p id="live-info" class="note" hidden></p>
+        <label for="text">Describe the vendor in plain English</label>
+        <textarea id="text" rows="3" maxlength="2000" required
+          placeholder="Check Delhivery, delhivery.com, director <name>, high risk"></textarea>
+        <p class="note">Demo vendors: Acme Logistics Pvt Ltd (all pass), Zentrovia Cargo Solutions Pvt Ltd (possible adverse reports),
+          Slowpoke Freight Pvt Ltd (a source times out), Ecom Express Ltd (recorded record).</p>
+        <div class="controls">
+          <label>Strictness <select id="strictness"></select></label>
+          <label>Rejection evidence <select id="rejection_evidence"></select></label>
+          <label>Data freshness (days) <select id="freshness_days"></select></label>
+        </div>
+        <p id="control-notes" class="note"></p>
+        <button type="submit" id="run-btn">Run checks</button>
+        <div id="confirm" class="confirm" hidden role="alertdialog" aria-labelledby="confirm-text">
+          <p id="confirm-text"></p>
+          <button type="button" id="confirm-yes" class="approve">Spend credits and run</button>
+          <button type="button" id="confirm-no" class="secondary">Cancel</button>
+        </div>
+      </form>
+    </section>
 
-  <section class="card">
-    <h2>History</h2>
-    <table id="runs"><thead><tr><th>Started (UTC)</th><th>Mode</th><th>Vendor</th><th>Result</th><th>Approval</th><th>Credits</th></tr></thead><tbody></tbody></table>
-  </section>
-</main>
+    <section id="progress" class="card" hidden aria-live="polite"></section>
+    <section id="result" class="card" hidden aria-live="polite"></section>
+
+    <section class="card">
+      <span class="eyebrow">History</span>
+      <h2>Previous checks</h2>
+      <div class="table-wrap">
+        <table id="runs"><thead><tr><th>Started (UTC)</th><th>Mode</th><th>Vendor</th><th>Result</th><th>Approval</th><th>Credits</th></tr></thead><tbody></tbody></table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  /* Theme toggle: light / dark, persisted. Falls back to the OS theme when never toggled. */
+  (function () {
+    var btn = document.getElementById("theme-toggle");
+    var mql = window.matchMedia("(prefers-color-scheme: dark)");
+    var effective = function () {
+      var t = document.documentElement.getAttribute("data-theme");
+      return t || (mql.matches ? "dark" : "light");
+    };
+    btn.addEventListener("click", function () {
+      var next = effective() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try { localStorage.setItem("vcd-theme", next); } catch (e) {}
+    });
+  })();
+</script>
 <script src="/app.js"></script>
 </body>
 </html>
