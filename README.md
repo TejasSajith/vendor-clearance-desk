@@ -1,76 +1,126 @@
 # Vendor Clearance Desk
 
-## The job and who pays
+## 1. What it is
 
-A mid-size Indian 3PL pays compliance and procurement staff or KYC firms to clear new carriers and suppliers before money moves.
+A Vendor Clearance Desk for a mid-size Indian 3PL (third-party logistics company). It replaces the manual check that staff or a KYC firm do before a new carrier or supplier is onboarded and paid.
 
-## Input
+## 2. Input and output
 
-A vendor clearance request: `{vendor_name, website, claimed_director, risk_tier, optional registry IDs}`. Risk tier is `low`, `medium` or `high` (set per request; D12 is still open).
+**In:** one plain-English sentence with the vendor, its website, the claimed director if there is one, and a risk level. For example:
 
-## Finished result and pass mark
+> Check LorryCare, website lorrycare.com, low risk.
 
-A recommendation for one vendor: `CLEARED`, `REJECTED`, `CANNOT_VERIFY` or `HOLD_FOR_APPROVAL`, with the four check results (exists, active, director match, adverse media), reasons that each link to a source record (exact passage or field, plus the record's date), what evidence is missing, and the cost in credits. `CLEARED` and `REJECTED` become pending actions held for a person's approval; nothing is sent or decided automatically.
+**Out:** a memo with the verdict, the reason for each check with its source and dates, what is missing, and the cost. Here is the memo from that recorded live run (from the live validation), as the template writer produces it:
 
-Pass mark (proposed, Tejas to confirm): no wrong definitive verdict on the labelled cases (a wrong answer counts against us more than `CANNOT_VERIFY`); every claim is sourced or the output says what is missing; a timed-out source is held for a person, never read as clean; a run stays under its time and credit ceiling and resumes after a crash with each action happening once. Measured with `python evaluation/run_eval.py`. The real-vendor labels in `evaluation/cases_real.json` are still empty.
+```
+Verdict: Can't verify.
 
-## Data sources
+Reasons:
+- Company exists: Passed. single matching record. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).
+- Company is active: Passed. 2 activity signals: headcount, traffic. Source: crustdata:/company/enrich, crustdata:/job/search (record date not stated by the source; retrieved 2026-11-22).
+- Claimed director: Can't verify. no claimed director in the request. Source: no source (record date not stated by the source; retrieved 2026-11-22).
+- Adverse media: Passed. searched, no relevant adverse report. Source: crustdata:/web/search/live (record date not stated by the source; retrieved 2026-11-22).
 
-All from Crustdata (`probe/REPORT.md`, `probe/REPORT_registry_news.md`):
-- **Company Identify and Enrich:** name, domain, status, founding year, HQ, headcount now and history, funding, leadership, web traffic. No registry IDs (CIN, GSTIN, DIN) and no company-level refresh date.
-- **Job Search:** postings in the last 90 days with `metadata.date_added`; useful for large firms only.
-- **Person Enrich and Search:** title, start date, employer link by company ID; separates same-name people. It is profile data, not a director of record.
-- **Web Search and Fetch:** adverse-media discovery. Weak as shipped: redirect URLs, no dates, namesakes.
-- **Open (D9, D10):** a registry source (CIN, directors, filings) and a better news source are not chosen yet.
+What is missing:
+- director_match
+- claimed_director (not supplied in the request)
 
-## How to run
+Cost: 3.4 credits (rupee cost not set yet).
+```
 
-Web UI, demo mode (no cost, replayed fixtures), from the repo root after `pip install -r requirements.txt`:
+The data source states no record date for these fields, so the memo says so and gives the date we retrieved the data. Rupee cost is not shown yet: the credit-to-rupee rate is still open.
+
+## 3. How it works
+
+1. **Request:** someone types the request in plain English. The language model picks out the vendor name, website and risk level. Code removes the director's name before the model sees the text.
+2. **Match:** code matches the vendor to one company record in Crustdata. If several records fit and the website does not settle it, the answer is "can't verify". The system never picks one at random.
+3. **Four checks:** the company exists, it is active (staff numbers, job posts, web traffic), the claimed director is listed at the company, and there is no adverse media.
+4. **Rules decide:** fixed, written rules turn the check results into one of four verdicts: Cleared, Rejected, Can't verify, Held for approval. The language model never decides anything; it only reads the request and writes the memo in plain English. Code checks every figure and source in the memo against the decision, and uses a template if anything does not match.
+5. **A person approves:** Cleared and Rejected are only recommendations until a person clicks Approve or Reject.
+6. **Logged and costed:** every data call and model call goes into a ledger with its cost, and every run is saved.
+
+## 4. Features built in
+
+- **Plain English in and out:** a sentence goes in and a readable memo comes out. If something needed is unclear, the page asks instead of guessing.
+- **Sourced reasons with dates:** each reason names the record it came from, the record's date (or "not stated by the source") and the date it was retrieved.
+- **"Can't verify" instead of a guess:** when the evidence does not settle a check, the memo says so and lists exactly what is missing. A rejection needs dated, sourced, serious evidence; anything weaker stays "can't verify".
+- **Credit and time caps per run:** a run stops cleanly at its cap, which is currently proposed as 50 credits and 300 seconds. The memo names the checks that did not run. The web page also caps credits per signed-in session.
+- **A ledger of every call:** every Crustdata call and every model call is recorded with the cost the API reports. In the live validation the ledger matched the account balance exactly.
+- **Safe restart:** if the process is killed mid-run and restarted, the run picks up where it stopped. Paid calls that already finished are not repeated, and each approval action happens exactly once.
+- **Human approval:** nothing irreversible happens without a person. Approving only records the decision; nothing is sent outside the app.
+- **Duplicate requests merged:** "Delhivery", "Delhivery Ltd" and "M/s Delhivery Limited" become one run and one approval.
+- **A source that does not answer is not a clean result:** if a source stays unreachable after retries, the case is held for a person.
+- **Sensitivity controls:** three settings on the page. *Strictness* sets how much evidence a check needs before it passes. *Evidence to reject* is standard or high; high needs two sources. *Data freshness* sets how recent staff-number data must be (30, 90 or 180 days, or the default of 60). Until strictness presets are approved, the three strictness choices give the same result, and the page says so. The hard rules cannot be changed from the page.
+- **Director privacy:** the claimed director's name is used only while the check runs. It is never stored, logged or sent to the model. Only a salted hash and the match result are kept.
+
+## 5. Tech stack
+
+| Part | Why |
+|---|---|
+| Python | One language for the checks, rules, tests and web server; quick to read and change. |
+| SQLite | One file holds run state, the ledger, the cache and approvals. No database server to run, and it is easy to inspect. |
+| FastAPI (with uvicorn) | A small web server for the single-page approval screen, with input checking built in. |
+| Plain HTML and JavaScript | One page with no framework and no build step. |
+| Crustdata APIs | Company records, staff numbers, job posts, people profiles and web search, all from one provider. |
+| Gemini (`gemini-3.8-flash`) | Language only: reads the request and drafts the memo. If it is off or slow, templates are used. |
+| Docker | One container image to host the service; keys come from environment variables, never from the image. |
+
+## 6. Infrastructure
+
+```mermaid
+flowchart LR
+    B[Browser: one page] -->|password sign-in| S[Backend service<br/>FastAPI in Docker]
+    S --> D[(SQLite file<br/>runs, ledger, cache, approvals)]
+    S -->|live mode| C[Crustdata APIs]
+    S -->|language only| G[Gemini model]
+    S -.->|demo mode: recorded fixtures,<br/>no Crustdata or Gemini calls| B
+```
+
+Demo mode is served by the same backend service (`APP_MODE=demo`, the default). It replays recorded results and spends nothing. It is not hosted anywhere public yet.
+
+## 7. Key design choices
+
+Most of these are still marked PROPOSED in DECISIONS.md until the owner signs them off.
+
+- **Rules decide, not a score:** each verdict can be traced to a written rule, so a person can see why it came out that way.
+- **No machine-learning model for the verdict:** there are too few labelled cases to train one honestly, and its decisions would be harder to explain to a person.
+- **Fixed checks:** the same input and the same data always give the same verdict.
+- **"Can't verify" over a guess:** a wrong answer costs more than an honest "can't verify", so the system says what is missing.
+- **A person approves:** clearing and rejecting a vendor cannot be taken back, so neither happens without a person.
+- **SQLite:** one file, no server, and it survives a crash. That is enough for one desk.
+- **Privacy by keeping less:** only the data a check needs is taken in, and the director's name is never kept.
+- **Caps and a ledger:** every run has a ceiling, and every call is counted, so cost is known and bounded.
+
+## 8. What it does not do
+
+- No sanctions or watch-list screening.
+- No court, FIR or regulator records.
+- No GST status and no company-registry IDs (CIN, GSTIN, DIN): Crustdata does not provide them.
+- No check of who really owns the company (beneficial ownership).
+- No continuous monitoring: each check is one point in time.
+- Small and new firms more often end at "can't verify", because they have little data in the source. The memo then names the registry evidence to ask for.
+- "Director" means listed at the company in profile data, not a director of record.
+
+## 9. Run it
+
+Install once: `pip install -r requirements.txt`.
+
+**Demo mode** (no keys and no cost; replays recorded results, labelled on screen):
 
 ```
 APP_PASSWORD=choose-one uvicorn app.server:create_app --factory --port 8000
 ```
 
-Then open http://127.0.0.1:8000. For live data add `APP_MODE=live` and `CRUSTDATA_API_KEY`; set `GEMINI_API_KEY` (environment or a gitignored `.env`) for model parsing and memos. Without it, templates are used. CLI: `python pipeline.py run --vendor NAME [--website URL] [--tier low|medium|high]`. Tests: `python -m pytest -q`.
+Then open http://127.0.0.1:8000.
 
-## Architecture
+**Live mode** (real Crustdata checks; Gemini is optional, and without it templates are used):
 
 ```
-English request ──> nl.parse_request ──> pipeline.run_request ──> policy.evaluate ──> decision.decide ──> core.finalize
-   (browser)         scrub director/IDs    checks via core.cached_call   signals -> checks      4 verdicts         pending action
-                     model: name/domain/tier  (throttle, cache, caps,     (controls.resolve                         (Approve / Reject
-                     code validates            ledger, retry)              picks the params)                         by a person)
-                                                                                                 │
-                                      display.display_result (labels only) <────────────────────┘
-                                      nl.write_memo (model rewrites a fact sheet; code verifies, else template)
+APP_MODE=live CRUSTDATA_API_KEY=... GEMINI_API_KEY=... APP_PASSWORD=choose-one uvicorn app.server:create_app --factory --port 8000
 ```
 
-- `core.py`: state, resume, evidence and cost ledger (model calls included, 0 credits), throttle, cache, idempotent actions and approvals.
-- `pipeline.py`: one request end to end, resumable and deduplicated; takes an optional parameter set from `controls.py`.
-- `policy.py` and `decision.py`: deterministic rules. They alone decide the verdict.
-- `llm.py`: model adapter (`gemini` | `none`), 20 s timeout, one retry, cool-down after a failure; every call is ledgered with model and tokens.
-- `nl.py`: English in (`parse_request`: director name and registry IDs are scrubbed by code before the model sees the text; values not in the sentence are dropped) and English out (`write_memo`: every figure, source, missing item and the verdict are checked against the decision).
-- `display.py`: plain-English labels (Passed, Failed, Suspicious, Can't verify, Couldn't reach the source). Display only.
-- `controls.py`: strictness, rejection evidence and freshness dials mapped to tunable parameters; hard rules are never exposed.
-- `app/server.py`: FastAPI with one HTML page (`app/static`, plain JS). Password login, per-run and per-session credit caps, approve and reject buttons, past runs. `app/demo.py`: no-cost demo sources.
+From the command line: `python pipeline.py run --vendor "NAME" --website DOMAIN --tier low`.
 
-## Approaches tried (what worked / didn't)
+**Tests:** `python -m pytest -q`.
 
-## Limitations
-
-- **Registry gap:** Crustdata has no CIN, GSTIN or director IDs. A vendor with no Crustdata record is `CANNOT_VERIFY`, naming "independent registry evidence (CIN/GSTIN/incorporation certificate)" as missing. It is never a rejection.
-- **Adverse media is weak:** result URLs are often redirects, many snippets have no date, and namesakes are common. A rejection needs a dated, resolved, sourced, severe report (`reject_*` parameters, PROPOSED); anything weaker is `CANNOT_VERIFY`.
-- **"Director" means listed at the company:** Person Enrich shows a person's own profile data, not a director of record.
-- **Timeouts are not answers:** a source that stays unreachable after retries holds the case for a person; it is never read as "nothing found".
-- **Caps stop the run:** at the credit or time cap the run stops cleanly, marks the remaining checks `not_run` and returns `CANNOT_VERIFY` listing them and the spend. A failure already found is shown as evidence for a person, not as a rejection.
-- **Conflicting sources are not averaged:** when two sources disagree, the check is `unknown` and both sides are named.
-- **Duplicates:** the same vendor submitted under different spellings returns the existing run and creates no second approval.
-- **Names and domains:** non-Latin names are searched as given (no transliteration); a weak match is `unknown`. A missing website or director makes those checks `unknown`, named as missing.
-- **Tuning:** all thresholds are PROPOSED until decided in `DECISIONS.md`; real-vendor labels are still empty, so nothing is tuned on real data yet.
-- **The model only translates:** it never sees the claimed director's name or registry IDs, and nothing it returns can change a verdict. A model memo that states a figure, link or verdict not in the decision is replaced by the template memo. If the model API is slow or down, parsing and memos use templates (after one 20 s timeout and retry, then a 120 s cool-down, PROPOSED).
-- **Template parsing is narrow:** without the model, the request must name the vendor after a verb ("check", "clear", "verify"...) or as "Vendor: ...". The director is found only in phrases like "director NAME" or "NAME is the director" (capitalised names). When a field is unclear, the UI asks instead of guessing.
-- **Record dates:** Crustdata gives no record date for most fields, so sources show "record date not stated by the source" with the retrieval date.
-- **Controls:** until presets are approved in `evaluation/presets_candidate.json`, lenient, balanced and strict give the same result, and the screen says so. Freshness choices 30/90/180 replace the 60-day default only when chosen.
-- **Demo mode is not live:** it replays recorded identify and web responses where they exist and synthetic signals elsewhere, labelled on screen. It is never a live decision.
-- **Web UI security:** one shared password (`APP_PASSWORD`), sessions in memory (a restart logs everyone out and resets session credit counts), no TLS of its own: put it behind HTTPS and set `APP_SECURE_COOKIE=1`. Runs are serialised, one at a time. Approving only records the decision locally; nothing is sent outside the app.
-- **Rupee cost:** not shown until credits-to-rupees is decided (D16).
+**More detail:** ARCHITECTURE_TECHNICAL and ARCHITECTURE_BUSINESS (in `docs/`), UNIT_ECONOMICS (in `finance/`), DECISIONS, and NOTES (approaches tried).
