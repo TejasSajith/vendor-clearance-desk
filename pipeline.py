@@ -40,10 +40,13 @@ def run_request(db, req, sources):
     core.start_run(db, json.dumps({"vendor_name": name, "website": domain, "risk_tier": tier}), run_id=run)
     core.claim_request(db, pk, run)
     ctx = Ctx(db, run)
-    stage = lambda n, fn: core.run_step(db, run, n, fn)
+    state = {}                                             # stage -> "ok" | "unreachable"
+    def stage(n, fn):
+        try: out = core.run_step(db, run, n, fn); state[n] = "ok"; return out
+        except (core.TransientError, core.SourceUnreachable): state[n] = "unreachable"; return None   # a timeout is never "nothing found"
 
     ident = stage("identify", lambda: sources.identify(ctx, name, domain))
-    sig = {"identify": identify_signals(name, domain, ident)}
+    sig = {"identify": identify_signals(name, domain, ident) if ident is not None else {}}
     cid = sig["identify"].get("company_id")
     if cid is not None:
         owner = core.claim_request(db, normalize.request_key(KIND, company_id=cid), run)
@@ -53,12 +56,21 @@ def run_request(db, req, sources):
         sig["profile"] = stage("profile", lambda: sources.profile(ctx, cid))
         sig["director"] = stage("director", lambda: sources.director(ctx, cid, req.get("claimed_director")))
     sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name))
+    sig = {k: v for k, v in sig.items() if v is not None}
 
+    CHECK_OF = {"identify": "exists", "profile": "active", "director": "director_match", "adverse": "adverse_media"}
     def final():
         checks = policy.evaluate(sig, policy.PROPOSED_PARAMS, tier)
+        for st, c in CHECK_OF.items():
+            if state.get(st) == "unreachable":
+                checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}
         d = decision.decide(checks); d.cost_credits = core.run_cost(db, run)
         key = core.finalize(db, run, d)
-        return {"run_id": run, "status": "done", "verdict": d.verdict, "decision": d.to_dict(), "checks": checks, "action_key": key}
-    res = stage("final", final)
-    core.set_run_status(db, run, "done")
+        return {"run_id": run, "status": "held" if d.verdict == decision.HOLD else "done", "verdict": d.verdict,
+                "decision": d.to_dict(), "checks": checks, "action_key": key}
+    if "unreachable" in state.values():                    # do not cache: a later retry must be able to re-run the stage
+        res = final()
+    else:
+        res = core.run_step(db, run, "final", final)
+    core.set_run_status(db, run, res["status"])
     return {**res, "existing": existed}

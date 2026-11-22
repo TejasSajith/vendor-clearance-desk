@@ -45,7 +45,10 @@ def _fail(reason, sources):
 def _exists(s, p):
     i = s.get("identify") or {}
     src = i.get("sources", [])
-    if not i.get("found"): return _r("unknown", "no matching company record", src)
+    if not i.get("found"):
+        r = _r("unknown", "No record found. The vendor may be too new or too small for the data source", src)
+        r["missing"] = ["independent registry evidence (CIN/GSTIN/incorporation certificate)"]   # never a sourced fail
+        return r
     if i.get("status") == "deleted":
         return _fail("company profile marked deleted", src) if p["deleted_is_fail"] else _r("unknown", "profile marked deleted; needs registry confirmation", src)
     if i.get("top_ties", 1) > 1 and i.get("domain_match") is not True:

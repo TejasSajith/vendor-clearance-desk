@@ -25,11 +25,12 @@ def _decide(checks):
     Required checks: exists, active, director_match, adverse_media."""
     required = ["exists", "active", "director_match", "adverse_media"]
     missing = [c for c in required if checks.get(c, {}).get("status", "unknown") == "unknown"]
+    extra = [m for c in required for m in checks.get(c, {}).get("missing", []) if checks.get(c, {}).get("status", "unknown") == "unknown"]
     low = [c for c in required if checks.get(c, {}).get("confidence", 1.0) < CONFIG["min_match_confidence"]
            and checks.get(c, {}).get("status") != "unknown"]
     fails = [c for c in required if checks.get(c, {}).get("status") == "fail"]
     reasons = [{"text": f"{c}: {checks[c]['reason']}", "sources": checks[c].get("sources", [])}
                for c in required if c in checks]
     if fails:   return Decision(REJECTED, reasons, missing)       # evidence of a problem (always with sources)
-    if missing or low: return Decision(CANNOT_VERIFY, reasons, missing + [f"{c} (low match confidence)" for c in low])
+    if missing or low: return Decision(CANNOT_VERIFY, reasons, missing + extra + [f"{c} (low match confidence)" for c in low])
     return Decision(CLEARED, reasons, [])
