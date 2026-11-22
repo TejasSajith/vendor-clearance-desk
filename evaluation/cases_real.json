@@ -1,0 +1,692 @@
+[
+ {
+  "id": "real_01_large",
+  "crustdata_company_id": 5798,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "large, strong activity and director data, but only 1 adverse search ran and its hits are undated complaints; no registry record",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35300,
+    "headcount_trend_pct": 4.9,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": null,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 1,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.facebook.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "ministryofcyberaffairs.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "real_02_large",
+  "crustdata_company_id": 5967,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "exists and active, but the director's headline names another firm while a 2015 role is still current",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 13088,
+    "headcount_trend_pct": 0.3,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": null,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 1,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "ecom-express.pissedconsumer.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "real_03_large",
+  "crustdata_company_id": 2037562,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "two records tie at 1.0 for the name and Crustdata has no domain to settle it",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 2,
+    "domain_match": null,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 12678,
+    "headcount_trend_pct": 2.9,
+    "series_age_days": 20,
+    "jobs_90d": 5,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": null,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 2,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.youtube.com"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "real_04_mid",
+  "crustdata_company_id": 8276,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "only 1 adverse search (results were namesakes); exists and active signals are fine; no registry record",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 1390,
+    "headcount_trend_pct": 5.4,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": null,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 1,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.pacermonitor.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "real_05_mid",
+  "crustdata_company_id": 1552,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "no director data and no adverse search were run for this company",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 1355,
+    "headcount_trend_pct": -0.3,
+    "series_age_days": 13,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": false,
+    "probed": false,
+    "company_id_match": false,
+    "start_date_plausible": false,
+    "same_name_candidates": null,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": []
+   }
+  }
+ },
+ {
+  "id": "real_06_mid",
+  "crustdata_company_id": 20487,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "no adverse search was run; exists, active and director signals are fine",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 1262,
+    "headcount_trend_pct": 3.2,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": null,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": []
+   }
+  }
+ },
+ {
+  "id": "real_07_small",
+  "crustdata_company_id": 6100573,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "small firm, one activity signal at most; no director or adverse data collected",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 39,
+    "headcount_trend_pct": 2.6,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": false,
+    "probed": false,
+    "company_id_match": false,
+    "start_date_plausible": false,
+    "same_name_candidates": null,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": []
+   }
+  }
+ },
+ {
+  "id": "real_08_small",
+  "crustdata_company_id": 3917119,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "small firm; director headline does not name the company; only 1 adverse search with an unrelated result",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 37,
+    "headcount_trend_pct": 2.8,
+    "series_age_days": 6,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": true,
+    "probed": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 1,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "real_09_lookalike",
+  "crustdata_company_id": 13006146,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "lookalike of a larger company: 4 staff, no domain; real status needs registry",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": null,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 4,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 97,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": false,
+    "probed": false,
+    "company_id_match": false,
+    "start_date_plausible": false,
+    "same_name_candidates": null,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": []
+   }
+  }
+ },
+ {
+  "id": "real_10_lookalike",
+  "crustdata_company_id": 11584,
+  "expected": "",
+  "proposed_expected": "CANNOT_VERIFY",
+  "basis": "Crustdata marks it deleted and the name and domain resolve to other companies; needs registry confirmation",
+  "risk_tier": "low",
+  "synthetic": false,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "deleted",
+    "name_similarity": 1.0,
+    "top_ties": 3,
+    "domain_match": false,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 34,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 594,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "found": false,
+    "probed": false,
+    "company_id_match": false,
+    "start_date_plausible": false,
+    "same_name_candidates": null,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": []
+   }
+  }
+ }
+]
