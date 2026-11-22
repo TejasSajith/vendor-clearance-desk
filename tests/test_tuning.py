@@ -18,8 +18,10 @@ def test_engine_pass_not_found_and_unreachable():
     assert all(v[0] == "not_run" for v in t.engine(row("d", s=sig(state="stopped_at_cap")), t.D).values())
 
 def test_loss_weights():
-    assert t.check_loss("pass", "pass") == 0 and t.check_loss("pass", "unknown") == 1 and t.check_loss("pass", "fail") == 3
-    assert t.check_loss("unknown", "pass") == 3 and t.check_loss("unknown", "unreachable") == 0.5 and t.check_loss("fail", "unknown") == 1
+    assert t.check_loss("pass", "pass") == 0 and t.check_loss("pass", "unknown") == 1 and t.check_loss("pass", "fail") == 3     # false fail 3
+    assert t.check_loss("unknown", "pass") == 5 and t.check_loss("fail", "pass") == 5                                    # false pass 5
+    assert t.check_loss("unknown", "unreachable") == 0.5 and t.check_loss("fail", "unknown") == 1 and t.check_loss("unknown", "unknown") == 0
+    assert t.check_loss("pass", "fail", {"false_fail": 7}) == 7 and t.check_loss("pass", "unreachable") == 1
 
 def test_splits_are_stratified_deterministic_and_folds_partition():
     rows = [row(f"{s}{i}", stratum=s) for s in "abc" for i in range(6)]
@@ -67,6 +69,7 @@ def test_score_lists_wrong_cases_with_raw_values():
     rows = [row("ok"), row("bad", labels=("fail", "pass", "pass"))]
     sc = t.score(rows)
     assert [(w["case_id"], w["check"], w["label"], w["engine"]) for w in sc["wrong"]] == [("bad", "exists", "fail", "pass")]
+    assert sc["per_check"]["exists"]["wrong"] == 1
     assert sc["wrong"][0]["raw"]["candidates"] == 1 and "name" not in json_dump(sc["wrong"]).lower().replace("name_sim", "")
 
 def json_dump(x):
@@ -84,3 +87,56 @@ def test_suspicious_band_and_repeat_noise():
            "repeats": {"f": {"1": sig()["adverse"], "t": 0}}}
     n = t.repeat_noise(doc)
     assert n[0]["status_flips"] and n[0]["hit_jaccard_min"] == 0.0
+
+
+# ---- established pass rate, gate, greedy, presets ----
+def bad_row(cid, stratum, sg):
+    r = row(cid, stratum=stratum, labels=("unknown", "unknown", "unknown"), s=sg); return r
+
+NOREC = lambda: sig(cands=[{"id": 9, "sim": 0.3, "domain": None}], profile={}, searches=1)   # no record, no data, too few searches: nothing passes
+def test_established_pass_rate_counts_passes_and_reasons():
+    rows = [row("a", stratum="large_legit"), row("b", stratum="big_brand_noise"), row("c", stratum="large_legit", s=sig(sim=0.5)), row("d", stratum="mid")]
+    er = t.established_pass_rate(rows)
+    assert (er["n"], er["passed"], er["fell_back"]) == (3, 2, 1) and er["rate"] == 0.667 and "exists: no record found" in er["why"]
+
+def test_gate_rejects_a_setting_where_a_bad_vendor_reaches_passed():
+    good_for_bad = sig(profile={**GOOD_PROFILE})            # an "invented" vendor whose data looks perfect: exists and active pass at any setting
+    rows = [bad_row("i1", "invented", good_for_bad), row("l1", stratum="large_legit")]
+    assert t.bad_passes(rows) == [("i1", "exists"), ("i1", "active")] or ("i1", "exists") in t.bad_passes(rows)
+    assert t.gate(rows, t.D) and any(v["why"] == "bad vendor reaches Passed" for v in t.gate(rows, t.D))
+
+def test_gate_passes_when_the_bad_vendors_stay_unknown_and_flags_a_worse_loss():
+    rows = [bad_row("i1", "invented", NOREC()), row("l1", stratum="large_legit")]
+    assert t.gate(rows, t.D) == []
+    # a bad vendor labelled fail whose loss rises when a parameter changes
+    r = row("s1", stratum="shut_down", labels=("pass", "fail", "unknown"), s=sig(profile={**GOOD_PROFILE, "jobs_90d": 0, "traffic_present": False}))
+    assert t.row_loss(r, {**t.D, "active_min_signals": 1}) > t.row_loss(r, t.D)
+    assert any(v["why"] == "bad vendor's loss gets worse" for v in t.gate([r], {**t.D, "active_min_signals": 1}))
+
+def test_sweep_gate_marks_rejected_values_and_reports_established_rate():
+    rows = [bad_row("i1", "invented", NOREC())] + [row(f"l{i}", stratum="large_legit", labels=("pass", "pass", "pass"), s=sig(profile={**GOOD_PROFILE, "jobs_90d": 0, "traffic_present": False})) for i in range(10)]
+    sw = t.sweep_gate(rows, grid={"active_min_signals": [1, 2]})["active_min_signals"]["values"]
+    assert sw[0]["gate_ok"] and sw[0]["established_rate"] == 1.0 and sw[1]["established_rate"] == 0.0
+
+def test_greedy_raises_the_established_pass_rate_without_breaking_the_gate():
+    rows = [bad_row("i1", "invented", NOREC())] + [row(f"l{i}", stratum="large_legit", labels=("pass", "pass", "pass"), s=sig(profile={**GOOD_PROFILE, "jobs_90d": 0, "traffic_present": False})) for i in range(8)]
+    par, trace, ok0 = t.greedy(rows, grid={"active_min_signals": [1, 2, 3], "min_headcount": [5, 20]})
+    assert ok0 and par["active_min_signals"] == 1 and t.gate(rows, par) == [] and t.established_pass_rate(rows, par)["rate"] == 1.0
+
+def test_greedy_reports_that_defaults_violating_the_gate_block_everything():
+    rows = [bad_row("i1", "invented", sig(profile={**GOOD_PROFILE}))]
+    par, trace, ok0 = t.greedy(rows, grid={"min_headcount": [5, 20]})
+    assert not ok0 and par == t.D and "violates the gate" in trace[0]["note"]
+    bp = t.build_presets(rows); assert bp["blocked"] and bp["presets"] == {}
+
+def test_build_presets_keep_the_gate_and_count_zero_bad_passes():
+    rows = [bad_row("i1", "invented", NOREC())] + [row(f"l{i}", stratum="large_legit", labels=("pass", "pass", "pass")) for i in range(8)] + [row(f"s{i}", stratum="small_real") for i in range(4)]
+    bp = t.build_presets(rows)
+    assert not bp["blocked"] and set(bp["presets"]) == {"lenient", "balanced", "strict"}
+    assert all(p["bad_vendor_passes"] == 0 for p in bp["presets"].values())
+    for p in bp["presets"].values(): assert "established_pass_rate" in p and "holdout_loss" in p and "mean_cv_loss" in p and "small_real" in p
+
+def test_losses_are_parameters_of_the_harness():
+    r = row("x", labels=("pass", "pass", "pass"), s=sig(sim=0.5))               # exists unknown: abstain 1
+    assert t.row_loss(r, t.D) == pytest.approx(1.0 + 1.0 * 0 + 0) or t.row_loss(r, t.D) >= 1.0
+    assert t.row_loss(r, t.D, {"abstain": 4}) > t.row_loss(r, t.D)

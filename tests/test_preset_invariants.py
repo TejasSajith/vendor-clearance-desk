@@ -85,3 +85,22 @@ def test_presets_file_works_through_controls_when_approved(tmp_path):
         for k, v in doc["strictness"][name].items(): assert r["params"][k] == v, (name, k)
     unapproved = controls.resolve({"strictness": "strict"}, candidate_path=str(PRESET_FILE))
     assert unapproved["params"] == policy.PROPOSED_PARAMS and any("not approved" in n for n in unapproved["notes"])
+
+@pytest.mark.parametrize("name", sorted(PRESETS))
+def test_no_preset_passes_an_invented_or_shut_down_vendor(name):
+    p = PRESETS[name]
+    base = {"state": "done", "input_domain": "a.in", "adverse": {"state": "searched", "searches_run": 4, "results_scanned": 20, "per_search": [{"source": "web", "results": []}] * 4}}
+    invented = {"case_id": "i", "name": "Quillvane Freight", "stratum": "invented", "split": "tune", "labels": {"exists": None, "active": None, "adverse_media": None},
+                "sig": {**base, "identify": {"candidates": [{"id": 5, "sim": 0.2, "domain": None}], "domain_candidate_ids": None}, "profile": None}}
+    shut = {"case_id": "s", "name": "Old Carriers", "stratum": "shut_down", "split": "tune", "labels": {"exists": None, "active": None, "adverse_media": None},
+            "sig": {**base, "identify": {"candidates": [{"id": 5, "sim": 1.0, "domain": "a.in"}], "domain_candidate_ids": [5]},
+                    "profile": {"status": "deleted", "headcount_total": 30, "headcount_trend_pct": -60.0, "series_age_days": 700, "jobs_90d": 0, "traffic_present": False, "sources": ["s"]}}}
+    assert tuning.bad_passes([invented, shut], p) == []
+
+def test_file_presets_report_zero_bad_vendor_passes_and_the_metrics():
+    if not PRESET_FILE.exists(): pytest.skip("presets_candidate.json is written by the scoring step")
+    doc = json.loads(PRESET_FILE.read_text())
+    if doc.get("blocked"): assert doc["presets"] == {} and doc["reason"]; return
+    for n, p in doc["presets"].items():
+        assert p["bad_vendor_passes"] == 0, n
+        for k in ("mean_cv_loss", "holdout_loss", "established_pass_rate", "small_real", "customer_description", "params_changed"): assert k in p, (n, k)

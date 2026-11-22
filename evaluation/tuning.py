@@ -8,15 +8,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "evaluation"))
 import policy, pipeline, run_eval
+from checks import adverse
 
 CHECKS = ("exists", "active", "adverse_media")
 LABEL_COL = {"exists": "expected_exists", "active": "expected_active", "adverse_media": "expected_adverse"}
 VERDICT = {"pass": "CLEARED", "fail": "REJECTED", "unknown": "CANNOT_VERIFY", "unreachable": "HOLD_FOR_APPROVAL", "not_run": "CANNOT_VERIFY"}
-W = run_eval.WEIGHTS
-D = policy.PROPOSED_PARAMS
+LOSSES = {"false_pass": 5.0, "false_fail": 3.0, "abstain": 1.0, "hold_vs_cnv": 0.5}      # PROPOSED; parameters of this harness (--losses overrides)
+W = run_eval.WEIGHTS                                                                       # kept for run_eval users; scoring below uses LOSSES
+D = {**policy.PROPOSED_PARAMS, **adverse.RULE_PARAMS}                                     # policy defaults plus the PROPOSED source-class rules
+ESTABLISHED_STRATA = ("large_legit", "big_brand_noise")
+BAD_STRATA = ("shut_down", "invented")
 GRID = {"candidate_name_sim_floor": [0.70, 0.75, 0.80, 0.85, 0.90, 0.95], "min_headcount": [1, 3, 5, 10, 20], "max_decline_pct": [10, 20, 30, 40, 60],
         "max_series_age_days": [30, 45, 60, 90, 120, 180], "min_jobs_90d": [1, 2, 3, 5], "active_min_signals": [1, 2, 3], "min_searches": [1, 2, 3, 4, 5],
-        "adverse_min_severity": [1, 2, 3], "reject_min_severity": [1, 2, 3], "reject_min_sources": [1, 2, 3]}
+        "adverse_min_severity": [1, 2, 3], "reject_min_severity": [1, 2, 3], "reject_min_sources": [1, 2, 3],
+        "established_headcount_min": [100, 250, 500, 1000, 5000, 10 ** 9], "rule_source_classes": [False, True], "rule_name_collision": [False, True]}
 
 # ---------- loading ----------
 def valid(x): return (x or "").strip().lower() in ("pass", "fail", "unknown")
@@ -27,7 +32,7 @@ def load_cases(csv_path=ROOT / "evaluation" / "cases_real.csv", signals_path=ROO
     for r in csv.DictReader(open(csv_path)):
         s = sig.get(r["case_id"])
         labels = {c: r[LABEL_COL[c]].strip().lower() if valid(r[LABEL_COL[c]]) else None for c in CHECKS}
-        rows.append({"case_id": r["case_id"], "stratum": r["stratum"], "split": r["split"], "labels": labels, "sig": s})
+        rows.append({"case_id": r["case_id"], "name": r["vendor_name"], "stratum": r["stratum"], "split": r["split"], "labels": labels, "sig": s})
     return rows
 
 def labelled(rows): return [r for r in rows if r["sig"] and all(r["labels"].values())]
@@ -43,13 +48,25 @@ def engine(row, params):
     sig = {"identify": pipeline.identify_signals("", s["input_domain"] or "", ident, params), "director": {"not_requested": True, "sources": []}}
     if sig["identify"].get("company_id") is not None and s.get("profile"): sig["profile"] = s["profile"]
     if sig["identify"].get("company_id") is not None and (s.get("profile") or {}).get("status"): sig["identify"]["status"] = s["profile"]["status"]
-    sig["adverse"] = s["adverse"] or {"state": "searched", "searches_run": 0, "hits": [], "sources": []}
+    a = s["adverse"] or {"state": "searched", "searches_run": 0, "hits": [], "sources": []}
+    if a.get("per_search") and "results" in a["per_search"][0]:                      # features in, policy signals out: the rules run here, under `params`
+        a = adverse.derive_signals(a["per_search"], row.get("name", ""), params, (s.get("profile") or {}).get("headcount_total"))
+    sig["adverse"] = a
     checks = policy.evaluate(sig, params, "low")
     return {c: (checks[c]["status"], checks[c]["reason"]) for c in CHECKS}
 
-def check_loss(label, status): return run_eval.cost(VERDICT[label], VERDICT[status], W)
-def row_loss(row, params):
-    e = engine(row, params); return sum(check_loss(row["labels"][c], e[c][0]) for c in CHECKS)
+def check_loss(label, status, losses=None):
+    """false_pass 5: the engine says pass but the label is not pass. false_fail 3: it says fail but the label is not fail. abstain 1: unknown (or not run)
+    where the label is a definite answer. hold_vs_cnv 0.5: a hold where the label is unknown (an unreachable source is never a definite answer)."""
+    L = losses or LOSSES
+    if status == label: return 0.0
+    if status == "pass": return L["false_pass"]
+    if status == "fail": return L["false_fail"]
+    if status in ("unknown", "not_run"): return L["abstain"] if label in ("pass", "fail") else 0.0
+    return L["abstain"] if label in ("pass", "fail") else L["hold_vs_cnv"]          # unreachable
+
+def row_loss(row, params, losses=None):
+    e = engine(row, params); return sum(check_loss(row["labels"][c], e[c][0], losses) for c in CHECKS)
 
 # ---------- splits ----------
 def stratified_split(rows, seed, frac=2 / 3):
@@ -154,9 +171,10 @@ def score(rows, params=D):
         for c in CHECKS:
             st, why = e[c]; l = check_loss(r["labels"][c], st); pc = per_check[c]
             pc["n"] += 1; pc["loss"] += l
-            pc["wrong"] += l == W["wrong"]; pc["abstain"] += (l == W["abstain"]); pc["hold"] += (l == W["hold_vs_cnv"])
+            is_wrong = st in ("pass", "fail") and st != r["labels"][c]
+            pc["wrong"] += is_wrong; pc["abstain"] += (not is_wrong and l == LOSSES["abstain"]); pc["hold"] += (not is_wrong and l == LOSSES["hold_vs_cnv"] and st == "unreachable")
             for key, d in ((r["stratum"], strata), (r["split"], splits)): d.setdefault(key, {"n": 0, "loss": 0.0})["n"] += 1; d[key]["loss"] += l
-            if l == W["wrong"]: wrong.append({"case_id": r["case_id"], "stratum": r["stratum"], "check": c, "label": r["labels"][c], "engine": st, "reason": why, "raw": raw_values(r, c, params)})
+            if is_wrong: wrong.append({"case_id": r["case_id"], "stratum": r["stratum"], "check": c, "label": r["labels"][c], "engine": st, "reason": why, "raw": raw_values(r, c, params)})
     return {"per_check": per_check, "per_stratum": strata, "per_split": splits, "wrong": wrong}
 
 def raw_values(row, check, params):
@@ -204,85 +222,194 @@ def repeat_noise(signals_doc, params=D):
                     "results_scanned": [a["results_scanned"] for a in runs]})
     return out
 
-# ---------- phase 6: presets ----------
-PRESET_SHAPES = {
-    "lenient": {"candidate_name_sim_floor": 0.80, "min_headcount": 3, "max_decline_pct": 40.0, "max_series_age_days": 90, "min_jobs_90d": 1, "active_min_signals": 1, "min_searches": 2, "adverse_min_severity": 3},
-    "balanced": {},
-    "strict": {"candidate_name_sim_floor": 0.90, "min_headcount": 10, "max_decline_pct": 20.0, "max_series_age_days": 45, "active_min_signals": 3, "min_searches": 4, "adverse_min_severity": 1, "reject_min_sources": 2},
-}
+# ---------- established pass rate, bad-vendor gate ----------
+def reason_bucket(check, status, reason):
+    r = (reason or "").lower()
+    if status == "unreachable": return "source unreachable (held)"
+    if status == "not_run": return "stopped at a cap"
+    if check == "exists":
+        if r.startswith("ambiguous"): return "exists: ambiguous match"
+        if r.startswith("no record found"): return "exists: no record found"
+        if "domain" in r: return "exists: domain belongs to another company"
+        if "deleted" in r: return "exists: profile marked deleted"
+        return "exists: other"
+    if check == "active":
+        if "only" in r and "activity signals" in r: return "active: too few activity signals"
+        if "no activity data" in r: return "active: no activity data"
+        if "conflict" in r: return "active: sources conflict"
+        return "active: other"
+    if "possible adverse report" in r: return "adverse: unconfirmed reports name the company"
+    if "too few searches" in r: return "adverse: too few searches"
+    return "adverse: other"
+
+def established_pass_rate(rows, params=D):
+    """Share of large_legit + big_brand_noise vendors where exists, active and adverse are all Passed, and why the others fell back."""
+    rs = [r for r in collected(rows) if r["stratum"] in ESTABLISHED_STRATA]; passed, why = 0, {}
+    for r in rs:
+        e = engine(r, params)
+        if all(e[c][0] == "pass" for c in CHECKS): passed += 1; continue
+        for c in CHECKS:
+            if e[c][0] != "pass": b = reason_bucket(c, e[c][0], e[c][1]); why[b] = why.get(b, 0) + 1
+    return {"n": len(rs), "passed": passed, "rate": round(passed / len(rs), 3) if rs else None, "fell_back": len(rs) - passed, "why": dict(sorted(why.items(), key=lambda kv: -kv[1]))}
+
+def is_bad(row): return row["stratum"] in BAD_STRATA or any(v == "fail" for v in row["labels"].values())
+
+def bad_passes(rows, params=D):
+    """(case, check) pairs where a shut_down or invented vendor reaches Passed on a check that must not pass for it. A label wins when present
+    (label other than pass); without a label the stratum decides: invented must not pass exists or active, shut_down must not pass active."""
+    out = []
+    for r in collected(rows):
+        if r["stratum"] not in BAD_STRATA: continue
+        e = engine(r, params)
+        for c in CHECKS:
+            lab = r["labels"][c]
+            must_not = (lab != "pass") if lab else ((r["stratum"] == "invented" and c in ("exists", "active")) or (r["stratum"] == "shut_down" and c == "active"))
+            if must_not and e[c][0] == "pass": out.append((r["case_id"], c))
+    return out
+
+def gate(rows, params, base=None, losses=None):
+    """Hard gate: no shut_down or invented vendor reaches Passed (exists, active or adverse), and no bad vendor's loss gets worse than at the defaults."""
+    base = base or D; viol = [{"case_id": c, "check": k, "why": "bad vendor reaches Passed"} for c, k in bad_passes(rows, params)]
+    for r in labelled(rows):
+        if is_bad(r) and row_loss(r, params, losses) > row_loss(r, base, losses) + 1e-9: viol.append({"case_id": r["case_id"], "check": "all", "why": "bad vendor's loss gets worse"})
+    return viol
+
+# ---------- sweep with the gate ----------
+def sweep_gate(rows, grid=GRID, defaults=D, splits=None, losses=None):
+    """One at a time. Per value: gate result, established pass rate, cross-validated loss (mean, sd over 20 repeated splits + 5 folds) and the small_real effect."""
+    lab = labelled(rows); splits = splits or all_splits(lab) if lab else []; out = {}
+    small = [r for r in collected(rows) if r["stratum"] == "small_real"]
+    for p, vals in grid.items():
+        per = []
+        for v in vals:
+            par = {**defaults, p: v}
+            loss = {r["case_id"]: row_loss(r, par, losses) for r in lab}
+            parts = [mean([loss[r["case_id"]] for r in te]) for _, te in splits if te]
+            viol = gate(rows, par, defaults, losses); er = established_pass_rate(rows, par)
+            per.append({"value": v, "gate_ok": not viol, "violations": len(viol), "established_rate": er["rate"], "cv_loss": mean(parts) if parts else None, "cv_sd": sd(parts),
+                        "small_real_nonpass": round(nonpass_rate(small, par), 3), "small_real_loss": mean([loss[r["case_id"]] for r in lab if r["stratum"] == "small_real"]) if any(r["stratum"] == "small_real" for r in lab) else None})
+        means = [x["cv_loss"] for x in per]
+        kind = classify(vals, means) if all(m is not None for m in means) else "n/a"
+        out[p] = {"values": per, "kind": kind, "overfit": kind == "spike"}
+    return out
+
+def greedy(rows, grid=GRID, defaults=D, losses=None, order=None):
+    """Coordinate ascent under the gate: change one parameter at a time, keep a change only if the gate still holds and the established pass rate does not fall;
+    prefer a higher established pass rate, then a lower loss, then the value closest to the default. Returns (params, trace, started_ok)."""
+    cur = dict(defaults); ok0 = not gate(rows, cur, defaults, losses); trace = []
+    key = lambda par: (-(established_pass_rate(rows, par)["rate"] or 0), mean([row_loss(r, par, losses) for r in labelled(rows)]) if labelled(rows) else 0)
+    if not ok0: return cur, [{"note": "the default setting itself violates the gate"}], False
+    for p in (order or list(grid)):
+        best, bk = cur[p], key(cur)
+        for v in grid[p]:
+            cand = {**cur, p: v}
+            if gate(rows, cand, defaults, losses): continue
+            k = key(cand)
+            if k < bk or (k == bk and abs(v - defaults[p]) < abs(best - defaults[p]) if isinstance(v, (int, float)) and not isinstance(v, bool) else False): best, bk = v, k
+        if best != cur[p]: trace.append({"parameter": p, "from": cur[p], "to": best}); cur[p] = best
+    return cur, trace, True
+
+def count_bad_passes(rows, params): return len(bad_passes(rows, params))
+
+# ---------- presets (gate-aware) ----------
+LENIENT_MOVES = [("candidate_name_sim_floor", 0.80), ("min_headcount", 3), ("max_decline_pct", 40.0), ("max_series_age_days", 90), ("active_min_signals", 1), ("min_searches", 2),
+                 ("adverse_min_severity", 3), ("established_headcount_min", 250)]
+STRICT_MOVES = [("candidate_name_sim_floor", 0.90), ("min_headcount", 10), ("max_decline_pct", 20.0), ("max_series_age_days", 45), ("active_min_signals", 3), ("min_searches", 4),
+                ("adverse_min_severity", 1), ("reject_min_sources", 2), ("established_headcount_min", 1000)]
 DESCRIPTIONS = {
-    "lenient": "Gives the benefit of the doubt. A vendor is accepted on a looser name match, with fewer signs of activity, and only serious-looking reports are raised. Expect more vendors to be cleared automatically and a higher chance that a weak vendor slips through to a person for approval.",
-    "balanced": "Our recommended middle setting. It asks for a clear name match and at least two independent signs that the business is operating, and it raises any report that names the company. Most genuine vendors get a clear answer; thin or unclear cases go to a person with a list of what is missing.",
-    "strict": "Asks for more before saying yes. The name must match closely, the business must show three signs of activity with recent data, and even minor reports naming the company are raised, and a rejection needs two separate sources. Expect more cases handed to a person, fewer wrong approvals, and a heavier load on small or new firms, which often have little public data.",
+    "lenient": "Gives the benefit of the doubt where it is safe to. Large, well-known companies are accepted on a looser name match and with fewer signs of activity, and a single report from one outlet no longer holds them up. It still never accepts a business that looks shut down or does not exist, and anything it cannot settle goes to a person.",
+    "balanced": "Our recommended middle setting. It asks for a clear name match and at least two independent signs that the business is operating, treats forum posts and review sites as unverified chatter, and for very large companies wants two reputable sources before raising a concern. Genuine large vendors usually get a clear answer; thin or unclear cases go to a person with a list of what is missing.",
+    "strict": "Asks for more before saying yes. The name must match closely, the business must show three signs of activity with recent data, and even minor reports from reputable sources are raised. A rejection needs two separate sources. Expect more cases handed to a person and a heavier load on small or new firms, which often have little public data.",
 }
 
+def apply_moves(rows, moves, base, losses=None):
+    cur = dict(base); kept = []
+    for p, v in moves:
+        if cur.get(p) == v: continue
+        cand = {**cur, p: v}
+        if not gate(rows, cand, D, losses): cur = cand; kept.append(p)
+    return cur, kept
+
+def evaluate_preset(rows, params, losses=None):
+    lab = labelled(rows); folds = stratified_folds(lab) if lab else []
+    cv = mean([mean([row_loss(r, params, losses) for r in te]) for _, te in folds if te]) if lab else None
+    hold = [r for r in lab if r["split"] == "holdout"]; sm = [r for r in collected(rows) if r["stratum"] == "small_real"]; lg = [r for r in collected(rows) if r["stratum"] == "large_legit"]
+    er = established_pass_rate(rows, params)
+    return {"mean_cv_loss": cv, "holdout_loss": mean([row_loss(r, params, losses) for r in hold]) if hold else None, "n_holdout": len(hold),
+            "established_pass_rate": er["rate"], "established_fell_back": er["fell_back"], "bad_vendor_passes": count_bad_passes(rows, params),
+            "small_real": {"nonpass_rate": round(nonpass_rate(sm, params), 3), "large_nonpass_rate": round(nonpass_rate(lg, params), 3),
+                           "loss": mean([row_loss(r, params, losses) for r in lab if r["stratum"] == "small_real"]) if any(r["stratum"] == "small_real" for r in lab) else None}}
+
+def build_presets(rows, losses=None):
+    best, trace, ok0 = greedy(rows, losses=losses)
+    if not ok0:
+        return {"blocked": True, "reason": "No setting passes the gate: the default setting already lets a shut_down or invented vendor reach Passed (see tuning_report.md)",
+                "violations_at_defaults": gate(rows, D, D, losses)[:20], "presets": {}}
+    out = {}
+    bal = best
+    len_, _ = apply_moves(rows, LENIENT_MOVES, bal, losses); strict, _ = apply_moves(rows, STRICT_MOVES, D, losses)
+    for name, par in (("lenient", len_), ("balanced", bal), ("strict", strict)):
+        changed = {p: v for p, v in par.items() if D.get(p) != v}
+        out[name] = {"params_changed": changed, **evaluate_preset(rows, par, losses), "customer_description": DESCRIPTIONS[name]}
+    return {"blocked": False, "greedy_trace": trace, "presets": out}
+
+PRESET_SHAPES = {"lenient": dict(LENIENT_MOVES), "balanced": {}, "strict": dict(STRICT_MOVES)}
 def preset_params(name, balanced_changes=None):
     ch = dict(PRESET_SHAPES[name]) if name != "balanced" else dict(balanced_changes or {})
     return {**D, **ch}
 
-def evaluate_preset(rows, params):
-    lab = labelled(rows); folds = stratified_folds(lab)
-    cv = mean([mean([row_loss(r, params) for r in te]) for _, te in folds if te]) if lab else None
-    hold = [r for r in lab if r["split"] == "holdout"]; sm = [r for r in collected(rows) if r["stratum"] == "small_real"]; lg = [r for r in collected(rows) if r["stratum"] == "large_legit"]
-    return {"mean_cv_loss": cv, "holdout_loss": mean([row_loss(r, params) for r in hold]) if hold else None, "n_holdout": len(hold),
-            "small_real": {"nonpass_rate": round(nonpass_rate(sm, params), 3), "large_nonpass_rate": round(nonpass_rate(lg, params), 3),
-                           "loss": mean([row_loss(r, params) for r in lab if r["stratum"] == "small_real"]) if any(r["stratum"] == "small_real" for r in lab) else None}}
+def write_presets(rows, losses=None, path=ROOT / "evaluation" / "presets_candidate.json"):
+    bp = build_presets(rows, losses)
+    doc = {"approved": False, "note": "Candidate presets for the owner. Nothing here is applied. Every preset keeps: no unsourced fail, unreachable leads to HOLD, no CANNOT_VERIFY to CLEARED when a required check is unknown, no rejection on one undated source, and no shut_down or invented vendor reaching Passed (tests/test_preset_invariants.py).",
+           "losses": losses or LOSSES, "defaults": {"params": {p: D[p] for p in GRID}, **evaluate_preset(rows, D, losses)}, "strictness": {}, **{k: v for k, v in bp.items() if k != "presets"}, "presets": bp["presets"]}
+    for name, p in bp["presets"].items(): doc["strictness"][name] = p["params_changed"]
+    path.write_text(json.dumps(doc, indent=1) + "\n"); return doc
 
 # ---------- report ----------
 def fmt(x, n=2): return "-" if x is None else f"{x:.{n}f}"
 
-def write_report(rows, doc, path=ROOT / "evaluation" / "tuning_report.md"):
-    lab = labelled(rows); sc = score(rows); sw = sweep(rows); ho = holdout_check(rows, None)
-    sl, g0 = small_vs_large(rows); sens = sensitivity(rows); band = suspicious_band(rows); noise = repeat_noise(doc)
-    L = ["", "## Phase 3: scoring the engine against your labels (defaults, 0 credits)", "",
-         f"{len(lab)} rows have all three labels (of {len(collected(rows))} collected). Loss: wrong 3, abstain 1, hold-vs-cannot-verify 0.5 per check.", "",
-         "| Check | Rows | Mean loss | Wrong (engine definitive, label different) | Abstained (engine unknown, label definitive) | Hold mismatch |", "|---|---|---|---|---|---|"]
+def write_report(rows, doc, losses=None, path=ROOT / "evaluation" / "tuning_report.md"):
+    lab = labelled(rows); sc = score(rows); sg = sweep_gate(rows, losses=losses); gr, trace, ok0 = greedy(rows, losses=losses)
+    ho = holdout_gate(rows, gr, losses); sens = sensitivity(rows); band = suspicious_band(rows); noise = repeat_noise(doc)
+    er = established_pass_rate(rows); er_old = established_pass_rate(rows, {**D, "rule_source_classes": False, "rule_name_collision": False, "established_headcount_min": 10 ** 9})
+    L = ["", f"## Scoring with false_pass {LOSSES['false_pass']:g}, false_fail {LOSSES['false_fail']:g}, abstain {LOSSES['abstain']:g}, hold_vs_cnv {LOSSES['hold_vs_cnv']:g} (PROPOSED)", "",
+         f"{len(lab)} rows have all three labels (of {len(collected(rows))} collected).", "", "| Check | Rows | Mean loss | Wrong (false pass / false fail) | Abstained | Hold mismatch |", "|---|---|---|---|---|---|"]
     for c, v in sc["per_check"].items(): L.append(f"| {c} | {v['n']} | {fmt(v['loss'] / v['n'] if v['n'] else None)} | {v['wrong']} | {v['abstain']} | {v['hold']} |")
-    L += ["", "| Stratum | Rows | Mean loss per row (3 checks) |", "|---|---|---|"] + [f"| {s} | {v['n'] // 3} | {fmt(v['loss'] / (v['n'] / 3))} |" for s, v in sorted(sc["per_stratum"].items())]
+    L += ["", "| Stratum | Rows | Mean loss per row |", "|---|---|---|"] + [f"| {s} | {v['n'] // 3} | {fmt(v['loss'] / (v['n'] / 3))} |" for s, v in sorted(sc["per_stratum"].items())]
     L += ["", "| Split | Rows | Mean loss per row |", "|---|---|---|"] + [f"| {s} | {v['n'] // 3} | {fmt(v['loss'] / (v['n'] / 3))} |" for s, v in sorted(sc["per_split"].items())]
-    L += ["", f"### Wrong cases ({len(sc['wrong'])}): engine definitive and different from your label", ""]
-    if not sc["wrong"]: L.append("None.")
-    for w in sc["wrong"]: L.append(f"- **{w['case_id']}** ({w['stratum']}), {w['check']}: label `{w['label']}`, engine `{w['engine']}`. Reason: {w['reason']}. Raw: `{json.dumps(w['raw'])}`")
-    L += ["", "## Phase 4: parameter sweep (one at a time, others at defaults)", "",
-          f"Labelled rows: {len(lab)}. 20 repeated stratified 2/3-1/3 splits plus 5-fold cross-validation ({len(all_splits(lab))} held-out parts). Loss = mean row loss (3 checks) on the held-out part. Plateau: 3 adjacent values within 5% of the best. Spike: an isolated interior best, marked OVERFIT. Inert: no value changes the loss.", "",
-          "| Parameter | Best | Default | Shape | Chosen by train in | Mean loss by value (sd) |", "|---|---|---|---|---|---|"]
-    for p, r in sw.items():
-        vals = ", ".join(f"{v}: {fmt(m)} ({fmt(s)})" for v, m, s in zip(r["values"], r["mean_loss"], r["sd_loss"]))
-        L.append(f"| {p} | {r['best']} | {D[p]} | {r['kind'].upper()}{' (OVERFIT)' if r['overfit'] else ''} | {fmt((r['selected_best_share'] or 0) * 100, 0)}% of splits | {vals} |")
-    L += ["", f"Holdout check (best value per parameter chosen on {ho['n_tune']} tune rows, evaluated on {ho['n_holdout']} holdout rows): tune loss {fmt(ho['tune_loss_default'])} to {fmt(ho['tune_loss_chosen'])}; holdout loss {fmt(ho['holdout_loss_default'])} (defaults) to {fmt(ho['holdout_loss_chosen'])} (chosen). Chosen: `{json.dumps(ho['chosen_on_tune'])}`", "",
-          f"### small_real versus large_legit (all collected rows; default gap {g0:+.3f} in non-pass rate)", "", "| Parameter | Value | small non-pass | large non-pass | gap | flag |", "|---|---|---|---|---|---|"]
-    for p, rs in sl.items():
-        for r in rs:
-            if r["flag"]: L.append(f"| {p} | {r['value']} | {r['small_nonpass']} | {r['large_nonpass']} | {r['gap']:+.3f} | pushes small firms to unknown or fail more than large ones |")
-    if not any(r["flag"] for rs in sl.values() for r in rs): L.append("| (none flagged) | | | | | |")
-    L += ["", "### Sensitivity on ALL collected rows (verdict changes per parameter step)", "", "| Parameter | Step | Rows changed | by check (exists / active / adverse) |", "|---|---|---|---|"]
+    L += ["", f"### Wrong cases ({len(sc['wrong'])})", ""] + (["None."] if not sc["wrong"] else
+          [f"- **{w['case_id']}** ({w['stratum']}), {w['check']}: label `{w['label']}`, engine `{w['engine']}`. Reason: {w['reason']}. Raw: `{json.dumps(w['raw'])}`" for w in sc["wrong"]])
+    L += ["", f"### Established pass rate (large_legit + big_brand_noise: exists, active and adverse all Passed)", "",
+          f"Current rules: **{er['passed']} of {er['n']} ({fmt((er['rate'] or 0) * 100, 0)}%)**; {er['fell_back']} fell back to Can't verify. Old rules (source classes, name collision and established rule off): {er_old['passed']} of {er_old['n']} ({fmt((er_old['rate'] or 0) * 100, 0)}%).", "",
+          "| Why a check fell back (current rules) | Checks |", "|---|---|"] + [f"| {k} | {v} |" for k, v in er["why"].items()]
+    L += ["", "## Sweep with the hard gate", "", "Gate: no shut_down or invented vendor reaches Passed on exists, active or adverse, and no bad vendor's loss is worse than at the defaults. 20 repeated stratified splits plus 5-fold cross-validation. Spike = isolated interior best (OVERFIT).", "",
+          "| Parameter | Shape | Value | Gate | Established pass rate | CV loss (sd) | small_real non-pass | small_real loss |", "|---|---|---|---|---|---|---|---|"]
+    for p, r in sg.items():
+        for i, x in enumerate(r["values"]):
+            L.append(f"| {p if i == 0 else ''} | {(r['kind'].upper() + (' (OVERFIT)' if r['overfit'] else '')) if i == 0 else ''} | {x['value']} | {'ok' if x['gate_ok'] else 'REJECTED (' + str(x['violations']) + ')'} | {fmt(x['established_rate'])} | {fmt(x['cv_loss'])} ({fmt(x['cv_sd'])}) | {x['small_real_nonpass']} | {fmt(x['small_real_loss'])} |")
+    L += ["", "**Joint setting chosen under the gate** " + (f"(greedy, starting from the defaults): `{json.dumps({t['parameter']: t['to'] for t in trace})}`" if ok0 else "NONE: the default setting itself violates the gate, so no setting passes and the gate was not relaxed. Violations at defaults: `" + json.dumps(gate(rows, D, D, losses)[:12]) + "`"),
+          "", f"Holdout ({ho['n_holdout']} rows): loss {fmt(ho['holdout_loss_default'])} at defaults, {fmt(ho['holdout_loss_chosen'])} at the chosen setting; bad-vendor passes at the chosen setting: {ho['bad_passes_chosen']}.", ""]
+    L += ["### Sensitivity on ALL collected rows (checks that change per parameter step)", "", "| Parameter | Step | Rows changed | exists / active / adverse |", "|---|---|---|---|"]
     for p, r in sens.items():
-        for s in r["steps"]: L.append(f"| {p}{' **UNSTABLE**' if s['share'] >= 0.10 else ''} | {s['from']} to {s['to']} | {s['rows_changed']} of {r['n_rows']} ({s['share']:.0%}) | {s['by_check']['exists']} / {s['by_check']['active']} / {s['by_check']['adverse_media']} |")
-    L += ["", "## Phase 5: the suspicious band and search noise", "", "A concern = adverse check `unknown` because reports name the company but cannot be confirmed (below the rejection bar).", "", "| Group | Rows | Concern fires | Rate |", "|---|---|---|---|"]
+        for st in r["steps"]: L.append(f"| {p}{' **UNSTABLE**' if st['share'] >= 0.10 else ''} | {st['from']} to {st['to']} | {st['rows_changed']} of {r['n_rows']} ({st['share']:.0%}) | {st['by_check']['exists']} / {st['by_check']['active']} / {st['by_check']['adverse_media']} |")
+    L += ["", "### Suspicious band and search noise", "", "| Group | Rows | Concern fires | Rate |", "|---|---|---|---|"]
     for k, v in {**band["by_label"], **{f"stratum {s}": x for s, x in band["by_stratum"].items()}}.items(): L.append(f"| {k} | {v['n']} | {v['fires']} | {fmt(v['rate'])} |")
-    L += ["", f"Repeat test ({len(noise)} rows, 3 runs each when complete): status flips between runs in {sum(1 for n in noise if n['status_flips'])} rows; minimum hit-set overlap (Jaccard) per row: "
-          + (", ".join(str(n['hit_jaccard_min']) for n in noise) or "n/a") + f"; dates changed on {sum(n['date_changes'] for n in noise)} of {sum(n['common_hits'] for n in noise)} hits seen in every run."]
-    path.write_text(path.read_text() + "\n".join(L) + "\n") if path.exists() else path.write_text("\n".join(L) + "\n")
-    return {"score": sc, "sweep": sw, "holdout": ho, "small_vs_large": sl, "sensitivity": sens, "band": band, "noise": noise}
+    L += ["", f"Repeat test ({len(noise)} rows): status flips in {sum(1 for n in noise if n['status_flips'])} rows; minimum hit overlap per row: " + (", ".join(str(n['hit_jaccard_min']) for n in noise) or "n/a") + f"; dates changed on {sum(n['date_changes'] for n in noise)} of {sum(n['common_hits'] for n in noise)} common hits."]
+    path.write_text((path.read_text() if path.exists() else "") + "\n".join(L) + "\n")
+    return {"score": sc, "sweep": sg, "greedy": gr, "trace": trace, "holdout": ho, "established": er, "established_old": er_old, "band": band, "noise": noise}
 
-def write_presets(rows, results, path=ROOT / "evaluation" / "presets_candidate.json"):
-    sw = results["sweep"]
-    bal = {p: r["best"] for p, r in sw.items() if r["best"] != D[p] and r["kind"] in ("plateau", "narrow", "edge") and not r["overfit"]
-           and p in ("candidate_name_sim_floor", "min_headcount", "max_decline_pct", "max_series_age_days", "min_jobs_90d", "active_min_signals", "min_searches", "adverse_min_severity")}
-    out = {"approved": False, "strictness": {}, "note": "Candidate presets for the owner to review. Nothing here is applied. Invariants kept by every preset: no unsourced fail, unreachable leads to HOLD, no CANNOT_VERIFY to CLEARED when a required check is unknown, no rejection on one undated source (tests/test_preset_invariants.py).",
-           "defaults": {"params": {p: D[p] for p in GRID}, **evaluate_preset(rows, D)}, "presets": {}}
-    for name in ("lenient", "balanced", "strict"):
-        par = preset_params(name, bal); ev = evaluate_preset(rows, par)
-        changed = {p: v for p, v in par.items() if D.get(p) != v}
-        out["strictness"][name] = changed             # the shape controls.py reads (only used once "approved" is set to true by the owner)
-        out["presets"][name] = {"params_changed": changed, **ev, "customer_description": DESCRIPTIONS[name]}
-    path.write_text(json.dumps(out, indent=1) + "\n"); return out
+def holdout_gate(rows, chosen, losses=None):
+    hold = [r for r in labelled(rows) if r["split"] == "holdout"]; f = lambda par: mean([row_loss(r, par, losses) for r in hold]) if hold else None
+    return {"n_holdout": len(hold), "holdout_loss_default": f(D), "holdout_loss_chosen": f(chosen), "bad_passes_chosen": count_bad_passes(rows, chosen)}
 
 def main(argv=None):
-    cmd = (argv or sys.argv[1:] or ["all"])[0]
-    rows = load_cases(); doc = json.loads((ROOT / "evaluation" / "signals_real.json").read_text())
-    n = len(labelled(rows))
-    if n < 25: print(f"only {n} fully labelled rows (need 25): not scoring"); return 1
-    res = write_report(rows, doc); write_presets(rows, res); print(f"scored {n} labelled rows; wrote tuning_report.md sections and presets_candidate.json"); return 0
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", nargs="?", default="all"); ap.add_argument("--losses", help="JSON overriding the loss weights"); ap.add_argument("--min-labelled", type=int, default=25)
+    a = ap.parse_args(argv)
+    global LOSSES
+    if a.losses: LOSSES = {**LOSSES, **json.loads(a.losses)}
+    rows = load_cases(); doc = json.loads((ROOT / "evaluation" / "signals_real.json").read_text()); n = len(labelled(rows))
+    if n < a.min_labelled: print(f"only {n} fully labelled rows (need {a.min_labelled}): not scoring"); return 1
+    res = write_report(rows, doc, LOSSES); write_presets(rows, LOSSES); print(f"scored {n} labelled rows; wrote tuning_report.md sections and presets_candidate.json"); return 0
 
 if __name__ == "__main__": raise SystemExit(main())

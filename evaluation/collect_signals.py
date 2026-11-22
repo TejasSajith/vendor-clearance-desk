@@ -104,7 +104,9 @@ def main():
     import threading
     from concurrent.futures import ThreadPoolExecutor
     ap = argparse.ArgumentParser(); ap.add_argument("--minutes", type=float, default=45); ap.add_argument("--workers", type=int, default=5)
-    ap.add_argument("--budget", type=float, default=None, help="credits this invocation may spend (step 2: 400)"); ap.add_argument("--fresh", action="store_true", help="restart the wall clock"); a = ap.parse_args()
+    ap.add_argument("--budget", type=float, default=None, help="credits this invocation may spend (step 2: 400)"); ap.add_argument("--fresh", action="store_true", help="restart the wall clock")
+    ap.add_argument("--run-seconds", type=float, default=None, help="in-process override of the per-run time cap (config.json is not written)"); a = ap.parse_args()
+    if a.run_seconds: core.CONFIG["max_seconds_per_run"] = a.run_seconds
     st = json.loads(STATE.read_text()) if STATE.exists() and not a.fresh else {"started": time.time()}
     STATE.write_text(json.dumps(st)); started = st["started"]; deadline = started + a.minutes * 60
     db = core.connect(str(DB)); out = load_out(); rows = list(csv.DictReader(open(CSV)))
