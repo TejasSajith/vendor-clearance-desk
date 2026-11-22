@@ -28,6 +28,7 @@ PROPOSED_PARAMS = {
     "tier_extra_high": 1,            # extra signals required for high-risk vendors
     "min_searches": 2,               # adverse: searches that must have run before "nothing found" counts
     "adverse_min_severity": 2,       # adverse: 0 none .. 3 severe; hits below this are ignored
+    "candidate_name_sim_floor": 0.85,  # PROPOSED: a candidate needs this token-sort name similarity (our own, on normalised names) to be considered
     "reject_min_sources": 1,         # PROPOSED: a rejection needs at least this many distinct sources
     "reject_require_dated": True,    # PROPOSED: every hit behind a rejection must carry a date
     "reject_min_severity": 3,        # PROPOSED: a rejection needs a hit at least this severe (0 none .. 3 severe)
@@ -47,8 +48,19 @@ def _fail(reason, sources):
     return _r("fail", reason, sources) if sources else _r("unknown", reason + " (no source, so it cannot support a rejection)")
 
 def _exists(s, p):
+    r = _exists_core(s, p)
+    note = (s.get("identify") or {}).get("domain_mismatch_note")
+    if note: r["notes"] = [note]
+    return r
+
+def _exists_core(s, p):
     i = s.get("identify") or {}
     src = i.get("sources", [])
+    if i.get("ambiguous"):
+        a = i["ambiguous"]; shown = "; ".join(f"{c['id']} {c['name']}" for c in a["candidates"][:10])
+        r = _r("unknown", f"ambiguous match: {a['n']} candidates ({shown}{'; ...' if a['n'] > 10 else ''})", src)
+        r["missing"] = [f"a domain or registry ID to tell the {a['n']} candidates apart"]
+        return r
     if not i.get("found"):
         r = _r("unknown", "No record found. The vendor may be too new or too small for the data source", src)
         r["missing"] = ["independent registry evidence (CIN/GSTIN/incorporation certificate)"]   # never a sourced fail

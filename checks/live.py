@@ -34,7 +34,7 @@ class LiveSources:
         res = call(ctx, "/company/identify", {"names": [name]})
         ms = (res[0]["matches"] if res else []) or []
         cands = [{"id": m["company_data"]["basic_info"]["crustdata_company_id"], "name": m["company_data"]["basic_info"].get("name") or "",
-                  "score": m["confidence_score"]} for m in ms]
+                  "score": m["confidence_score"], "domain": m["company_data"]["basic_info"].get("primary_domain")} for m in ms]
         dom_ids = None
         if domain:
             dres = call(ctx, "/company/identify", {"domains": [domain]})

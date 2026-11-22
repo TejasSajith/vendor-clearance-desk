@@ -1,0 +1,160 @@
+{
+ "input": "Ecom Express Ltd",
+ "domain": "ecomexpress.in",
+ "candidates": [
+  {
+   "id": 21593867,
+   "name": "Ecom Express Pvt Ltd",
+   "score": 0.8,
+   "domain": null
+  },
+  {
+   "id": 3863060,
+   "name": "BABA EXPRESS ECOM PVT. LTD",
+   "score": 0.8,
+   "domain": "babaexpress.in"
+  },
+  {
+   "id": 23968187,
+   "name": "Baba Express Ecom Pvt Ltd",
+   "score": 0.8,
+   "domain": null
+  },
+  {
+   "id": 5967,
+   "name": "Ecom Express Limited",
+   "score": 0.6,
+   "domain": "ecomexpress.in"
+  },
+  {
+   "id": 32597834,
+   "name": "Ecom Express",
+   "score": 0.6,
+   "domain": "e-com.express"
+  },
+  {
+   "id": 25673149,
+   "name": "ECOM EXPRESS",
+   "score": 0.6,
+   "domain": null
+  },
+  {
+   "id": 18665104,
+   "name": "Ecom Express Support",
+   "score": 0.6,
+   "domain": "ecomexpress.in"
+  },
+  {
+   "id": 17502585,
+   "name": "Indian Ecom Express",
+   "score": 0.6,
+   "domain": "indiaecomcourierexpress.com"
+  },
+  {
+   "id": 15079142,
+   "name": "Ecom Express LLC",
+   "score": 0.6,
+   "domain": null
+  },
+  {
+   "id": 21949977,
+   "name": "Ecom Express Warora",
+   "score": 0.6,
+   "domain": null
+  },
+  {
+   "id": 1176331,
+   "name": "ECOM",
+   "score": 0.6,
+   "domain": "morson-edge.com"
+  },
+  {
+   "id": 13006146,
+   "name": "Ecom Express Delivery Center",
+   "score": 0.6,
+   "domain": null
+  },
+  {
+   "id": 681140,
+   "name": "EXPRESS",
+   "score": 0.6,
+   "domain": "express.com"
+  },
+  {
+   "id": 777637,
+   "name": "American Express",
+   "score": 0.6,
+   "domain": "americanexpress.com"
+  },
+  {
+   "id": 1485594,
+   "name": "DHL Express",
+   "score": 0.6,
+   "domain": "dhl.com"
+  },
+  {
+   "id": 9901363,
+   "name": "SPX Express",
+   "score": 0.6,
+   "domain": "spx.sg"
+  },
+  {
+   "id": 6430317,
+   "name": "PT. Global Jet Express (J&T Express)",
+   "score": 0.6,
+   "domain": "jet.co.id"
+  },
+  {
+   "id": 2037562,
+   "name": "DTDC Express Limited",
+   "score": 0.6,
+   "domain": null
+  },
+  {
+   "id": 1260302,
+   "name": "Holiday Inn Express",
+   "score": 0.6,
+   "domain": "holidayinnexpress.com"
+  },
+  {
+   "id": 6052367,
+   "name": "Express Employment International",
+   "score": 0.6,
+   "domain": "expresspros.com"
+  },
+  {
+   "id": 1075412,
+   "name": "ECOM Agroindustrial Corp. Ltd.",
+   "score": 0.6,
+   "domain": "ecomgroup.com"
+  },
+  {
+   "id": 5051,
+   "name": "TCI Express Ltd.",
+   "score": 0.6,
+   "domain": "tciexpress.in"
+  },
+  {
+   "id": 1588866,
+   "name": "S.F. EXPRESS CO. LTD",
+   "score": 0.6,
+   "domain": "sf-express.com"
+  },
+  {
+   "id": 1122159,
+   "name": "NX GROUP (NIPPON EXPRESS GROUP)",
+   "score": 0.6,
+   "domain": "nipponexpress.com"
+  },
+  {
+   "id": 1155138,
+   "name": "Express Scripts Pharmacy Benefit Services",
+   "score": 0.6,
+   "domain": "express-scripts.com"
+  }
+ ],
+ "domain_ids": [
+  5967,
+  18665104
+ ]
+}

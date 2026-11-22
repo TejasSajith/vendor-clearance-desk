@@ -1,0 +1,10 @@
+[main] Delhivery: CANNOT_VERIFY {'exists': 'pass', 'active': 'pass', 'director_match': 'unknown', 'adverse_media': 'unknown'} +4.43 credits 39.5s
+[main] DTDC Express Limited: CANNOT_VERIFY {'exists': 'pass', 'active': 'pass', 'director_match': 'unknown', 'adverse_media': 'unknown'} +4.43 credits 27.3s
+[main] Everest Fleet Pvt. Ltd.: CANNOT_VERIFY {'exists': 'pass', 'active': 'pass', 'director_match': 'unknown', 'adverse_media': 'unknown'} +3.4 credits 44.1s
+[main] ProConnect Supply Chain Solutions Ltd: CANNOT_VERIFY {'exists': 'pass', 'active': 'pass', 'director_match': 'unknown', 'adverse_media': 'pass'} +3.4 credits 59.2s
+[main] Xtrans Logistics Pvt Ltd: CANNOT_VERIFY {'exists': 'pass', 'active': 'unknown', 'director_match': 'unknown', 'adverse_media': 'pass'} +3.4 credits 38.6s
+[main] LorryCare: CANNOT_VERIFY {'exists': 'pass', 'active': 'pass', 'director_match': 'unknown', 'adverse_media': 'pass'} +3.4 credits 22.2s
+[main] Ecom Express Ltd: CANNOT_VERIFY {'exists': 'unknown', 'active': 'unknown', 'director_match': 'unknown', 'adverse_media': 'pass'} +4.4 credits 26.1s
+[main] Ecom Express Delivery Center: CANNOT_VERIFY {'exists': 'pass', 'active': 'unknown', 'director_match': 'unknown', 'adverse_media': 'unknown'} +3.2 credits 38.8s
+[main] Zentrovia Cargo Solutions Pvt Ltd: CANNOT_VERIFY {'exists': 'unknown', 'active': 'unknown', 'director_match': 'unknown', 'adverse_media': 'unknown'} +3.2 credits 42.0s
+[main] Future Supply Chain Solutions Limited: CANNOT_VERIFY {'exists': 'unknown', 'active': 'unknown', 'director_match': 'unknown', 'adverse_media': 'pass'} +4.2 credits 27.2s

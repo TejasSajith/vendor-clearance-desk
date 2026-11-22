@@ -37,7 +37,8 @@ def test_three_spellings_give_one_run_and_one_action(db):
 def test_same_company_under_different_name_is_caught_after_resolution(db):
     src = FakeSources()
     a = pipeline.run_request(db, {"vendor_name": "Acme Logistics Pvt Ltd", "website": "acme.in", "claimed_director": "Dir One"}, src)
-    b = pipeline.run_request(db, {"vendor_name": "Acme Freight Services", "claimed_director": "Dir One"}, src)   # resolves to the same id
+    src2 = FakeSources(candidates=[{"id": 1, "name": "Acme Freight Services", "score": 1.0}])          # the same company id under another name
+    b = pipeline.run_request(db, {"vendor_name": "Acme Freight Services", "claimed_director": "Dir One"}, src2)
     assert b["existing"] and b["duplicate_of"] == a["run_id"] and _actions(db) == 1
 
 def test_genuinely_different_companies_stay_separate(db):

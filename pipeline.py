@@ -4,7 +4,7 @@ must go through ctx.call, which is core.cached_call (throttle, cache, limits, le
 Verdicts are recommendations: CLEARED and REJECTED become pending actions that a person approves (core.finalize)."""
 import json, time
 import core, decision, policy
-from checks import normalize
+from checks import normalize, exists
 
 KIND = "clearance"
 
@@ -30,18 +30,17 @@ class Ctx:
     def call(self, endpoint, params, fn, credits_from=None):
         return core.cached_call(self.db, self.run_id, endpoint, params, fn, credits_from=credits_from)
 
-def identify_signals(name, domain, ident):
-    cands = ident.get("candidates") or []
-    if not cands: return {"found": False, "status": None, "name_similarity": 0.0, "top_ties": 0, "domain_match": None,
-                          "sources": ["crustdata:/company/identify"]}
-    top = max(c["score"] for c in cands); best = [c for c in cands if c["score"] == top]
-    chosen = best[0]
-    dm = None
-    if domain and ident.get("domain_candidate_ids") is not None:
-        ids = ident["domain_candidate_ids"]; dm = bool(ids) and ids[0] == chosen["id"]
-    return {"found": True, "company_id": chosen["id"], "status": ident.get("status"),
-            "name_similarity": normalize.name_similarity(name, chosen["name"]), "top_ties": len(best), "domain_match": dm,
-            "sources": ["crustdata:/company/identify"]}
+def identify_signals(name, domain, ident, params=None):
+    """Our own matching (checks/exists.py); Crustdata's confidence score is not used for the choice."""
+    p = params or policy.PROPOSED_PARAMS
+    m = exists.match(name, domain, ident.get("candidates") or [], ident.get("domain_candidate_ids"), p["candidate_name_sim_floor"])
+    base = {"sources": ["crustdata:/company/identify"], "status": ident.get("status"), "domain_mismatch_note": m["domain_note"]}
+    if m["outcome"] == "none": return {**base, "found": False, "name_similarity": 0.0, "top_ties": 0, "domain_match": None}
+    if m["outcome"] == "ambiguous":
+        return {**base, "found": False, "name_similarity": m["above"][0]["sim"], "top_ties": len(m["above"]), "domain_match": None,
+                "ambiguous": {"n": len(m["above"]), "candidates": [{"id": c["id"], "name": c["name"]} for c in m["above"]]}}
+    c = m["chosen"]
+    return {**base, "found": True, "company_id": c["id"], "name_similarity": c["sim"], "top_ties": 1, "domain_match": m["domain_match"]}
 
 def _existing_result(db, run_id):
     row = db.execute("SELECT result FROM steps WHERE run_id=? AND name='final'", (run_id,)).fetchone()
