@@ -1,0 +1,91 @@
+"""Core: durable state, evidence ledger, cost ledger, idempotent actions, approvals.
+All state lives in SQLite so a killed process resumes where it stopped."""
+import hashlib, json, sqlite3, time, uuid
+from pathlib import Path
+
+CONFIG = json.loads((Path(__file__).parent / "config.json").read_text())
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY, request TEXT, status TEXT, started REAL);
+CREATE TABLE IF NOT EXISTS steps(run_id TEXT, name TEXT, result TEXT, PRIMARY KEY(run_id,name));
+CREATE TABLE IF NOT EXISTS facts(id INTEGER PRIMARY KEY, run_id TEXT, subject TEXT, claim TEXT,
+  value TEXT, source_url TEXT NOT NULL, passage TEXT NOT NULL, source_type TEXT,
+  source_date TEXT, retrieved_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS calls(id INTEGER PRIMARY KEY, run_id TEXT, endpoint TEXT, params TEXT,
+  status TEXT, credits REAL, ms INTEGER, ts REAL);
+CREATE TABLE IF NOT EXISTS actions(key TEXT PRIMARY KEY, run_id TEXT, kind TEXT, payload TEXT,
+  status TEXT, created REAL);  -- pending -> approved -> done | rejected
+"""
+
+class LimitExceeded(Exception): pass
+class UnsourcedFact(Exception): pass
+
+def connect(path="clearance.db"):
+    db = sqlite3.connect(path, isolation_level=None)  # autocommit; each write is durable
+    db.executescript(SCHEMA)
+    return db
+
+def start_run(db, request, run_id=None):
+    """Same run_id => resume. Otherwise a new run."""
+    run_id = run_id or uuid.uuid4().hex[:12]
+    db.execute("INSERT OR IGNORE INTO runs VALUES(?,?,?,?)", (run_id, request, "running", time.time()))
+    return run_id
+
+def run_step(db, run_id, name, fn):
+    """Run fn once per (run, step). On restart a finished step returns its saved result."""
+    row = db.execute("SELECT result FROM steps WHERE run_id=? AND name=?", (run_id, name)).fetchone()
+    if row: return json.loads(row[0])
+    result = fn()
+    db.execute("INSERT OR REPLACE INTO steps VALUES(?,?,?)", (run_id, name, json.dumps(result)))
+    return result
+
+# ---------- evidence ledger ----------
+def add_fact(db, run_id, subject, claim, value, source_url, passage, source_type, retrieved_at, source_date=None):
+    """A fact without a source link and exact passage is refused. No model-memory facts."""
+    if not (source_url and passage and passage.strip() and retrieved_at):
+        raise UnsourcedFact(f"refusing unsourced fact: {claim!r}")
+    db.execute("INSERT INTO facts(run_id,subject,claim,value,source_url,passage,source_type,source_date,retrieved_at)"
+               " VALUES(?,?,?,?,?,?,?,?,?)",
+               (run_id, subject, claim, json.dumps(value), source_url, passage, source_type, source_date, retrieved_at))
+
+def facts(db, run_id, subject=None):
+    q, a = "SELECT subject,claim,value,source_url,passage,source_type,source_date,retrieved_at FROM facts WHERE run_id=?", [run_id]
+    if subject: q += " AND subject=?"; a.append(subject)
+    cols = ["subject","claim","value","source_url","passage","source_type","source_date","retrieved_at"]
+    return [dict(zip(cols, r)) for r in db.execute(q, a)]
+
+# ---------- cost ledger + limits ----------
+def run_cost(db, run_id):
+    return db.execute("SELECT COALESCE(SUM(credits),0) FROM calls WHERE run_id=?", (run_id,)).fetchone()[0]
+
+def tracked_call(db, run_id, endpoint, params, fn, credits=0.0):
+    """Wrap every external call: enforce limits, then log cost and time."""
+    started = db.execute("SELECT started FROM runs WHERE id=?", (run_id,)).fetchone()[0]
+    if time.time() - started > CONFIG["max_seconds_per_run"]: raise LimitExceeded("time limit")
+    if run_cost(db, run_id) + credits > CONFIG["max_cost_credits_per_run"]: raise LimitExceeded("cost limit")
+    t0, status = time.time(), "ok"
+    try: return fn()
+    except Exception: status = "error"; raise
+    finally:
+        db.execute("INSERT INTO calls(run_id,endpoint,params,status,credits,ms,ts) VALUES(?,?,?,?,?,?,?)",
+                   (run_id, endpoint, json.dumps(params), status, credits, int((time.time()-t0)*1000), time.time()))
+
+# ---------- idempotent actions + approvals ----------
+def propose_action(db, run_id, kind, payload):
+    """Same (run, kind, payload) always gets the same key, so a retry can't create a second action."""
+    key = hashlib.sha256(json.dumps([run_id, kind, payload], sort_keys=True).encode()).hexdigest()[:16]
+    db.execute("INSERT OR IGNORE INTO actions VALUES(?,?,?,?,?,?)",
+               (key, run_id, kind, json.dumps(payload), "pending", time.time()))
+    return key
+
+def set_approval(db, key, approve=True):
+    db.execute("UPDATE actions SET status=? WHERE key=? AND status='pending'",
+               ("approved" if approve else "rejected", key))
+
+def execute_action(db, key, executor):
+    """Claim atomically (approved -> done) BEFORE executing, so it can't run twice."""
+    claimed = db.execute("UPDATE actions SET status='done' WHERE key=? AND status='approved'", (key,)).rowcount
+    if claimed != 1: return False
+    kind, payload = db.execute("SELECT kind,payload FROM actions WHERE key=?", (key,)).fetchone()
+    executor(kind, json.loads(payload))
+    return True
