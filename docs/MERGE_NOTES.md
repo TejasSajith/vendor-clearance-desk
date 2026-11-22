@@ -5,7 +5,7 @@ Sources: our repo docs and `probe/REPORT.md` vs `docs/tripwire_handoff.md`; Crus
 | # | Claim | Ours | Theirs | Evidence |
 |---|---|---|---|---|
 | 1 | Company Identify cost | 0.2 credit per match (probe: 18 calls, 3.6 credits) | free | **Resolved:** `GET /account/endpoints` lists 0.2 credits for `/company/identify` on our account. The docs say Free, so docs prices are not reliable. Record the cost each response reports |
-| 2 | Company refresh date | none at company level (probe) | Enrich has top-level `updated_at` | **Open:** the probe never requested `fields: ["metadata"]`, so the field was not asked for, not shown empty. Test on one company (about 2 credits) |
+| 2 | Company refresh date | none at company level (probe) | Enrich has top-level `updated_at` | **Resolved:** updated_at, indexed_at and growth_calculation_date are null for the probed company; there is no company-level refresh date. Freshness comes from the newest headcount timeseries point. |
 | 3 | Rate limits | 5/min company, person, job; 10/min web | about 5/min, unsure if per endpoint or overall | **Resolved:** per endpoint (5 for company, person and job endpoints incl. Identify; 10 for web; 300 autocomplete) plus an account-wide `token_limit_rpm` of 100. Engine v2 enforces both |
 | 4 | Headcount time series | `headcount.timeseries[]` has 155 to 365 dated points (probe) | unsure | Docs do not describe it; the probe saw it in real responses. Trust the probe |
 | 5 | Keys | one key per builder (handbook FAQ: each builder gets their own account and 15,000 credits) | one shared key for 3 people | Handbook; three keys give three times the limit and credits |
