@@ -28,6 +28,9 @@ PROPOSED_PARAMS = {
     "tier_extra_high": 1,            # extra signals required for high-risk vendors
     "min_searches": 2,               # adverse: searches that must have run before "nothing found" counts
     "adverse_min_severity": 2,       # adverse: 0 none .. 3 severe; hits below this are ignored
+    "reject_min_sources": 1,         # PROPOSED: a rejection needs at least this many distinct sources
+    "reject_require_dated": True,    # PROPOSED: every hit behind a rejection must carry a date
+    "reject_min_severity": 3,        # PROPOSED: a rejection needs a hit at least this severe (0 none .. 3 severe)
 }
 
 def load_params(path=None):
@@ -84,14 +87,30 @@ def _director(s, p):
         return _r("pass", "listed at this company per profile data (not a director of record)", src)
     return _r("unknown", "person found but identity or tenure not settled", src)
 
+def _gaps(h, p):
+    """What a hit still lacks before it may support a rejection."""
+    g = []
+    if p["reject_require_dated"] and not h.get("dated"): g.append("a date")
+    if not h.get("discriminator"): g.append("a match to the target beyond the name (namesakes possible)")
+    if not h.get("source_ok"): g.append("a verified source page")
+    if h.get("severity", 0) < p["reject_min_severity"]: g.append(f"severity >= {p['reject_min_severity']}")
+    return g
+
 def _adverse(s, p):
     a = s.get("adverse") or {}
     src = a.get("sources", [])
     if a.get("state") == "unreachable": return _r("unreachable", "a source timed out", src)
     relevant = [h for h in a.get("hits", []) if h.get("names_target") and h.get("severity", 0) >= p["adverse_min_severity"]]
-    confirmed = [h for h in relevant if h.get("dated") and h.get("discriminator") and h.get("source_ok")]
-    if confirmed: return _fail("dated adverse report naming the target", [h.get("url") for h in confirmed if h.get("url")])
-    if relevant: return _r("unknown", "possible adverse report, not confirmed (undated, unresolved or weak source)", src)
+    confirmed = [h for h in relevant if not _gaps(h, p)]
+    urls = sorted({h["url"] for h in confirmed if h.get("url")})
+    if confirmed and len(urls) >= p["reject_min_sources"]:
+        return _r("fail", "adverse report naming the target: dated, resolved and sourced" if p["reject_require_dated"] else "adverse report naming the target", urls)
+    if relevant:
+        missing = sorted({x for h in relevant for x in _gaps(h, p)})
+        if confirmed: missing.append(f"{p['reject_min_sources']} distinct sources (have {len(urls)})")
+        n = len(relevant)
+        return _r("unknown", f"{n} possible adverse report{'s' if n != 1 else ''}, not enough to reject; rejection needs a dated, resolved report: missing "
+                  + "; ".join(missing), src)
     if a.get("searches_run", 0) < p["min_searches"]: return _r("unknown", "too few searches run", src)
     return _r("pass", "searched, no relevant adverse report", src)
 
