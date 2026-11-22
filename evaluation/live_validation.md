@@ -87,3 +87,27 @@ Same pipeline with our own candidate matching (`candidate_name_sim_floor` 0.85, 
 - **Leftover found in this run and fixed (`76a8f52`):** for the invented vendor the director check said "claimed director not found at this company" although no director was supplied and there was no company. It now says "no claimed director in the request" (or "no company record to look for the claimed director in" when one is supplied).
 - **Credits:** 4.6 for this check (budget 8). The account balance went 15040.39 to 15035.79.
 - **Still true:** no claimed director was supplied, so no vendor can be `CLEARED`; the live director lookup (Person Search by name and employer) is written but has **not** been validated against the live API.
+
+## 10. Diagnostics before the T2 collection
+
+### 10a. Why Ecom Express Limited is `unknown` and the invented vendor passes
+
+Offline, from the saved raw responses of the section 9 run (no credits). Both vendors had `searches_run` 2 and `results_scanned` 10 (web 10, news 0).
+
+| | Ecom Express Limited | Zentrovia Cargo Solutions Pvt Ltd |
+|---|---|---|
+| Results naming the target (full-name phrase rule) | 5 of 10 | 0 of 10 |
+| Of those, severity >= 2 (`adverse_min_severity`) | 4 (one is severity 1 and ignored) | 0 |
+| Of those, dated | 4 of 4 | n/a |
+| Dated, resolved to the target, source page verified, severity >= 3 | 0 | n/a |
+| Result | `unknown`: "4 possible adverse reports, not enough to reject..." | `pass`: "no adverse reports found in 2 searches (limited coverage); 10 results scanned" |
+
+**Cause: not a bug.** The real company has press and complaint pages that name it, so its hits exist and cannot be dismissed or confirmed (no discriminator, no verified page, severity below 3). The invented vendor has no pages that name it, so nothing is flagged. Most of its 10 results are scam-checker pages for other websites.
+
+**Is the stricter phrase rule hiding real results? No, on this evidence.** Results the old first-word rule counted but the phrase rule dropped: Ecom Express #1 (a generic post about "ecom scamming") and #4 (a generic "eCommerce fraud" guide); Zentrovia #2, #5 and #9 (other websites). None refers to the company. I did not loosen the rule.
+
+**A design point for you:** coverage works against the real vendor. A vendor with any press presence ends `unknown` on adverse media, while a non-existent one gets a `pass` (labelled limited coverage). The pass is harmless today because `exists` is `unknown` for it, but it shows that `pass` here means "nothing found", not "nothing wrong". Options: leave as is; make a limited-coverage pass not count as a pass; or require that `exists` passes before adverse can pass. Not changed.
+
+### 10a-2. Person Search request shape (no real person)
+
+The live director lookup (`checks/live.py`) had only been tested with fakes. One call with an invented placeholder name at a large company returned HTTP 200, zero results, zero credits: the filters (`basic_profile.name`, `experience.employment_details.current.name`) and the field list are accepted. The results key is `profiles`. Result fields for a real person are exercised in 10b.

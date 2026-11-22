@@ -74,6 +74,11 @@ class LiveSources:
         res = call(ctx, "/person/search", {"filters": {"op": "and", "conditions": conds},
                                            "fields": ["crustdata_person_id", "basic_profile.headline", "experience.employment_details.current"], "limit": 5}, sensitive=True)
         people = res.get("profiles") or []
+        self.stats = {"results": len(people), "total_count": res.get("total_count"),
+                      "with_current_role_at_company": sum(1 for p in people if any(r.get("crustdata_company_id") == cid for r in ((p.get("experience") or {}).get("employment_details", {}).get("current") or []))),
+                      "fields_present": sorted({k for p in people for k in p}),
+                      "basic_profile_fields": sorted({k for p in people for k in (p.get("basic_profile") or {})}),
+                      "current_role_fields": sorted({k for p in people for r in ((p.get("experience") or {}).get("employment_details", {}).get("current") or []) for k in r})}   # names of fields and counts only, never values
         cur = [r for p in people for r in ((p.get("experience") or {}).get("employment_details", {}).get("current") or []) if r.get("crustdata_company_id") == cid]
         tok = (normalize.normalize_name(rec.get("name", "")).split() or [""])[0]
         head = " ".join(((p.get("basic_profile") or {}).get("headline") or "") for p in people).lower()
