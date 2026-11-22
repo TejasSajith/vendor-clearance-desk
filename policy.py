@@ -31,6 +31,7 @@ PROPOSED_PARAMS = {
     "reject_min_sources": 1,         # PROPOSED: a rejection needs at least this many distinct sources
     "reject_require_dated": True,    # PROPOSED: every hit behind a rejection must carry a date
     "reject_min_severity": 3,        # PROPOSED: a rejection needs a hit at least this severe (0 none .. 3 severe)
+    "conflict_adverse_terms": "closed,insolvent,struck_off,fraud",   # PROPOSED: a dated, sourced hit saying one of these conflicts with a pass
 }
 
 def load_params(path=None):
@@ -118,7 +119,40 @@ def _adverse(s, p):
     if a.get("searches_run", 0) < p["min_searches"]: return _r("unknown", "too few searches run", src)
     return _r("pass", "searched, no relevant adverse report", src)
 
+def _conflicts(s, checks, p):
+    """Two sources that disagree never average out: the affected check becomes unknown and names both sides."""
+    terms = {t.strip() for t in str(p["conflict_adverse_terms"]).split(",") if t.strip()}
+    hits = [h for h in (s.get("adverse") or {}).get("hits", [])
+            if h.get("names_target") and h.get("dated") and h.get("url") and terms & set(h.get("says") or [])]
+    for name in ("exists", "active"):
+        c = checks[name]
+        if c["status"] != "pass": continue
+        if hits:
+            h = hits[0]; says = ", ".join(sorted(terms & set(h["says"])))
+            checks[name] = {"status": "unknown", "reason": f"sources conflict: {', '.join(c['sources']) or 'profile data'} says {name} ({c['reason']}), "
+                            f"{h['url']} says {says} (dated report)", "sources": list(c["sources"]) + [h["url"]], "conflict": True}
+    i, pr, a = s.get("identify") or {}, s.get("profile") or {}, checks["active"]
+    if a["status"] == "pass":
+        trend = pr.get("headcount_trend_pct")
+        if i.get("status") == "deleted":
+            checks["active"] = {"status": "unknown", "reason": "sources conflict: identify says status deleted, profile says "
+                                f"{pr.get('headcount_total')} employees (newest point {pr.get('series_age_days')} days old) and {pr.get('jobs_90d') or 0} recent jobs",
+                                "sources": list(i.get("sources", [])) + list(pr.get("sources", [])), "conflict": True}
+        elif i.get("status") == "active" and trend is not None and trend < -p["max_decline_pct"]:
+            checks["active"] = {"status": "unknown", "reason": f"sources conflict: identify says status active, headcount series says {trend}% over the window "
+                                f"(more than the {p['max_decline_pct']}% decline allowed)",
+                                "sources": list(i.get("sources", [])) + list(pr.get("sources", [])), "conflict": True}
+
+def _guard_fails(checks, p):
+    """A fail without enough sources is not a fail."""
+    for name, c in checks.items():
+        if c["status"] == "fail" and len(set(c.get("sources", []))) < p["reject_min_sources"]:
+            checks[name] = {**c, "status": "unknown", "reason": c["reason"] + f" (needs {p['reject_min_sources']} source(s); a rejection must be sourced)"}
+
 def evaluate(signals, params=None, risk_tier="low"):
     p = params or PROPOSED_PARAMS
-    return {"exists": _exists(signals, p), "active": _active(signals, p, risk_tier),
-            "director_match": _director(signals, p), "adverse_media": _adverse(signals, p)}
+    checks = {"exists": _exists(signals, p), "active": _active(signals, p, risk_tier),
+              "director_match": _director(signals, p), "adverse_media": _adverse(signals, p)}
+    _guard_fails(checks, p)
+    _conflicts(signals, checks, p)
+    return checks
