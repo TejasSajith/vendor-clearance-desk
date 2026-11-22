@@ -103,21 +103,30 @@ Most of these are still marked PROPOSED in DECISIONS.md until the owner signs th
 
 ## 9. Run it
 
-Install once: `pip install -r requirements.txt`.
-
-**Demo mode** (no keys and no cost; replays recorded results, labelled on screen):
+Install once: `pip install -r requirements.txt`. Then start the web UI:
 
 ```
-APP_PASSWORD=choose-one uvicorn app.server:create_app --factory --port 8000
+python -m app                # http://127.0.0.1:8000  (another port: python -m app --port 8001)
 ```
 
-Then open http://127.0.0.1:8000.
+Open http://127.0.0.1:8000 and stop it with Ctrl+C. If the port is busy (an earlier server left running), the start command
+says so: free the port with `lsof -ti tcp:8000 | xargs kill`. The server binds to 127.0.0.1 only.
 
-**Live mode** (real Crustdata checks; Gemini is optional, and without it templates are used):
+- **Demo (recorded)**, chosen on the page: replays recorded results with template parsing and memos. Zero live calls, zero credits.
+  Try Acme Logistics Pvt Ltd (all pass), Zentrovia Cargo Solutions Pvt Ltd (possible adverse reports), Slowpoke Freight Pvt Ltd
+  (a source times out) or Ecom Express Ltd (recorded record).
+- **Live**, chosen on the page: needs `CRUSTDATA_API_KEY` (environment or the gitignored `.env`) and the caps in `config.json`.
+  The page shows the credit and time caps and asks you to confirm before it spends anything. `GEMINI_API_KEY` is optional.
+- `APP_PASSWORD` (optional locally) turns on a sign-in. `APP_DATA_DIR` sets where `demo.db` and `clearance.db` live.
+- Runs queue up and one background worker runs them one at a time; the page shows each check's progress. API: `POST /api/ask`,
+  `GET /api/run/{id}`, `GET /api/runs`, `POST /api/action/{key}/approve|reject`, `GET /api/health`.
+- **Vercel:** see D46 in `DECISIONS.md` (proposed: Vercel serves the page and the recorded demo; live runs need a host with a disk).
+  On Vercel the server runs each job inside the request, requires `APP_PASSWORD` and keeps live mode off.
 
-```
-APP_MODE=live CRUSTDATA_API_KEY=... GEMINI_API_KEY=... APP_PASSWORD=choose-one uvicorn app.server:create_app --factory --port 8000
-```
+**What the web UI stubs or limits:** Approve only records the decision locally; nothing is sent anywhere. Strictness levels
+give the same result until presets are approved (D38), and the page says so. Freshness also offers the policy default (60).
+Record dates show "not stated by the source". Sessions and the job queue live in memory, so a restart signs people out and
+forgets queued jobs. Finished runs stay in SQLite. Progress is shown per data fetch; Passed or Failed comes from the policy at the end.
 
 From the command line: `python pipeline.py run --vendor "NAME" --website DOMAIN --tier low`.
 

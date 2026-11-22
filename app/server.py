@@ -95,12 +95,12 @@ def create_app(data_dir=None, demo_sources=None, live_sources=None, password=Non
         from .demo import DemoSources
         demo_sources = DemoSources()
 
-    # Live mode: available only with a key (or injected sources), set caps, and a durable store (not Vercel's /tmp, D41)
+    # Live mode: available only with a key (or injected sources), set caps, and a durable store (not Vercel's /tmp, D46)
     live_reason = None
     if allow_live is False: live_reason = "Live mode is switched off on this server."
     elif live_sources is None and not os.environ.get("CRUSTDATA_API_KEY"): live_reason = "Live mode needs CRUSTDATA_API_KEY on the server."
     elif allow_live is None and on_vercel() and os.environ.get("APP_ALLOW_LIVE_EPHEMERAL") != "1":
-        live_reason = ("Live mode is off on Vercel until a durable database is chosen (D41): /tmp storage would lose the "
+        live_reason = ("Live mode is off on Vercel until a durable database is chosen (D46): /tmp storage would lose the "
                        "ledger, the approvals and the duplicate check between requests.")
     elif not live_caps()[0]: live_reason = "Live mode refuses to run: the credit cap and time cap are not set in config.json."
     _live = {"sources": live_sources}

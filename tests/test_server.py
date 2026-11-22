@@ -136,7 +136,7 @@ def test_live_off_without_key_and_on_vercel(tmp_path, monkeypatch):
     c = TestClient(server.create_app(data_dir=tmp_path, password=PW, llm_provider=None), base_url="https://testserver")   # secure cookie
     login(c)
     s = c.get("/api/status").json()
-    assert s["inline"] is True and s["modes"]["live"]["available"] is False and "D41" in s["modes"]["live"]["reason"]
+    assert s["inline"] is True and s["modes"]["live"]["available"] is False and "D46" in s["modes"]["live"]["reason"]
 
 def test_session_credit_cap_is_hard(tmp_path, monkeypatch):
     monkeypatch.setitem(core.CONFIG, "session_credit_cap", 52)        # first run reserves 50 and spends 4; 4 + 50 > 52, so a second run is refused
