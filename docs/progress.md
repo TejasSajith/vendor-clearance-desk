@@ -1,6 +1,6 @@
 # progress.md: state of the project as of Sun 22 Nov 2026, 13:45 IST
 
-For a teammate's AI agent joining mid-build. Read this first, then `AGENTS.md` (rules), `DECISIONS.md`, `plan.md`, `handover.md`, `probe/REPORT.md`. **Tejas is the owner and makes every large design decision and every parameter or threshold value.** Where this file says PROPOSED, nothing has been decided: ask Tejas, do not build on it.
+For a teammate's AI agent joining mid-build. Read this first, then `AGENTS.md` (rules), `DECISIONS.md`, `plan.md`, `docs/handover.md`, `probe/REPORT.md`. **Tejas is the owner and makes every large design decision and every parameter or threshold value.** Where this file says PROPOSED, nothing has been decided: ask Tejas, do not build on it.
 
 ## 1. The event
 ContextCon 05 at BITS Pilani, run with Crustdata (YC F24). Theme "Services, Replaced": build an agent service that does a whole paid job from request to result. Build window starts 10:45 AM (one document says 10:15 AM; confirm with organisers, D17). Requirement change from the organisers expected at hour 3 (about 1:45 PM). Code freeze 6:00 PM. Demo video (2 minutes, one link) by 5:30 PM. Submission once early as a safety net, then final.
@@ -36,7 +36,7 @@ Deterministic rules decide the verdict (`policy.py`, `decision.py`); the LLM onl
 - `decision.py`: verdicts from check results; unreachable gives `HOLD_FOR_APPROVAL`.
 - `policy.py`: raw signals to check results using `PROPOSED_PARAMS`.
 - `evaluation/run_eval.py`: metrics, `--compare` (report-only), `--sweep`; 19 synthetic cases. The synthetic cases pass 19/19 only because the labels were written to match the rules, so they test logic, not whether the thresholds are right. Real fixtures from `probe/raw/` are needed before tuning means anything.
-- Docs: `AGENTS.md`, `CLAUDE.md`, `DECISIONS.md`, `plan.md`, `handover.md`.
+- Docs: `AGENTS.md`, `CLAUDE.md`, `DECISIONS.md`, `plan.md`, `docs/handover.md`.
 
 ## 7. Status and next steps
 Not yet reported back by Tejas: placing the files in the GitHub repo and the first commits; the real-fixtures task; the registry and news probe. The checks modules (`checks/exists.py`, `active.py`, `director.py`, `adverse.py`), the pipeline and CLI, chaos tests, the ethics layer, the finance numbers, README and diagram are all still to build. Order and commit points are in `plan.md`. Do not start a task that depends on a PROPOSED decision.

@@ -42,7 +42,7 @@ Defaults in code marked `PROPOSED` are placeholders, not decisions.
 Small commits at logical points, pushed right away. Prefixes: `docs:`, `core:`, `policy:`, `eval:`, `checks:`, `pipeline:`, `approval:`, `test:`, `fix:`. Commit after each of: a module with its tests, a new rule, a fixture set, a docs update, each decision implemented. Never commit secrets, raw responses, databases or personal data. Do not force-push.
 
 ## 5. Layout
-`core.py` state, ledger, cost, throttle, cache, actions · `decision.py` verdicts · `policy.py` signals to checks (parameters) · `evaluation/` harness, cases, sweeps · `checks/` live-data check modules (to build) · `tests/` · `probe/` Crustdata audit (raw gitignored) · `NOTES.md` approaches tried · `DECISIONS.md` · `plan.md` · `handover.md`.
+`core.py` state, ledger, cost, throttle, cache, actions · `decision.py` verdicts · `policy.py` signals to checks (parameters) · `evaluation/` harness, cases, sweeps · `checks/` live-data check modules (to build) · `tests/` · `probe/` Crustdata audit (raw gitignored) · `NOTES.md` approaches tried · `DECISIONS.md` · `plan.md` · `docs/` (`handover.md`, `progress.md`, `MERGE_NOTES.md`, `tripwire_handoff.md`) · `README.md`. Paths in docs are relative to the repo root.
 
 ## 6. Ask before you proceed if
 You are unsure which section applies, a rule seems to conflict with a task, the two event documents disagree, or a change would alter a verdict, a parameter or what we tell the client. When in doubt, ask Tejas.
