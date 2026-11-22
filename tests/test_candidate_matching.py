@@ -63,3 +63,11 @@ def test_floor_is_a_parameter():
     cands = [{"id": 1, "name": "Acme Freight Lines", "domain": None}]
     assert exists.match("Acme Freight", "", cands, None, 0.85)["outcome"] == "none"
     assert exists.match("Acme Freight", "", cands, None, 0.5)["outcome"] == "one"
+
+def test_director_wording_when_there_is_no_company_record(db):
+    # no candidate: no director claimed -> "no claimed director", director claimed -> "no company record" (never "not found at this company")
+    a = pipeline.run_request(db, {"vendor_name": ZEN["input"]}, FakeSources(candidates=ZEN["candidates"]))
+    assert a["checks"]["director_match"]["reason"] == "no claimed director in the request"
+    b = pipeline.run_request(db, {"vendor_name": ZEN["input"], "claimed_director": "Some Person"}, FakeSources(candidates=ZEN["candidates"]))
+    assert b["checks"]["director_match"]["reason"] == "no company record to look for the claimed director in"
+    assert "Some Person" not in str(b)

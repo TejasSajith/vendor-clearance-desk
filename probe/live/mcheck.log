@@ -1,0 +1,91 @@
+{
+ "vendor": "Ecom Express Limited",
+ "verdict": "CANNOT_VERIFY",
+ "status": "done",
+ "checks": {
+  "exists": "pass",
+  "active": "pass",
+  "director_match": "unknown",
+  "adverse_media": "unknown"
+ },
+ "reasons": {
+  "exists": "single matching record",
+  "active": "2 activity signals: headcount, traffic",
+  "director_match": "no claimed director in the request",
+  "adverse_media": "4 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+ },
+ "notes": {},
+ "missing": [
+  "director_match",
+  "adverse_media",
+  "claimed_director (not supplied in the request)"
+ ],
+ "calls": [
+  [
+   "/company/identify",
+   0.2
+  ],
+  [
+   "/company/identify",
+   0.2
+  ],
+  [
+   "/company/enrich",
+   2.0
+  ],
+  [
+   "/job/search",
+   0.0
+  ],
+  [
+   "/web/search/live",
+   1.0
+  ],
+  [
+   "/web/search/live",
+   0.0
+  ]
+ ],
+ "credits": 3.4,
+ "seconds": 19.0
+}
+{
+ "vendor": "Zentrovia Cargo Solutions Pvt Ltd",
+ "verdict": "CANNOT_VERIFY",
+ "status": "done",
+ "checks": {
+  "exists": "unknown",
+  "active": "unknown",
+  "director_match": "unknown",
+  "adverse_media": "pass"
+ },
+ "reasons": {
+  "exists": "No record found. The vendor may be too new or too small for the data source",
+  "active": "no activity data",
+  "director_match": "claimed director not found at this company",
+  "adverse_media": "no adverse reports found in 2 searches (limited coverage); 10 results scanned"
+ },
+ "notes": {},
+ "missing": [
+  "exists",
+  "active",
+  "director_match",
+  "independent registry evidence (CIN/GSTIN/incorporation certificate)"
+ ],
+ "calls": [
+  [
+   "/company/identify",
+   0.2
+  ],
+  [
+   "/web/search/live",
+   1.0
+  ],
+  [
+   "/web/search/live",
+   0.0
+  ]
+ ],
+ "credits": 1.2,
+ "seconds": 14.4
+}

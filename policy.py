@@ -94,6 +94,10 @@ def _active(s, p, tier):
 def _director(s, p):
     d = s.get("director") or {}
     src = d.get("sources", [])
+    if d.get("no_company"):
+        r = _r("unknown", "no company record to look for the claimed director in", src)
+        r["missing"] = ["a company record to check the claimed director against"]
+        return r
     if d.get("not_requested"):
         r = _r("unknown", "no claimed director in the request", src)
         r["missing"] = ["claimed_director (not supplied in the request)"]

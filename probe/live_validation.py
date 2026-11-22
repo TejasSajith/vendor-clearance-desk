@@ -10,7 +10,7 @@ import core, pipeline
 from checks import live
 
 LIVE = ROOT / "probe" / "live"; LIVE.mkdir(exist_ok=True)
-DB = {"main": LIVE / "live.db", "cap": LIVE / "cap.db", "crash": LIVE / "crash.db"}
+DB = {"main": LIVE / "live.db", "cap": LIVE / "cap.db", "crash": LIVE / "crash.db", "m": LIVE / "m.db"}
 BUDGET = 60.0
 VENDORS = [
     ("large", "Delhivery", "delhivery.com"), ("large", "DTDC Express Limited", "https://www.dtdc.com"),
@@ -30,9 +30,9 @@ def spent_all():
     return t
 
 _orig_post = live._post
-def _guarded_post(path, body, timeout=90):
+def _guarded_post(path, body, timeout=90, save_raw=True):
     if spent_all() >= BUDGET - 3: raise SystemExit(f"budget guard: {spent_all():.2f} credits spent, stopping before {BUDGET}")
-    return _orig_post(path, body, timeout)
+    return _orig_post(path, body, timeout, save_raw)
 live._post = _guarded_post
 
 def req(v): return {"vendor_name": v[1], "website": v[2], "risk_tier": "low"}
@@ -99,6 +99,22 @@ def main():
         res = {"child_exit_code": p.returncode, "before": before, "rows_before": rows_before, "after": after, "rows_after": [(i, e, c) for i, e, _, c in rows_after],
                "repeated_calls": dup, "verdict": r["verdict"], "status": r["status"], "actions": after["actions"], "runs": after["runs"]}
         (LIVE / "crash_results.json").write_text(json.dumps(res, indent=1)); print(json.dumps(res, indent=1))
+    elif mode == "mcheck":      # M1-M4 re-check: two vendors, fresh database, under 8 credits
+        global BUDGET
+        if DB["m"].exists(): DB["m"].unlink()
+        db = core.connect(str(DB["m"])); out = []
+        base = spent_all()
+        for name, site in (("Ecom Express Limited", "ecomexpress.in"), ("Zentrovia Cargo Solutions Pvt Ltd", None)):
+            if spent_all() - base >= 8 - 3: raise SystemExit("m-check budget guard")
+            before = snapshot(db); t0 = time.time()
+            r = pipeline.run_request(db, {"vendor_name": name, "website": site, "risk_tier": "low"}, live.LiveSources())
+            after = snapshot(db)
+            calls = db.execute("SELECT endpoint, credits FROM calls WHERE run_id=?", (r["run_id"],)).fetchall()
+            out.append({"vendor": name, "verdict": r["verdict"], "status": r["status"], "checks": {k: c["status"] for k, c in r["checks"].items()},
+                        "reasons": {k: c["reason"] for k, c in r["checks"].items()}, "notes": {k: c["notes"] for k, c in r["checks"].items() if c.get("notes")},
+                        "missing": r["decision"]["missing"], "calls": calls, "credits": round(after["credits"] - before["credits"], 4), "seconds": round(time.time() - t0, 1)})
+            print(json.dumps(out[-1], indent=1), flush=True)
+        (LIVE / "mcheck_results.json").write_text(json.dumps(out, indent=1))
     elif mode == "crash-child":
         n = {"i": 0}; orig = live.call
         def counting(ctx, path, body):
