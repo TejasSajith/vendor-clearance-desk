@@ -8,6 +8,19 @@
     "person": 5,
     "job": 5,
     "web": 10,
-    "default": 5
+    "default": 5,
+    "/company/search/autocomplete": 300,
+    "/person/search/autocomplete": 300,
+    "/social_post/search": 100
+  },
+  "account_rpm": 100,
+  "retry": {
+    "attempts": 3,
+    "backoff_seconds": 2,
+    "_status": "PROPOSED, Tejas to confirm (D30)"
+  },
+  "cache_ttl_seconds": {
+    "default": null,
+    "_status": "OFF until Tejas decides D24 (proposed 24h; person data 7 days)"
   }
 }

@@ -72,8 +72,84 @@ def test_throttle_waits_at_limit(monkeypatch):
     t = {"v": 1000.0}; slept = []
     monkeypatch.setitem(core._clock, "now", lambda: t["v"])
     monkeypatch.setitem(core._clock, "sleep", lambda s: (slept.append(s), t.__setitem__("v", t["v"] + s)))
-    core._windows.clear()
+    core._windows.clear(); core._seeded.clear()
     for _ in range(5): core.throttle("/person/enrich")
     assert not slept
     core.throttle("/person/enrich")          # 6th call within a minute must wait
     assert slept and slept[0] > 59
+
+
+# ---- engine v2 ----
+def _fake_clock(monkeypatch, start=1000.0):
+    t = {"v": start}; slept = []
+    monkeypatch.setitem(core._clock, "now", lambda: t["v"])
+    monkeypatch.setitem(core._clock, "sleep", lambda s: (slept.append(s), t.__setitem__("v", t["v"] + s)))
+    core._windows.clear(); core._seeded.clear()
+    return t, slept
+
+def test_crash_after_claim_is_finished_once_on_recovery(db):
+    rid = core.start_run(db, "x"); done = []
+    k = core.propose_action(db, rid, "draft_request", {"to": "vendor"}); core.set_approval(db, k)
+    def dying(kind, payload, key): raise KeyboardInterrupt()          # process killed mid-action
+    try: core.execute_action(db, k, dying)
+    except KeyboardInterrupt: pass
+    assert db.execute("SELECT status FROM actions WHERE key=?", (k,)).fetchone()[0] == "executing"
+    assert core.recover_actions(db, lambda kind, p, key: done.append(key)) == [k]    # restart finishes it
+    assert core.recover_actions(db, lambda kind, p, key: done.append(key)) == []     # and only once
+    assert done == [k]
+    assert not core.execute_action(db, k, lambda *a: done.append(1))
+
+def test_rerun_does_not_duplicate_facts(db):
+    rid = core.start_run(db, "x")
+    for _ in range(2): core.add_fact(db, rid, "Acme", "status", "active", "u", "status: active", "api", "2026-11-22")
+    assert len(core.facts(db, rid)) == 1
+
+def test_quote_grounding(db):
+    rid = core.start_run(db, "x")
+    core.add_fact(db, rid, "A", "c", 1, "u", "Founded in 2011", "web", "d", content="<p>We were  founded in 2011.</p>".replace("<p>", "").replace("</p>", ""))
+    import pytest as _p
+    with _p.raises(core.UngroundedQuote):
+        core.add_fact(db, rid, "A", "c2", 1, "u", "Founded in 1990", "web", "d", content="We were founded in 2011.")
+
+def test_throttle_survives_restart(db, monkeypatch):
+    t, slept = _fake_clock(monkeypatch)
+    for i in range(5):                                   # five calls logged 10s ago by the "previous process"
+        db.execute("INSERT INTO calls(run_id,endpoint,params,status,credits,ms,ts) VALUES('r','/person/enrich','{}','ok',1,1,?)", (t["v"] - 10,))
+    core.throttle("/person/enrich", db)                  # 6th call must wait for the window, not burst
+    assert slept and 49 < slept[0] < 52
+
+def test_exact_endpoint_limit_and_account_limit(db, monkeypatch):
+    t, slept = _fake_clock(monkeypatch)
+    for _ in range(50): core.throttle("/company/search/autocomplete", db)     # 300/min endpoint: no waiting
+    assert not slept
+    monkeypatch.setitem(core.CONFIG, "account_rpm", 3); core._windows.clear(); core._seeded.clear()
+    for ep in ("/company/enrich", "/person/enrich", "/job/search"): core.throttle(ep, db)
+    core.throttle("/web/search/live", db)                # 4th call across endpoints hits the account-wide cap
+    assert slept
+
+def test_retry_then_success_and_then_unreachable(monkeypatch):
+    t, slept = _fake_clock(monkeypatch); n = {"i": 0}
+    def flaky():
+        n["i"] += 1
+        if n["i"] < 3: raise core.TransientError("timeout")
+        return "ok"
+    assert core.call_with_retry(flaky) == "ok" and slept == [2, 4]
+    import pytest as _p
+    with _p.raises(core.SourceUnreachable): core.call_with_retry(lambda: (_ for _ in ()).throw(core.TransientError("down")))
+    slept.clear()
+    r = iter([core.RateLimited(7), "ok"])
+    def limited():
+        v = next(r)
+        if isinstance(v, Exception): raise v
+        return v
+    assert core.call_with_retry(limited) == "ok" and slept == [7]
+
+def test_cache_ttl_off_by_default_and_expires_when_set(db, monkeypatch):
+    t, slept = _fake_clock(monkeypatch); n = []
+    f = lambda: n.append(1) or {"v": 1}
+    rid = core.start_run(db, "x")
+    core.cached_call(db, rid, "/person/enrich", {"a": 1}, f); t["v"] += 10**6
+    core.cached_call(db, rid, "/person/enrich", {"a": 1}, f); assert len(n) == 1       # no TTL: still cached
+    monkeypatch.setitem(core.CONFIG, "cache_ttl_seconds", {"default": 100})
+    core.cached_call(db, rid, "/person/enrich", {"a": 1}, f); assert len(n) == 2       # expired: refetched
+    assert core.purge_cache(db, 0) >= 1
