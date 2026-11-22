@@ -1,0 +1,945 @@
+[
+ {
+  "id": "genuine_large",
+  "expected": "CLEARED",
+  "basis": "all four checks pass",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "genuine_mid",
+  "expected": "CLEARED",
+  "basis": "two activity signals",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 420,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "small_thin_data",
+  "expected": "CANNOT_VERIFY",
+  "basis": "small firm: headcount only, <2 activity signals",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 12,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": false,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "lookalike_tie",
+  "expected": "CANNOT_VERIFY",
+  "basis": "tie at top score, domain does not settle it",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 2,
+    "domain_match": null,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "lookalike_low_similarity",
+  "expected": "CANNOT_VERIFY",
+  "basis": "name similarity below threshold",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 0.6,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "domain_other_company",
+  "expected": "CANNOT_VERIFY",
+  "basis": "domain resolves to another company (proposed: unknown, not fail)",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": false,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "deleted_profile",
+  "expected": "CANNOT_VERIFY",
+  "basis": "deleted profile needs registry confirmation",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "deleted",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 0,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 400,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "director_namesake",
+  "expected": "CANNOT_VERIFY",
+  "basis": "same-name person, discriminators disagree",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": false,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "director_contradicted",
+  "expected": "REJECTED",
+  "basis": "dated record shows claimed director elsewhere",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": true,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "adverse_confirmed",
+  "expected": "REJECTED",
+  "basis": "dated, resolved, severe report naming the target",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": true,
+      "source_ok": true,
+      "severity": 3,
+      "url": "https://example.test/report"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "adverse_undated",
+  "expected": "CANNOT_VERIFY",
+  "basis": "possible report but undated",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": true,
+      "source_ok": true,
+      "severity": 3,
+      "url": "https://example.test/report"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "adverse_namesake_ignored",
+  "expected": "CLEARED",
+  "basis": "hit does not name the target",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": false,
+      "discriminator": true,
+      "source_ok": true,
+      "severity": 3,
+      "url": "https://example.test/report"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "adverse_unreachable",
+  "expected": "HOLD_FOR_APPROVAL",
+  "basis": "source timed out: retry or person, never clean",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "unreachable",
+    "searches_run": 1,
+    "hits": [],
+    "sources": []
+   }
+  }
+ },
+ {
+  "id": "adverse_not_searched",
+  "expected": "CANNOT_VERIFY",
+  "basis": "too few searches to say nothing found",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 0,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "high_tier_two_signals",
+  "expected": "CANNOT_VERIFY",
+  "basis": "high risk needs one extra signal",
+  "risk_tier": "high",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 420,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "low_tier_two_signals",
+  "expected": "CLEARED",
+  "basis": "low risk, two signals",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 420,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  }
+ },
+ {
+  "id": "paraphrase_0",
+  "expected": "CLEARED",
+  "basis": "same company, name worded differently",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "group": "para1",
+  "input_name": "Delhivery Ltd"
+ },
+ {
+  "id": "paraphrase_1",
+  "expected": "CLEARED",
+  "basis": "same company, name worded differently",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "group": "para1",
+  "input_name": "Delhivery Limited"
+ },
+ {
+  "id": "paraphrase_2",
+  "expected": "CLEARED",
+  "basis": "same company, name worded differently",
+  "risk_tier": "low",
+  "synthetic": true,
+  "signals": {
+   "identify": {
+    "found": true,
+    "status": "active",
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true,
+    "sources": [
+     "crustdata:/company/identify"
+    ]
+   },
+   "profile": {
+    "headcount_total": 35000,
+    "headcount_trend_pct": 2.0,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich"
+    ]
+   },
+   "director": {
+    "found": true,
+    "company_id_match": true,
+    "start_date_plausible": true,
+    "same_name_candidates": 372,
+    "discriminators_agree": true,
+    "contradicted": false,
+    "sources": [
+     "crustdata:/person/enrich"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "group": "para1",
+  "input_name": "DELHIVERY"
+ }
+]

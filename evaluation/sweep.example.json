@@ -1,0 +1,18 @@
+{
+ "_note": "example sweep grid; edit freely",
+ "name_sim_min": [
+  0.8,
+  0.9,
+  0.95
+ ],
+ "active_min_signals": [
+  1,
+  2,
+  3
+ ],
+ "tier_extra_high": [
+  0,
+  1,
+  2
+ ]
+}
