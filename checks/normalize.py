@@ -1,5 +1,5 @@
 """Input normalisation for vendor requests: names, domains, and idempotency keys. Pure functions, no network."""
-import hashlib, json, re
+import hashlib, json, re, unicodedata
 from difflib import SequenceMatcher
 
 _STOP = {"pvt", "private", "ltd", "limited", "llp", "inc"}
@@ -10,7 +10,8 @@ def normalize_name(name):
     s = (name or "").lower().replace("&", " and ")
     s = re.sub(r"\bm\s*/\s*s\b", " ", s)
     s = re.sub(r"\bmessrs\b", " ", s)
-    s = re.sub(r"[\W_]+", " ", s, flags=re.UNICODE)
+    s = unicodedata.normalize("NFKC", s)
+    s = "".join(ch if unicodedata.category(ch)[0] in "LMN" else " " for ch in s)     # keep letters, marks, digits in any script
     return " ".join(t for t in s.split() if t not in _STOP)
 
 def normalize_domain(value):

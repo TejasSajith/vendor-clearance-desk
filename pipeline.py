@@ -8,6 +8,23 @@ from checks import normalize
 
 KIND = "clearance"
 
+class ValidationError(ValueError):
+    """A request that cannot be run. `field` names what is missing or wrong."""
+    def __init__(self, field, message): super().__init__(f"{field}: {message}"); self.field, self.message = field, message
+
+def validate_request(req):
+    """Returns the cleaned request or raises ValidationError naming the field. The name is used as given (no transliteration)."""
+    if not isinstance(req, dict): raise ValidationError("request", "must be an object with vendor_name")
+    name = req.get("vendor_name")
+    if not isinstance(name, str) or not name.strip(): raise ValidationError("vendor_name", "required: the vendor name is empty or missing")
+    tier = req.get("risk_tier") or "low"
+    if tier not in ("low", "medium", "high"): raise ValidationError("risk_tier", "must be low, medium or high")
+    claimed = req.get("claimed_director")
+    claimed = claimed.strip() if isinstance(claimed, str) and claimed.strip() else None
+    site = req.get("website") or req.get("domain") or req.get("email")
+    return {"vendor_name": name.strip(), "domain": normalize.normalize_domain(site) if isinstance(site, str) else "",
+            "claimed_director": claimed, "risk_tier": tier}
+
 class Ctx:
     def __init__(self, db, run_id): self.db, self.run_id = db, run_id
     def call(self, endpoint, params, fn, credits_from=None):
@@ -31,9 +48,10 @@ def _existing_result(db, run_id):
     return json.loads(row[0]) if row else {"run_id": run_id, "status": "in_progress"}
 
 def run_request(db, req, sources):
-    name = (req.get("vendor_name") or "").strip()
-    domain = normalize.normalize_domain(req.get("website") or req.get("domain"))
-    tier = req.get("risk_tier", "low")
+    try: v = validate_request(req)
+    except ValidationError as e:                           # a clean result, not a crash
+        return {"status": "invalid", "verdict": None, "field": e.field, "message": str(e)}
+    name, domain, tier, claimed = v["vendor_name"], v["domain"], v["risk_tier"], v["claimed_director"]
     pk = normalize.request_key(KIND, name, domain)
     run = "r_" + pk[:12]
     existed = db.execute("SELECT 1 FROM runs WHERE id=?", (run,)).fetchone() is not None
@@ -56,7 +74,8 @@ def run_request(db, req, sources):
             core.set_run_status(db, run, f"duplicate_of:{owner}")
             return {**_existing_result(db, owner), "existing": True, "duplicate_of": owner}
         sig["profile"] = stage("profile", lambda: sources.profile(ctx, cid))
-        sig["director"] = stage("director", lambda: sources.director(ctx, cid, req.get("claimed_director")))
+        sig["director"] = (stage("director", lambda: sources.director(ctx, cid, claimed)) if claimed
+                           else {"not_requested": True, "sources": []})
     sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name))
     sig = {k: v for k, v in sig.items() if v is not None}
 
@@ -72,7 +91,7 @@ def run_request(db, req, sources):
         d = decision.decide(checks, core.run_cost(db, run), time.time() - started); d.cost_credits = core.run_cost(db, run)
         key = core.finalize(db, run, d)
         status = "stopped_at_cap" if "not_run" in state.values() else "held" if d.verdict == decision.HOLD else "done"
-        return {"run_id": run, "status": status, "verdict": d.verdict,
+        return {"run_id": run, "status": status, "verdict": d.verdict, "missing_inputs": [k for k, x in (("website", domain), ("claimed_director", claimed)) if not x],
                 "decision": d.to_dict(), "checks": checks, "action_key": key}
     if "unreachable" in state.values():                    # do not cache: a later retry must be able to re-run the stage
         res = final()

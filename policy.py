@@ -81,6 +81,10 @@ def _active(s, p, tier):
 def _director(s, p):
     d = s.get("director") or {}
     src = d.get("sources", [])
+    if d.get("not_requested"):
+        r = _r("unknown", "no claimed director in the request", src)
+        r["missing"] = ["claimed_director (not supplied in the request)"]
+        return r
     if d.get("contradicted"): return _fail("claimed director contradicted by a dated record", src)
     if not d.get("found"): return _r("unknown", "claimed director not found at this company", src)
     if d.get("company_id_match") and d.get("start_date_plausible") and d.get("discriminators_agree"):
