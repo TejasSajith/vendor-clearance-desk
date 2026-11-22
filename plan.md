@@ -10,10 +10,10 @@ Time: code freeze 6:00 PM. Requirement change expected around 1:45 PM (hour 3). 
 - [x] Policy layer (signals to checks, proposed parameters) and evaluation harness with synthetic cases 🔖
 
 ## Now (13:30 to 15:00)
-- [ ] Put these docs and the eval harness in the repo, commit in separate commits 🔖
-- [ ] Registry probe: do aggregator pages fetch directly? CIN, status, directors, incorporation date? **[D9]**
-- [ ] News probe: `sources:["news"]`; decode `google.com/goto?url=` links; dates present? **[D10]**
-- [ ] Real eval fixtures from `probe/raw/` (pseudonymised), proposed labels for Tejas to confirm 🔖
+- [x] Put these docs and the eval harness in the repo, commit in separate commits 🔖
+- [x] Registry probe: do aggregator pages fetch directly? CIN, status, directors, incorporation date? **[D9]**
+- [x] News probe: `sources:["news"]`; decode `google.com/goto?url=` links; dates present? **[D10]**
+- [x] Real eval fixtures from `probe/raw/` (pseudonymised), proposed labels for Tejas to confirm 🔖
 - [ ] Tejas reviews D1 to D8 and D11, D12 and fills the Decision column
 - [ ] `checks/exists.py` and `checks/active.py`: raw Crustdata to signals, through `cached_call` 🔖
 - [ ] `checks/director.py` 🔖

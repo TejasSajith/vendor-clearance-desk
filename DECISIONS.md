@@ -21,3 +21,4 @@ Proposed values live in `policy.PROPOSED_PARAMS`. Test alternatives with `evalua
 | D15 | Stretch features | quote-verification and injection test, document-request drafts, ring detection, Watcher re-checks | First two before the others | value | PROPOSED | |
 | D16 | Credits to rupees and our price per vendor check | From Crustdata pricing page vs manual KYC cost | TBD | finance | PROPOSED | |
 | D17 | Which event document governs | Handbook (dashboard) vs problem-statement PDF; ask organisers | Satisfy both | scoring | PROPOSED | |
+| D18 | Crustdata MCP use | Exploration only (Claude Code, probes) / also inside the service. The service must call the API itself through `core.cached_call` so every call is throttled, cached and ledgered | Exploration only, never inside the service | cost, robustness, ledger | PROPOSED | |
