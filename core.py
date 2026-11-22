@@ -87,8 +87,9 @@ def facts(db, run_id, subject=None):
 def run_cost(db, run_id):
     return db.execute("SELECT COALESCE(SUM(credits),0) FROM calls WHERE run_id=?", (run_id,)).fetchone()[0]
 
-def tracked_call(db, run_id, endpoint, params, fn, credits=0.0, credits_from=None):
-    """Wrap every external call: enforce limits, then log cost and time."""
+def tracked_call(db, run_id, endpoint, params, fn, credits=0.0, credits_from=None, log_from=None):
+    """Wrap every external call: enforce limits, then log cost and time.
+    log_from(out) -> dict: extra fields from the response merged into the logged params (e.g. model tokens)."""
     started = db.execute("SELECT started FROM runs WHERE id=?", (run_id,)).fetchone()[0]
     if time.time() - started > CONFIG["max_seconds_per_run"]: raise LimitExceeded("time limit")
     if run_cost(db, run_id) + credits > CONFIG["max_cost_credits_per_run"]: raise LimitExceeded("cost limit")
@@ -96,6 +97,7 @@ def tracked_call(db, run_id, endpoint, params, fn, credits=0.0, credits_from=Non
     try:
         out = fn()
         if credits_from: credits = credits_from(out)   # use the cost the API response reports
+        if log_from: params = {**params, **log_from(out)}
         return out
     except Exception: status = "error"; raise
     finally:
@@ -192,7 +194,7 @@ def _ttl(endpoint):
     t = CONFIG.get("cache_ttl_seconds") or {}
     return t.get(endpoint, t.get(_group(endpoint), t.get("default")))
 
-def cached_call(db, run_id, endpoint, params, fn, credits_from=None, sensitive=False):
+def cached_call(db, run_id, endpoint, params, fn, credits_from=None, sensitive=False, attempts=None, log_from=None):
     """Same request is never paid for twice (also across restarts), unless it is older than the TTL (off by default).
     fn must return only successful responses and raise RateLimited / TransientError for 429 / timeout / 5xx.
     sensitive=True (person data): the call log keeps only a salted hash of the params, and purge_sensitive removes the cached response."""
@@ -209,8 +211,8 @@ def cached_call(db, run_id, endpoint, params, fn, credits_from=None, sensitive=F
         def attempt():
             throttle(endpoint, db)
             return fn()
-        return call_with_retry(attempt)
-    out = tracked_call(db, run_id, endpoint, logged, go, credits_from=credits_from)
+        return call_with_retry(attempt, attempts=attempts)
+    out = tracked_call(db, run_id, endpoint, logged, go, credits_from=credits_from, log_from=log_from)
     db.execute("INSERT OR REPLACE INTO cache VALUES(?,?,?)", (key, json.dumps(out), _clock["now"]()))
     if sensitive: db.execute("INSERT OR IGNORE INTO sensitive_keys VALUES(?,?)", (run_id, key))
     return out

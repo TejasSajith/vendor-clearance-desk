@@ -13,7 +13,8 @@ def _domain_matches(c, domain, domain_ids):
 def match(name, domain, candidates, domain_ids, floor):
     """candidates: [{"id","name","domain"?,...}]; domain: normalised supplied domain or ''; domain_ids: ids Identify returned for that domain (or None).
     outcome: "none" (nothing at or above the floor), "one", "tie_broken_by_domain", or "ambiguous" (still tied after the domain)."""
-    above = sorted(({**c, "sim": token_sort_ratio(name, c["name"])} for c in candidates), key=lambda c: -c["sim"])
+    # a candidate may carry a precomputed "sim" (stored signals, so no third-party names need to be kept); otherwise we compute it
+    above = sorted(({**c, "sim": c["sim"] if "sim" in c else token_sort_ratio(name, c["name"])} for c in candidates), key=lambda c: -c["sim"])
     above = [c for c in above if c["sim"] >= floor]
     if not above: return {"outcome": "none", "chosen": None, "above": [], "domain_match": None, "domain_note": None}
     chosen, outcome = None, "one"

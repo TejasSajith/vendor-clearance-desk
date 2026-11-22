@@ -1,0 +1,67 @@
+case_id,vendor_name,website,stratum,split,expected_exists,expected_active,expected_adverse,source_note,cid
+c001,Allcargo Logistics,allcargologistics.com,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",1613
+c002,Amazon Fulfillment Centre and Service Provider,,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",6260872
+c003,Blue Dart,bluedart.com,large_legit,holdout,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",736
+c004,DRIVER,driverlogistics.in,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",610478
+c005,DTDC Express Limited,,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",2037562
+c006,Delhivery,delhivery.com,large_legit,holdout,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",5798
+c007,Ecom Express Limited,ecomexpress.in,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",5967
+c008,Ekart Express,ekartlogistics.in,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",1088367
+c009,Mahindra Logistics,mahindralogistics.com,large_legit,holdout,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",2885
+c010,Om Logistics Supply Chain Pvt. Ltd.,omlogisticssupplychain.com,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",610895
+c011,Safexpress Private Limited,safexpress.com,large_legit,holdout,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",12981
+c012,Shadowfax,shadowfax.in,large_legit,holdout,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",5823
+c013,TVS Supply Chain Solutions,tvsscs.com,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",5988
+c014,Xpressbees (BusyBees Logistics Solutions Pvt. Ltd.),xpressbees.com,large_legit,tune,,,,"Crustdata search, largest by headcount; VERIFY it is a logistics firm and trading",5925
+c015,BVC Logistics,bvclogistics.com,mid,tune,,,,"Crustdata search, 300 to 3000 staff",16782
+c016,Delhi Integrated Multi Modal Transit System Ltd. (DIMTS),dimts.in,mid,tune,,,,"Crustdata search, 300 to 3000 staff",20615
+c017,ECU Worldwide,ecuworldwide.com,mid,tune,,,,"Crustdata search, 300 to 3000 staff",28990
+c018,FR8,fr8.in,mid,tune,,,,"Crustdata search, 300 to 3000 staff",6495
+c019,Future Supply Chain Solutions Limited,futuresupplychains.com,mid,holdout,,,,"Crustdata search, 300 to 3000 staff",1552
+c020,GreenCell Mobility,greencellmobility.com,mid,tune,,,,"Crustdata search, 300 to 3000 staff",1068157
+c021,MoveInSync,moveinsync.com,mid,holdout,,,,"Crustdata search, 300 to 3000 staff",705123
+c022,Origo Commodities India Pvt Ltd,origoindia.com,mid,holdout,,,,"Crustdata search, 300 to 3000 staff",6824
+c023,Sitics Logistic Solutions Pvt Ltd,sitics.co,mid,tune,,,,"Crustdata search, 300 to 3000 staff",28065
+c024,TCI Express Ltd.,tciexpress.in,mid,tune,,,,"Crustdata search, 300 to 3000 staff",5051
+c025,Warehouse Now,warehousenow.in,mid,tune,,,,"Crustdata search, 300 to 3000 staff",652676
+c026,Wherehouse.io,wherehouse.io,mid,holdout,,,,"Crustdata search, 300 to 3000 staff",609970
+c027,BDG International (India) Pvt. Ltd,bdginternational.in,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",45608
+c028,Boxigo,boxigo.in,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",610182
+c029,Everett(INDIA)Pvt.Ltd.,everett.co.in,small_real,holdout,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",38019
+c030,Fly By Knight,flybyknight.co.in,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",15905
+c031,FreightFox,freightfox.ai,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",653971
+c032,GOFLAMINGO,goflamingo.co.in,small_real,holdout,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",23161
+c033,Inlogsys Techno Pvt Ltd,inlogsys.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",43220
+c034,Logistics Kart,logisticskart.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",38512
+c035,LookAhead from Gazelle Information Technologies,gazelle.in,small_real,holdout,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",615450
+c036,MK Exim (India) Limited,mkexim.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",3098
+c037,Maple Packers & Movers,maplepackers.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",39919
+c038,Rhyno,rhyno.in,small_real,holdout,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",778121
+c039,Smart GC Pro,smartgcpro.com,small_real,holdout,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",748196
+c040,Speedbox,speedboxapp.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",8890
+c041,Trucknetic,trucknetic.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",610774
+c042,Warehousity,warehousity.com,small_real,tune,,,,"Crustdata search, 11 to 50 staff; VERIFY it is real and trading",10584
+c043,Abhi Group of Companies,abhigroup.co.in,shut_down,tune,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",4410744
+c044,JSW SHIPPING & LOGISTICS PVT LTD,jsw.com,shut_down,tune,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",2114153
+c045,Kushal Limited,kushallimited.com,shut_down,holdout,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",2703
+c046,Pricol Logistics Private Limited,pricollogistics.com,shut_down,tune,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",14768294
+c047,Seasky Private Limited ®,seasky.co.in,shut_down,tune,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",2300322
+c048,ULA,ulaindia.com,shut_down,holdout,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",6756416
+c049,VaaaN Infra Private Limited,vaaaninfra.com,shut_down,tune,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",15453671
+c050,Westwind Shipping & Logistics Private Limited,westwindindia.com,shut_down,holdout,,,,"Crustdata status=deleted (a profile flag, not proof of closure); VERIFY",4619491
+c051,Brivaldo Logistics Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c052,Dunmarek Freight Forwarders Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c053,Kestravon Haulage Pvt Ltd,,invented,holdout,,,,invented by construction (nonexistent),
+c054,Nordexa Carriers Pvt Ltd,,invented,holdout,,,,invented by construction (nonexistent),
+c055,Ombrelin Supply Chain Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c056,Pelorix Trucking Co Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c057,Quillvane Freight Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c058,Taliswen Cargo Movers Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c059,Vexoria Transport Solutions Pvt Ltd,,invented,tune,,,,invented by construction (nonexistent),
+c060,Yarvenzia Express Carriers Pvt Ltd,,invented,holdout,,,,invented by construction (nonexistent),
+c061,Amazon Wholesale (India) Private Limited,amazonbusiness.in,lookalike_or_wrong_domain,tune,,,,small entity whose name starts like a large firm; VERIFY it is a different company,7607
+c062,Apollo Supply Chain,tcixps.com,lookalike_or_wrong_domain,tune,,,,"real company, a DIFFERENT company's domain (wrong domain by construction)",24071
+c063,BORZO,cabtechnologies.com,lookalike_or_wrong_domain,tune,,,,"real company, a DIFFERENT company's domain (wrong domain by construction)",714603
+c064,DTDC ATK,atkexp.com,lookalike_or_wrong_domain,holdout,,,,small entity whose name starts like a large firm; VERIFY it is a different company,2729796
+c065,Ecom Books,ecombooks.co.in,lookalike_or_wrong_domain,holdout,,,,small entity whose name starts like a large firm; VERIFY it is a different company,613981
+c066,NimbusPost,kdlogistics.co.in,lookalike_or_wrong_domain,tune,,,,"real company, a DIFFERENT company's domain (wrong domain by construction)",1070649

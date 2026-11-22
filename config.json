@@ -11,7 +11,8 @@
     "default": 5,
     "/company/search/autocomplete": 300,
     "/person/search/autocomplete": 300,
-    "/social_post/search": 100
+    "/social_post/search": 100,
+    "/llm/generate": 30
   },
   "account_rpm": 100,
   "retry": {
@@ -22,5 +23,14 @@
   "cache_ttl_seconds": {
     "default": null,
     "_status": "OFF until Tejas decides D24 (proposed 24h; person data 7 days)"
-  }
+  },
+  "llm": {
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "timeout_seconds": 20,
+    "attempts": 2,
+    "_status": "PROPOSED (D36). Model from the Gemini API docs model list (ai.google.dev/gemini-api/docs/models, stable, GA 2026-09-02); confirm with `python llm.py models`. Timeout 20 s and one retry as instructed; /llm/generate rate limit 30/min proposed."
+  },
+  "inr_per_credit": null,
+  "_inr_per_credit_status": "OPEN (D16): rupees per Crustdata credit; memos say 'not set' until decided"
 }

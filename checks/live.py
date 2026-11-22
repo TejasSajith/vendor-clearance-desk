@@ -17,7 +17,8 @@ def _post(path, body, timeout=90, save_raw=True):
             "authorization": f"Bearer {os.environ['CRUSTDATA_API_KEY']}", "x-api-version": "2025-11-01"})
     except requests.exceptions.RequestException as e:
         raise core.TransientError(repr(e))
-    if r.status_code == 429: raise core.RateLimited(float(r.headers.get("retry-after") or 0) or None)
+    if r.status_code == 429:                           # back off using the reset time (X-RateLimit-Reset is seconds until the window resets)
+        raise core.RateLimited(float(r.headers.get("x-ratelimit-reset") or r.headers.get("retry-after") or 0) or None)
     if r.status_code >= 500: raise core.TransientError(f"HTTP {r.status_code}")
     r.raise_for_status()
     out = {"credits": float(r.headers.get("x-credits-used") or 0), "body": r.json()}
