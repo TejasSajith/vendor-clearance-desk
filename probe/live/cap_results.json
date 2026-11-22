@@ -1,0 +1,37 @@
+{
+ "vendor": "Everest Fleet Pvt. Ltd.",
+ "status": "stopped_at_cap",
+ "verdict": "CANNOT_VERIFY",
+ "checks": {
+  "exists": "pass",
+  "active": "not_run",
+  "director_match": "unknown",
+  "adverse_media": "not_run"
+ },
+ "missing": [
+  "active (not run: cap reached)",
+  "adverse_media (not run: cap reached)"
+ ],
+ "reasons": [
+  "run stopped at its cost or time cap after 2.4 credits, 14.5 s; not run: active, adverse_media",
+  "exists [pass]: single matching record",
+  "director_match [unknown]: no claimed director in the request"
+ ],
+ "calls": [
+  [
+   "/company/identify",
+   0.2
+  ],
+  [
+   "/company/identify",
+   0.2
+  ],
+  [
+   "/company/enrich",
+   2.0
+  ]
+ ],
+ "credits": 2.4,
+ "seconds": 14.5,
+ "actions": 0
+}

@@ -1,0 +1,54 @@
+{
+ "rows": [
+  {
+   "submitted": "Delhivery Ltd",
+   "run_id": "r_802554c1cb2b",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  },
+  {
+   "submitted": "M/s Delhivery Limited",
+   "run_id": "r_802554c1cb2b",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  },
+  {
+   "submitted": "Delhivery",
+   "run_id": "r_802554c1cb2b",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  },
+  {
+   "submitted": "Xtrans Logistics Ltd",
+   "run_id": "r_1a0867479523",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  },
+  {
+   "submitted": "M/s Xtrans Logistics Limited",
+   "run_id": "r_1a0867479523",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  },
+  {
+   "submitted": "Xtrans Logistics",
+   "run_id": "r_1a0867479523",
+   "verdict": "CANNOT_VERIFY",
+   "existing": true
+  }
+ ],
+ "before": {
+  "runs": 10,
+  "actions": 0,
+  "calls": 57,
+  "credits": 37.46,
+  "cache": 57
+ },
+ "after": {
+  "runs": 10,
+  "actions": 0,
+  "calls": 57,
+  "credits": 37.46,
+  "cache": 57
+ }
+}

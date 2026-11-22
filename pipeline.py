@@ -74,6 +74,7 @@ def run_request(db, req, sources):
             core.set_run_status(db, run, f"duplicate_of:{owner}")
             return {**_existing_result(db, owner), "existing": True, "duplicate_of": owner}
         sig["profile"] = stage("profile", lambda: sources.profile(ctx, cid))
+        if sig["profile"] and sig["profile"].get("status"): sig["identify"]["status"] = sig["profile"]["status"]   # company status comes from enrich
         sig["director"] = (stage("director", lambda: sources.director(ctx, cid, claimed)) if claimed
                            else {"not_requested": True, "sources": []})
     sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name))

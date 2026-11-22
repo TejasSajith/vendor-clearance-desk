@@ -1,0 +1,66 @@
+{
+ "child_exit_code": 137,
+ "before": {
+  "runs": 1,
+  "actions": 0,
+  "calls": 2,
+  "credits": 0.4,
+  "cache": 2
+ },
+ "rows_before": [
+  [
+   1,
+   "/company/identify",
+   0.2
+  ],
+  [
+   2,
+   "/company/identify",
+   0.2
+  ]
+ ],
+ "after": {
+  "runs": 1,
+  "actions": 0,
+  "calls": 6,
+  "credits": 3.4,
+  "cache": 6
+ },
+ "rows_after": [
+  [
+   1,
+   "/company/identify",
+   0.2
+  ],
+  [
+   2,
+   "/company/identify",
+   0.2
+  ],
+  [
+   3,
+   "/company/enrich",
+   2.0
+  ],
+  [
+   4,
+   "/job/search",
+   0.0
+  ],
+  [
+   5,
+   "/web/search/live",
+   1.0
+  ],
+  [
+   6,
+   "/web/search/live",
+   0.0
+  ]
+ ],
+ "repeated_calls": 0,
+ "verdict": "CANNOT_VERIFY",
+ "status": "done",
+ "actions": 0,
+ "runs": 1
+}

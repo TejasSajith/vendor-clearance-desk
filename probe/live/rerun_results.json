@@ -1,0 +1,333 @@
+{
+ "before": {
+  "runs": 10,
+  "actions": 0,
+  "calls": 57,
+  "credits": 37.46,
+  "cache": 57
+ },
+ "after": {
+  "runs": 10,
+  "actions": 0,
+  "calls": 57,
+  "credits": 37.46,
+  "cache": 57
+ },
+ "rows": [
+  {
+   "bucket": "large",
+   "vendor": "Delhivery",
+   "run_id": "r_802554c1cb2b",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "pass",
+    "director_match": "unknown",
+    "adverse_media": "unknown"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "3 activity signals: headcount, jobs, traffic",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "10 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a date; a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+   },
+   "missing": [
+    "director_match",
+    "adverse_media",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "large",
+   "vendor": "DTDC Express Limited",
+   "run_id": "r_153a5a82044e",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "pass",
+    "director_match": "unknown",
+    "adverse_media": "unknown"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "2 activity signals: headcount, jobs",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "7 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a date; a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+   },
+   "missing": [
+    "director_match",
+    "adverse_media",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "mid",
+   "vendor": "Everest Fleet Pvt. Ltd.",
+   "run_id": "r_9f2bd226f0bb",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "pass",
+    "director_match": "unknown",
+    "adverse_media": "unknown"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "2 activity signals: headcount, traffic",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "3 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a date; a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+   },
+   "missing": [
+    "director_match",
+    "adverse_media",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "mid",
+   "vendor": "ProConnect Supply Chain Solutions Ltd",
+   "run_id": "r_fcb9baa7d08b",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "pass",
+    "director_match": "unknown",
+    "adverse_media": "pass"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "2 activity signals: headcount, traffic",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "searched, no relevant adverse report"
+   },
+   "missing": [
+    "director_match",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "small",
+   "vendor": "Xtrans Logistics Pvt Ltd",
+   "run_id": "r_1a0867479523",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "unknown",
+    "director_match": "unknown",
+    "adverse_media": "pass"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "only 1 of 2 activity signals",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "searched, no relevant adverse report"
+   },
+   "missing": [
+    "active",
+    "director_match",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "small",
+   "vendor": "LorryCare",
+   "run_id": "r_a00cae49c494",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "pass",
+    "director_match": "unknown",
+    "adverse_media": "pass"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "2 activity signals: headcount, traffic",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "searched, no relevant adverse report"
+   },
+   "missing": [
+    "director_match",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "lookalike A",
+   "vendor": "Ecom Express Ltd",
+   "run_id": "r_e7340645df64",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "unknown",
+    "active": "unknown",
+    "director_match": "unknown",
+    "adverse_media": "pass"
+   },
+   "reasons": {
+    "exists": "several records tie for this name and the domain does not settle it",
+    "active": "only 1 of 2 activity signals",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "searched, no relevant adverse report"
+   },
+   "missing": [
+    "exists",
+    "active",
+    "director_match",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "lookalike B",
+   "vendor": "Ecom Express Delivery Center",
+   "run_id": "r_2958b5d3b3ad",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "pass",
+    "active": "unknown",
+    "director_match": "unknown",
+    "adverse_media": "unknown"
+   },
+   "reasons": {
+    "exists": "single matching record",
+    "active": "only 0 of 2 activity signals",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "4 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a date; a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+   },
+   "missing": [
+    "active",
+    "director_match",
+    "adverse_media",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "website",
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "invented",
+   "vendor": "Zentrovia Cargo Solutions Pvt Ltd",
+   "run_id": "r_8bebb5eca2f8",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "unknown",
+    "active": "unknown",
+    "director_match": "unknown",
+    "adverse_media": "unknown"
+   },
+   "reasons": {
+    "exists": "several records tie for this name and the domain does not settle it",
+    "active": "only 1 of 2 activity signals",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "3 possible adverse reports, not enough to reject; rejection needs a dated, resolved report: missing a date; a match to the target beyond the name (namesakes possible); a verified source page; severity >= 3"
+   },
+   "missing": [
+    "exists",
+    "active",
+    "director_match",
+    "adverse_media",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "website",
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  },
+  {
+   "bucket": "wrong domain",
+   "vendor": "Future Supply Chain Solutions Limited",
+   "run_id": "r_a4b13d43716c",
+   "status": "done",
+   "verdict": "CANNOT_VERIFY",
+   "checks": {
+    "exists": "unknown",
+    "active": "unknown",
+    "director_match": "unknown",
+    "adverse_media": "pass"
+   },
+   "reasons": {
+    "exists": "input domain belongs to a different company",
+    "active": "only 1 of 2 activity signals",
+    "director_match": "no claimed director in the request",
+    "adverse_media": "searched, no relevant adverse report"
+   },
+   "missing": [
+    "exists",
+    "active",
+    "director_match",
+    "claimed_director (not supplied in the request)"
+   ],
+   "missing_inputs": [
+    "claimed_director"
+   ],
+   "credits_new": 0.0,
+   "seconds": 0.0,
+   "action_key": null,
+   "existing": true
+  }
+ ]
+}
