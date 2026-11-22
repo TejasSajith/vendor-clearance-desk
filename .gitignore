@@ -14,3 +14,4 @@ dist/
 probe/raw/
 .DS_Store
 devconsole/console.db
+probe/audit_signals.txt
