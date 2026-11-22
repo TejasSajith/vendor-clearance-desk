@@ -4,7 +4,7 @@
 
 Unmask helps businesses make more informed decisions about the suppliers and carriers they work with. It brings together company information, activity checks, people searches and negative news reports to help assess a vendor before onboarding.
 
-Built for the **Trust and Compliance** track at ContextCon 05, in collaboration with Crustdata.
+Built for the **Trust and Compliance** track at ContextCon, in collaboration with Crustdata.
 
 ## 1. The service
 
