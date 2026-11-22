@@ -38,7 +38,7 @@ def identify_signals(name, domain, ident, params=None):
     if m["outcome"] == "none": return {**base, "found": False, "name_similarity": 0.0, "top_ties": 0, "domain_match": None}
     if m["outcome"] == "ambiguous":
         return {**base, "found": False, "name_similarity": m["above"][0]["sim"], "top_ties": len(m["above"]), "domain_match": None,
-                "ambiguous": {"n": len(m["above"]), "candidates": [{"id": c["id"], "name": c["name"]} for c in m["above"]]}}
+                "ambiguous": {"n": len(m["above"]), "candidates": [{"id": c["id"], "name": c.get("name", "")} for c in m["above"]]}}
     c = m["chosen"]
     return {**base, "found": True, "company_id": c["id"], "name_similarity": c["sim"], "top_ties": 1, "domain_match": m["domain_match"]}
 

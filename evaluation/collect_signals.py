@@ -47,7 +47,10 @@ class CollectSources(live.LiveSources):
             per.append({"source": src, "n_results": len(rs), "hits": sh}); hits += sh
         return {"state": "searched", "searches_run": len(per), "results_scanned": scanned, "hits": hits, "per_search": per, "sources": ["crustdata:/web/search/live"]}
 
-def spent(db): return db.execute("SELECT COALESCE(SUM(credits),0) FROM calls").fetchone()[0]
+def spent(db=None):
+    c = core.connect(str(DB))              # a short-lived connection: safe to call from any thread
+    try: return c.execute("SELECT COALESCE(SUM(credits),0) FROM calls").fetchone()[0]
+    finally: c.close()
 
 def load_out(): return json.loads(OUT.read_text()) if OUT.exists() else {"rows": {}, "repeats": {}}
 def save_out(d):
@@ -97,40 +100,47 @@ def checkpoint(out, db, started, note=""):
     except Exception: pass
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("--minutes", type=float, default=45); a = ap.parse_args()
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+    ap = argparse.ArgumentParser(); ap.add_argument("--minutes", type=float, default=45); ap.add_argument("--workers", type=int, default=5); a = ap.parse_args()
     st = json.loads(STATE.read_text()) if STATE.exists() else {"started": time.time()}
     STATE.write_text(json.dumps(st)); started = st["started"]; deadline = started + a.minutes * 60
-    db = core.connect(str(DB)); out = load_out(); rows = list(csv.DictReader(open(CSV))); src = CollectSources()
-    last_cp = time.time(); n_pass = 0
-    def tick():
-        nonlocal last_cp
-        if time.time() - last_cp >= 600: checkpoint(out, db, started, "in progress"); last_cp = time.time()
-        if spent(db) + PHASE0_CREDITS >= CREDIT_CAP - 20: print("credit guard reached", flush=True); raise SystemExit(0)
-    # main pass, then retry rows that ended unreachable or stopped (never read as "nothing found")
-    while time.time() < deadline and n_pass < 3:
+    db = core.connect(str(DB)); out = load_out(); rows = list(csv.DictReader(open(CSV)))
+    lock = threading.Lock(); last_cp = [time.time()]
+    def tick():                                   # call with the lock held
+        if time.time() - last_cp[0] >= 600: checkpoint(out, db, started, "in progress"); last_cp[0] = time.time()
+    def over_credit(): return spent(db) + PHASE0_CREDITS >= CREDIT_CAP - 20
+    def work(r):
+        if time.time() >= deadline or over_credit(): return
+        wdb = core.connect(str(DB))
+        try: res = collect_row(wdb, r, CollectSources())
+        finally: wdb.close()
+        with lock: out["rows"][r["case_id"]] = res; save_out(out); tick()
+    # main pass in parallel (the per-endpoint throttle is shared and thread-safe), then retry rows that ended unreachable or stopped
+    for n_pass in range(3):
         todo = [r for r in rows if r["case_id"] not in out["rows"] or out["rows"][r["case_id"]]["state"] in ("unreachable", "stopped_at_cap")]
-        if not todo: break
+        if not todo or time.time() >= deadline: break
         if n_pass: time.sleep(60)
-        for r in todo:
-            if time.time() >= deadline: break
-            out["rows"][r["case_id"]] = collect_row(db, r, src); save_out(out); tick()
-        n_pass += 1
+        with ThreadPoolExecutor(a.workers) as ex: list(ex.map(work, todo))
     # adverse stability: 12 rows, 2 repeats each (run 0 is the collection itself), at least a minute apart per row
     rnd = random.Random(7)
     pools = {"large_legit": 3, "mid": 2, "small_real": 3, "shut_down": 1, "lookalike_or_wrong_domain": 1, "invented": 2}
-    chosen = [r for s, k in pools.items() for r in rnd.sample([x for x in rows if x["stratum"] == s and out["rows"].get(x["case_id"], {}).get("state") != "unreachable"], k)]
+    chosen = [r for s_, k in pools.items() for r in rnd.sample([x for x in rows if x["stratum"] == s_], k)]
     out["repeat_rows"] = [r["case_id"] for r in chosen]
+    def repeat(job):
+        r, k = job; cid = r["case_id"]
+        if time.time() >= deadline or str(k) in out["repeats"].get(cid, {}): return
+        wdb = core.connect(str(DB)); run = core.start_run(wdb, f"repeat-{cid}-{k}", run_id=f"rep_{cid}_{k}")
+        try:
+            if k == 2:                            # at least a minute after repeat 1 of the same row
+                gap = 60 - (time.time() - out["repeats"].get(cid, {}).get("t", 0))
+                if gap > 0: time.sleep(gap)
+            sig = CollectSources().adverse(pipeline.Ctx(wdb, run), r["vendor_name"], normalize.normalize_domain(r["website"]), repeat=k)
+        except (core.TransientError, core.SourceUnreachable, core.LimitExceeded): return
+        finally: wdb.close()
+        with lock: out["repeats"].setdefault(cid, {})[str(k)] = sig; out["repeats"][cid]["t"] = time.time(); save_out(out); tick()
     for k in (1, 2):
-        for r in chosen:
-            if time.time() >= deadline: break
-            cid = r["case_id"]
-            if str(k) in out["repeats"].get(cid, {}): continue
-            run = core.start_run(db, f"repeat-{cid}-{k}", run_id=f"rep_{cid}_{k}")
-            last = out["repeats"].get(cid, {}).get("t", 0)
-            if time.time() - last < 60: time.sleep(60 - (time.time() - last))
-            try: sig = src.adverse(pipeline.Ctx(db, run), r["vendor_name"], normalize.normalize_domain(r["website"]), repeat=k)
-            except (core.TransientError, core.SourceUnreachable, core.LimitExceeded): continue
-            out["repeats"].setdefault(cid, {})[str(k)] = sig; out["repeats"][cid]["t"] = time.time(); save_out(out); tick()
+        with ThreadPoolExecutor(a.workers) as ex: list(ex.map(repeat, [(r, k) for r in chosen]))
     complete = len(out["rows"]) == len(rows)
     checkpoint(out, db, started, "finished" if complete else "stopped at the 45 minute wall clock")
     print(f"done: {len(out['rows'])}/{len(rows)} rows, credits {round(spent(db), 2)}", flush=True)

@@ -12,7 +12,8 @@
     "/company/search/autocomplete": 300,
     "/person/search/autocomplete": 300,
     "/social_post/search": 100,
-    "/llm/generate": 30
+    "/llm/generate": 30,
+    "/demo/replay": 600
   },
   "account_rpm": 100,
   "retry": {

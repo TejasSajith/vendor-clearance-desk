@@ -1,6 +1,6 @@
 """Core: durable state, evidence ledger, cost ledger, idempotent actions, approvals.
 All state lives in SQLite so a killed process resumes where it stopped."""
-import hashlib, json, sqlite3, time, uuid
+import hashlib, json, sqlite3, threading, time, uuid
 from pathlib import Path
 
 CONFIG = json.loads((Path(__file__).parent / "config.json").read_text())
@@ -32,7 +32,7 @@ class RateLimited(Exception):                      # HTTP 429: raise this from f
     def __init__(self, retry_after=None): super().__init__("rate limited"); self.retry_after = retry_after
 
 def connect(path="clearance.db"):
-    db = sqlite3.connect(path, isolation_level=None)  # autocommit; each write is durable
+    db = sqlite3.connect(path, timeout=60, isolation_level=None)  # autocommit; each write is durable; several worker connections may share the file
     db.execute("PRAGMA secure_delete=ON")             # purged personal data is overwritten, not left in free pages
     db.executescript(SCHEMA)
     return db
@@ -164,20 +164,23 @@ def _seed(db, name, where, args):
     for (ts,) in db.execute(f"SELECT ts FROM calls WHERE ts>? {where} ORDER BY ts", (now - 60, *args)):
         _windows[name].append(ts)
 
+_lock = threading.Lock()
+
 def throttle(endpoint, db=None):
-    """Sliding 60s window: per exact endpoint (limits in config, from GET /account/endpoints) and account-wide (account_rpm)."""
-    _seed(db, endpoint, "AND endpoint=?", (endpoint,)); _seed(db, "*", "", ())
+    """Sliding 60s window: per exact endpoint (limits in config, from GET /account/endpoints) and account-wide (account_rpm). Thread-safe."""
+    with _lock: _seed(db, endpoint, "AND endpoint=?", (endpoint,)); _seed(db, "*", "", ())
     limit, acct = _limit(endpoint), CONFIG.get("account_rpm")
     while True:
-        now = _clock["now"]()
-        for name in (endpoint, "*"):
-            w = _windows[name]
-            while w and now - w[0] >= 60: w.popleft()
-        e, a = _windows[endpoint], _windows["*"]
-        if len(e) < limit and (not acct or len(a) < acct):
-            e.append(now); a.append(now); return
-        wait = max([60 - (now - e[0]) if len(e) >= limit else 0, 60 - (now - a[0]) if acct and len(a) >= acct else 0])
-        _clock["sleep"](wait + 0.05)
+        with _lock:
+            now = _clock["now"]()
+            for name in (endpoint, "*"):
+                w = _windows[name]
+                while w and now - w[0] >= 60: w.popleft()
+            e, a = _windows[endpoint], _windows["*"]
+            if len(e) < limit and (not acct or len(a) < acct):
+                e.append(now); a.append(now); return
+            wait = max([60 - (now - e[0]) if len(e) >= limit else 0, 60 - (now - a[0]) if acct and len(a) >= acct else 0])
+        _clock["sleep"](wait + 0.05)           # sleep outside the lock so other endpoints keep moving
 
 def call_with_retry(fn, attempts=None, backoff=None):
     """Retry rate limits and transient errors; after the last attempt raise SourceUnreachable (the check reports 'unreachable')."""
