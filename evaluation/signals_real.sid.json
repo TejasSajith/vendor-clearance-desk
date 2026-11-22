@@ -1,0 +1,2125 @@
+{
+ "c001": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 1613,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 6103,
+    "headcount_trend_pct": 3.1,
+    "series_age_days": 20,
+    "jobs_90d": 5,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 11,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "sg.finance.yahoo.com",
+      "date_text": null,
+      "url_id": "f61e95ff91",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "d61719534e",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "3986c47c87",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "ea1003ad3f",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.jagran.com",
+      "date_text": null,
+      "url_id": "65457265f7",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.zeebiz.com",
+      "date_text": null,
+      "url_id": "10398ac575",
+      "query_src": "news"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350100.7080278
+ },
+ "c002": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 6260872,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": null
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 13903,
+    "headcount_trend_pct": 0.6,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 9,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350130.8762434
+ },
+ "c003": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 736,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 10946,
+    "headcount_trend_pct": 3.7,
+    "series_age_days": 20,
+    "jobs_90d": 184,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 25,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "5b3c22bea3",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "3ded81c16d",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.instagram.com",
+      "date_text": null,
+      "url_id": "2e6cf7e801",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "a816e1fc2d",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "a89ab3bc93",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.facebook.com",
+      "date_text": null,
+      "url_id": "8624c35e5b",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "cf7d2b4075",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "84a59305e4",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "dbb620148d",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "6a80a936ad",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "navbharattimes.indiatimes.com",
+      "date_text": null,
+      "url_id": "d1a28ad6de",
+      "query_src": "news"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350166.4658358
+ },
+ "c004": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 610478,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 13978,
+    "headcount_trend_pct": 27.7,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 22,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "d24d232c96",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "704cfda4cf",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "bf740ef6a9",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.bhaskar.com",
+      "date_text": null,
+      "url_id": "afb0e65566",
+      "query_src": "news"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "6ef86f39a6",
+      "query_src": "news"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350518.1800528
+ },
+ "c005": {
+  "state": "ambiguous",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": null,
+    "domain_mismatch_note": null,
+    "found": false,
+    "name_similarity": 1.0,
+    "top_ties": 3,
+    "domain_match": null,
+    "ambiguous": {
+     "n": 3,
+     "candidates": [
+      {
+       "id": 2037562,
+       "name": ""
+      },
+      {
+       "id": 65301475,
+       "name": ""
+      },
+      {
+       "id": 15469538,
+       "name": ""
+      }
+     ]
+    }
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 15,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "6efa0b4085",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350552.8816261
+ },
+ "c006": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5798,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 35300,
+    "headcount_trend_pct": 4.9,
+    "series_age_days": 6,
+    "jobs_90d": 59,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 30,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.instagram.com",
+      "date_text": null,
+      "url_id": "9d2b41443b",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "ae187c8a68",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "bb9165749a",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "e0055efda9",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com",
+      "date_text": "29 अग॰ 2020",
+      "url_id": "e3231ccfa2",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "30 अक्टू॰ 2026",
+      "url_id": "86c97a9760",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "0dd385237d",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "7f6b25bee3",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "techenclave.com",
+      "date_text": "16 दिस॰ 2024",
+      "url_id": "150bb4d261",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "766537d31b",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350578.348404
+ },
+ "c007": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5967,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 13088,
+    "headcount_trend_pct": 0.3,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 15,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "12 अप्रैल 2024",
+      "url_id": "372e0dc811",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "19 अग॰ 2024",
+      "url_id": "369e4f555e",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "bae06f08c2",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "13 अक्टू॰ 2020",
+      "url_id": "f029deccec",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "22 मार्च 2025",
+      "url_id": "6e6909503e",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.linkedin.com",
+      "date_text": null,
+      "url_id": "bbc5516dab",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350606.5071676
+ },
+ "c008": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 1088367,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 7629,
+    "headcount_trend_pct": 3.7,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 13,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.linkedin.com",
+      "date_text": null,
+      "url_id": "076e180719",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "90e6c3022c",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350640.486603
+ },
+ "c009": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 2885,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 8577,
+    "headcount_trend_pct": 3.7,
+    "series_age_days": 20,
+    "jobs_90d": 2,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 12,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "308018d0a1",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "5a71a21731",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "71f3f56dca",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.linkedin.com",
+      "date_text": null,
+      "url_id": "159d4979a3",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "8 मार्च 2026",
+      "url_id": "690b63a8a8",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "19ea3bc409",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "22 अप्रैल 2024",
+      "url_id": "4887ae30d4",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "27 नव॰ 2023",
+      "url_id": "feeff10c55",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.instagram.com",
+      "date_text": null,
+      "url_id": "f420e1f64f",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350671.2632308
+ },
+ "c010": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 610895,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 4981,
+    "headcount_trend_pct": 4.3,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 19,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "03950cb8b9",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350702.5537612
+ },
+ "c011": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 12981,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 6253,
+    "headcount_trend_pct": 2.5,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 5,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.facebook.com",
+      "date_text": null,
+      "url_id": "dffb62c069",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "a0c2b6ccfc",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "bb518285d8",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "bidplus.gem.gov.in",
+      "date_text": null,
+      "url_id": "44c1122059",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "in.linkedin.com",
+      "date_text": null,
+      "url_id": "646bccd7e5",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350813.4468718
+ },
+ "c012": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5823,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 10461,
+    "headcount_trend_pct": 8.8,
+    "series_age_days": 20,
+    "jobs_90d": 1,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 18,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "172b3b1531",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "f1884c95f0",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "1532796c24",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "2 मई 2026",
+      "url_id": "13998aa6d8",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "d85e11178d",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "a69f89debd",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "cb58c68a97",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.instagram.com",
+      "date_text": null,
+      "url_id": "69f56ccf6e",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "55c34114ef",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.techinasia.com",
+      "date_text": "16 अग॰ 2021",
+      "url_id": "0a8b11ebeb",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "16 अग॰ 2021",
+      "url_id": "67e5f98dbf",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.facebook.com",
+      "date_text": null,
+      "url_id": "56bf671c1d",
+      "query_src": "news"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350857.4772763
+ },
+ "c013": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5988,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 7438,
+    "headcount_trend_pct": 3.0,
+    "series_age_days": 20,
+    "jobs_90d": 45,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 11,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "36c9c5b698",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "cfb5685c72",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.grasim.com",
+      "date_text": null,
+      "url_id": "0fb9b91781",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350892.237357
+ },
+ "c014": {
+  "state": "done",
+  "stratum": "large_legit",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5925,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 8749,
+    "headcount_trend_pct": 3.6,
+    "series_age_days": 6,
+    "jobs_90d": 1,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 20,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795350950.7805448
+ },
+ "c015": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 16782,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 778,
+    "headcount_trend_pct": 3.6,
+    "series_age_days": 20,
+    "jobs_90d": 6,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 11,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351000.817695
+ },
+ "c016": {
+  "state": "ambiguous",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": null,
+    "domain_mismatch_note": null,
+    "found": false,
+    "name_similarity": 1.0,
+    "top_ties": 5,
+    "domain_match": null,
+    "ambiguous": {
+     "n": 5,
+     "candidates": [
+      {
+       "id": 20615,
+       "name": ""
+      },
+      {
+       "id": 16761529,
+       "name": ""
+      },
+      {
+       "id": 16676242,
+       "name": ""
+      },
+      {
+       "id": 29950067,
+       "name": ""
+      },
+      {
+       "id": 19932143,
+       "name": ""
+      }
+     ]
+    }
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 15,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "49ec512b60",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "cms.rajyasabha.nic.in",
+      "date_text": "14 अग॰ 2014",
+      "url_id": "1f5d581ed6",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.facebook.com",
+      "date_text": null,
+      "url_id": "9031c54f98",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351026.2835793
+ },
+ "c017": {
+  "state": "ambiguous",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": null,
+    "domain_mismatch_note": null,
+    "found": false,
+    "name_similarity": 1.0,
+    "top_ties": 4,
+    "domain_match": null,
+    "ambiguous": {
+     "n": 4,
+     "candidates": [
+      {
+       "id": 28990,
+       "name": ""
+      },
+      {
+       "id": 9644839,
+       "name": ""
+      },
+      {
+       "id": 1894983,
+       "name": ""
+      },
+      {
+       "id": 74999795,
+       "name": ""
+      }
+     ]
+    }
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 5,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.freightwaves.com",
+      "date_text": "31 मार्च 2021",
+      "url_id": "7c44b8c2ac",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351106.5832334
+ },
+ "c018": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 6495,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 639,
+    "headcount_trend_pct": 16.4,
+    "series_age_days": 20,
+    "jobs_90d": 5,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 3,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351166.721023
+ },
+ "c019": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 1552,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 1355,
+    "headcount_trend_pct": -0.3,
+    "series_age_days": 13,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 6,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.etnownews.com",
+      "date_text": null,
+      "url_id": "295b5f1ea1",
+      "query_src": "news"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351216.3729622
+ },
+ "c020": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 1068157,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 512,
+    "headcount_trend_pct": 5.8,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 16,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "2 दिस॰ 2022",
+      "url_id": "7f2ebd9144",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351261.6260061
+ },
+ "c021": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 705123,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 965,
+    "headcount_trend_pct": 5.7,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 17,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351296.8801122
+ },
+ "c022": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 6824,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 725,
+    "headcount_trend_pct": 0.6,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 17,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "f693e6ced3",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "094c2be0e7",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "8b0d242b03",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "1d8cf0dc28",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "indiankanoon.org",
+      "date_text": null,
+      "url_id": "7e0621008a",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "3aef5e035e",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351344.3239026
+ },
+ "c023": {
+  "state": "ambiguous",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": null,
+    "domain_mismatch_note": null,
+    "found": false,
+    "name_similarity": 1.0,
+    "top_ties": 2,
+    "domain_match": null,
+    "ambiguous": {
+     "n": 2,
+     "candidates": [
+      {
+       "id": 28065,
+       "name": ""
+      },
+      {
+       "id": 10860021,
+       "name": ""
+      }
+     ]
+    }
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 4,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "tracxn.com",
+      "date_text": "24 अक्टू॰ 2026",
+      "url_id": "c81c22b773",
+      "query_src": "web"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "7 सित॰ 2026",
+      "url_id": "399153e8f7",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351371.2309968
+ }
+}
