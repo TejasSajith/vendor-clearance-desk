@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendor Clearance Desk</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<header>
+  <h1>Vendor Clearance Desk</h1>
+  <div id="badges"></div>
+</header>
+<nav id="modes" class="modes" hidden aria-label="Mode">
+  <button type="button" id="mode-demo" class="tab" aria-pressed="true">Demo (recorded results)</button>
+  <button type="button" id="mode-live" class="tab" aria-pressed="false" hidden>Live (real checks)</button>
+</nav>
+<div id="demo-banner" class="banner" hidden></div>
+
+<section id="demo" class="card" hidden>
+  <h2>Pick a recorded case</h2>
+  <p class="note">Each case shows the result a person would see. Nothing is run and no credits are spent.</p>
+  <div id="cases" class="cases"></div>
+</section>
+
+<section id="login" class="card" hidden>
+  <h2>Sign in</h2>
+  <p id="login-where" class="note" hidden></p>
+  <form id="login-form">
+    <label for="pw">Access password</label>
+    <input id="pw" type="password" autocomplete="off" required>
+    <button type="submit">Sign in</button>
+    <p id="login-error" class="error" role="alert"></p>
+  </form>
+</section>
+
+<main id="main" hidden>
+  <section class="card">
+    <h2>New request</h2>
+    <form id="run-form">
+      <label for="text">Describe the vendor in plain English</label>
+      <textarea id="text" rows="3" maxlength="2000" required
+        placeholder="Check Acme Logistics Pvt Ltd, website acmelogistics.in, director [name], high risk."></textarea>
+      <div class="controls">
+        <label>Strictness <select id="strictness"></select></label>
+        <label>Evidence to reject <select id="rejection_evidence"></select></label>
+        <label>Data freshness (days) <select id="freshness_days"></select></label>
+      </div>
+      <p id="control-notes" class="note"></p>
+      <button type="submit" id="run-btn">Run</button>
+      <span id="running" class="note" hidden>Running checks…</span>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Past runs</h2>
+    <table id="runs"><thead><tr><th>Started (UTC)</th><th>Vendor</th><th>Result</th><th>Approval</th><th>Credits</th></tr></thead><tbody></tbody></table>
+  </section>
+</main>
+
+<section id="result" class="card" hidden aria-live="polite"></section>
+<script src="/app.js"></script>
+</body>
+</html>

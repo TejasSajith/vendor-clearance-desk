@@ -1,0 +1,10 @@
+# Used by Vercel only: the demo-mode function (vercel_demo/main.py) and its one dependency.
+# The full app (CLI, live checks, web server) installs from requirements.txt and is not deployed to Vercel (docs/DEPLOY.md).
+[project]
+name = "vendor-clearance-desk-demo"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["fastapi==0.165.0"]
+
+[tool.vercel]
+entrypoint = "vercel_demo.main:app"

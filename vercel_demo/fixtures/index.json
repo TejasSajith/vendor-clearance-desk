@@ -1,0 +1,44 @@
+[
+ {
+  "id": "no-record",
+  "kind": "Can't verify: no company record",
+  "vendor": "Zentrovia Cargo Solutions Pvt Ltd",
+  "overall": "Can't verify",
+  "origin": "recorded"
+ },
+ {
+  "id": "director-missing",
+  "kind": "Can't verify: director not supplied",
+  "vendor": "LorryCare",
+  "overall": "Can't verify",
+  "origin": "recorded"
+ },
+ {
+  "id": "suspicious",
+  "kind": "Suspicious: possible adverse reports",
+  "vendor": "DTDC Express Limited",
+  "overall": "Can't verify",
+  "origin": "recorded"
+ },
+ {
+  "id": "cap-stopped",
+  "kind": "Stopped at the credit cap",
+  "vendor": "Everest Fleet Pvt. Ltd.",
+  "overall": "Can't verify",
+  "origin": "recorded"
+ },
+ {
+  "id": "cleared",
+  "kind": "Cleared, waiting for a person's approval",
+  "vendor": "Acme Logistics Pvt Ltd",
+  "overall": "Cleared",
+  "origin": "synthetic"
+ },
+ {
+  "id": "held",
+  "kind": "Held for approval: a source timed out",
+  "vendor": "Slowpoke Freight Pvt Ltd",
+  "overall": "Held for approval",
+  "origin": "synthetic"
+ }
+]

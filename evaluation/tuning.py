@@ -8,30 +8,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT)); sys.path.insert(0, str(ROOT / "evaluation"))
 import policy, pipeline, run_eval
-from checks import adverse
+from checks import adverse, crosschecks
 
 CHECKS = ("exists", "active", "adverse_media")
 LABEL_COL = {"exists": "expected_exists", "active": "expected_active", "adverse_media": "expected_adverse"}
 VERDICT = {"pass": "CLEARED", "fail": "REJECTED", "unknown": "CANNOT_VERIFY", "unreachable": "HOLD_FOR_APPROVAL", "not_run": "CANNOT_VERIFY"}
 LOSSES = {"false_pass": 5.0, "false_fail": 3.0, "abstain": 1.0, "hold_vs_cnv": 0.5}      # PROPOSED; parameters of this harness (--losses overrides)
 W = run_eval.WEIGHTS                                                                       # kept for run_eval users; scoring below uses LOSSES
-D = {**policy.PROPOSED_PARAMS, **adverse.RULE_PARAMS}                                     # policy defaults plus the PROPOSED source-class rules
+D = {**policy.PROPOSED_PARAMS, **adverse.RULE_PARAMS, **crosschecks.CROSS_PARAMS}                                     # policy defaults plus the PROPOSED source-class rules
 ESTABLISHED_STRATA = ("large_legit", "big_brand_noise")
 BAD_STRATA = ("shut_down", "invented")
 GRID = {"candidate_name_sim_floor": [0.70, 0.75, 0.80, 0.85, 0.90, 0.95], "min_headcount": [1, 3, 5, 10, 20], "max_decline_pct": [10, 20, 30, 40, 60],
         "max_series_age_days": [30, 45, 60, 90, 120, 180], "min_jobs_90d": [1, 2, 3, 5], "active_min_signals": [1, 2, 3], "min_searches": [1, 2, 3, 4, 5],
         "adverse_min_severity": [1, 2, 3], "reject_min_severity": [1, 2, 3], "reject_min_sources": [1, 2, 3],
-        "established_headcount_min": [100, 250, 500, 1000, 5000, 10 ** 9], "rule_source_classes": [False, True], "rule_name_collision": [False, True]}
+        "established_headcount_min": [100, 250, 500, 1000, 5000, 10 ** 9], "rule_source_classes": [False, True], "rule_name_collision": [False, True],
+        "adverse_pass_needs_exists": [False, True], "adverse_pass_needs_active": [False, True], "adverse_min_results_scanned": [0, 5, 10, 20]}
 
 # ---------- loading ----------
 def valid(x): return (x or "").strip().lower() in ("pass", "fail", "unknown")
 
-def load_cases(csv_path=ROOT / "evaluation" / "cases_real.csv", signals_path=ROOT / "evaluation" / "signals_real.json"):
+def load_cases(csv_path=ROOT / "evaluation" / "cases_real.csv", signals_path=ROOT / "evaluation" / "signals_real.json", labels_path=None):
+    """labels_path: an optional PROVISIONAL label file (evaluation/labels_agent.csv). The owner's labels in cases_real.csv always win; the file only fills blanks."""
     sig = json.loads(Path(signals_path).read_text())["rows"] if Path(signals_path).exists() else {}
+    extra = {r["case_id"]: r for r in csv.DictReader(open(labels_path))} if labels_path else {}
     rows = []
     for r in csv.DictReader(open(csv_path)):
         s = sig.get(r["case_id"])
-        labels = {c: r[LABEL_COL[c]].strip().lower() if valid(r[LABEL_COL[c]]) else None for c in CHECKS}
+        e = extra.get(r["case_id"], {})
+        pick = lambda c: r[LABEL_COL[c]] if valid(r[LABEL_COL[c]]) else e.get(LABEL_COL[c], "")
+        labels = {c: pick(c).strip().lower() if valid(pick(c)) else None for c in CHECKS}
         rows.append({"case_id": r["case_id"], "name": r["vendor_name"], "stratum": r["stratum"], "split": r["split"], "labels": labels, "sig": s})
     return rows
 
@@ -52,7 +57,7 @@ def engine(row, params):
     if a.get("per_search") and "results" in a["per_search"][0]:                      # features in, policy signals out: the rules run here, under `params`
         a = adverse.derive_signals(a["per_search"], row.get("name", ""), params, (s.get("profile") or {}).get("headcount_total"))
     sig["adverse"] = a
-    checks = policy.evaluate(sig, params, "low")
+    checks = crosschecks.apply(policy.evaluate(sig, params, "low"), a, params)
     return {c: (checks[c]["status"], checks[c]["reason"]) for c in CHECKS}
 
 def check_loss(label, status, losses=None):
@@ -293,19 +298,32 @@ def sweep_gate(rows, grid=GRID, defaults=D, splits=None, losses=None):
         out[p] = {"values": per, "kind": kind, "overfit": kind == "spike"}
     return out
 
-def greedy(rows, grid=GRID, defaults=D, losses=None, order=None):
+def greedy(rows, grid=GRID, defaults=D, losses=None, order=None, objective="established", freeze=()):
     """Coordinate ascent under the gate: change one parameter at a time, keep a change only if the gate still holds and the established pass rate does not fall;
-    prefer a higher established pass rate, then a lower loss, then the value closest to the default. Returns (params, trace, started_ok)."""
-    cur = dict(defaults); ok0 = not gate(rows, cur, defaults, losses); trace = []
-    key = lambda par: (-(established_pass_rate(rows, par)["rate"] or 0), mean([row_loss(r, par, losses) for r in labelled(rows)]) if labelled(rows) else 0)
-    if not ok0: return cur, [{"note": "the default setting itself violates the gate"}], False
+    prefer a higher established pass rate, then a lower loss, then the value closest to the default. If the defaults violate the gate, first look for the smallest
+    set of cross-check rules (D45) that satisfies it; if none does, nothing passes and the gate is not relaxed. Returns (params, trace, started_ok)."""
+    cur = dict(defaults); trace = []
+    if gate(rows, cur, defaults, losses):
+        import itertools
+        found = None
+        for combo in sorted(itertools.product([False, True], repeat=2), key=sum):
+            cand = {**cur, "adverse_pass_needs_exists": combo[0], "adverse_pass_needs_active": combo[1]}
+            if not gate(rows, cand, defaults, losses): found = cand; break
+        if not found: return cur, [{"note": "the default setting itself violates the gate, and no cross-check rule fixes it"}], False
+        cur = found; trace += [{"parameter": k, "from": defaults[k], "to": cur[k]} for k in ("adverse_pass_needs_exists", "adverse_pass_needs_active") if cur[k] != defaults[k]]
+    er0 = established_pass_rate(rows, defaults)["rate"] or 0
+    lossf = lambda par: mean([row_loss(r, par, losses) for r in labelled(rows)]) if labelled(rows) else 0
+    est = lambda par: -(established_pass_rate(rows, par)["rate"] or 0)
+    key = (lambda par: (est(par), lossf(par))) if objective == "established" else (lambda par: (round(lossf(par), 3), est(par)))   # "loss": minimise loss, never lowering the established pass rate
     for p in (order or list(grid)):
+        if p in freeze: continue
         best, bk = cur[p], key(cur)
         for v in grid[p]:
             cand = {**cur, p: v}
             if gate(rows, cand, defaults, losses): continue
-            k = key(cand)
-            if k < bk or (k == bk and abs(v - defaults[p]) < abs(best - defaults[p]) if isinstance(v, (int, float)) and not isinstance(v, bool) else False): best, bk = v, k
+            if objective == "loss" and -est(cand) < er0 - 1e-9: continue
+            k = key(cand); closer = isinstance(v, (int, float)) and not isinstance(v, bool) and abs(v - defaults[p]) < abs(best - defaults[p])
+            if k < bk or (k == bk and closer): best, bk = v, k
         if best != cur[p]: trace.append({"parameter": p, "from": cur[p], "to": best}); cur[p] = best
     return cur, trace, True
 
@@ -314,7 +332,7 @@ def count_bad_passes(rows, params): return len(bad_passes(rows, params))
 # ---------- presets (gate-aware) ----------
 LENIENT_MOVES = [("candidate_name_sim_floor", 0.80), ("min_headcount", 3), ("max_decline_pct", 40.0), ("max_series_age_days", 90), ("active_min_signals", 1), ("min_searches", 2),
                  ("adverse_min_severity", 3), ("established_headcount_min", 250)]
-STRICT_MOVES = [("candidate_name_sim_floor", 0.90), ("min_headcount", 10), ("max_decline_pct", 20.0), ("max_series_age_days", 45), ("active_min_signals", 3), ("min_searches", 4),
+STRICT_MOVES = [("adverse_pass_needs_exists", True), ("adverse_pass_needs_active", True), ("adverse_min_results_scanned", 5), ("candidate_name_sim_floor", 0.90), ("min_headcount", 10), ("max_decline_pct", 20.0), ("max_series_age_days", 45), ("active_min_signals", 3), ("min_searches", 4),
                 ("adverse_min_severity", 1), ("reject_min_sources", 2), ("established_headcount_min", 1000)]
 DESCRIPTIONS = {
     "lenient": "Gives the benefit of the doubt where it is safe to. Large, well-known companies are accepted on a looser name match and with fewer signs of activity, and a single report from one outlet no longer holds them up. It still never accepts a business that looks shut down or does not exist, and anything it cannot settle goes to a person.",
@@ -340,8 +358,11 @@ def evaluate_preset(rows, params, losses=None):
             "small_real": {"nonpass_rate": round(nonpass_rate(sm, params), 3), "large_nonpass_rate": round(nonpass_rate(lg, params), 3),
                            "loss": mean([row_loss(r, params, losses) for r in lab if r["stratum"] == "small_real"]) if any(r["stratum"] == "small_real" for r in lab) else None}}
 
+BALANCED_FREEZE = ("active_min_signals", "min_headcount", "reject_min_sources", "reject_min_severity")      # safety-relevant: the balanced preset does not loosen these
+
 def build_presets(rows, losses=None):
-    best, trace, ok0 = greedy(rows, losses=losses)
+    """balanced = the lowest-loss setting under the gate that never lowers the established pass rate, with the activity and rejection standards frozen."""
+    best, trace, ok0 = greedy(rows, losses=losses, objective="loss", freeze=BALANCED_FREEZE)
     if not ok0:
         return {"blocked": True, "reason": "No setting passes the gate: the default setting already lets a shut_down or invented vendor reach Passed (see tuning_report.md)",
                 "violations_at_defaults": gate(rows, D, D, losses)[:20], "presets": {}}
@@ -405,11 +426,14 @@ def holdout_gate(rows, chosen, losses=None):
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(); ap.add_argument("cmd", nargs="?", default="all"); ap.add_argument("--losses", help="JSON overriding the loss weights"); ap.add_argument("--min-labelled", type=int, default=25)
+    ap.add_argument("--labels", help="provisional label file used only where cases_real.csv is blank")
+    ap.add_argument("--signals", default=str(ROOT / "evaluation" / "signals_real.json")); ap.add_argument("--report", default=str(ROOT / "evaluation" / "tuning_report.md"))
+    ap.add_argument("--presets", default=str(ROOT / "evaluation" / "presets_candidate.json"))
     a = ap.parse_args(argv)
     global LOSSES
     if a.losses: LOSSES = {**LOSSES, **json.loads(a.losses)}
-    rows = load_cases(); doc = json.loads((ROOT / "evaluation" / "signals_real.json").read_text()); n = len(labelled(rows))
+    rows = load_cases(signals_path=a.signals, labels_path=a.labels); doc = json.loads(Path(a.signals).read_text()); n = len(labelled(rows))
     if n < a.min_labelled: print(f"only {n} fully labelled rows (need {a.min_labelled}): not scoring"); return 1
-    res = write_report(rows, doc, LOSSES); write_presets(rows, LOSSES); print(f"scored {n} labelled rows; wrote tuning_report.md sections and presets_candidate.json"); return 0
+    res = write_report(rows, doc, LOSSES, path=Path(a.report)); write_presets(rows, LOSSES, path=Path(a.presets)); print(f"scored {n} labelled rows; wrote tuning_report.md sections and presets_candidate.json"); return 0
 
 if __name__ == "__main__": raise SystemExit(main())

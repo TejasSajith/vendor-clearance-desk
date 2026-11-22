@@ -4,7 +4,7 @@ must go through ctx.call, which is core.cached_call (throttle, cache, limits, le
 Verdicts are recommendations: CLEARED and REJECTED become pending actions that a person approves (core.finalize)."""
 import json, time
 import core, decision, policy
-from checks import normalize, exists, adverse
+from checks import normalize, exists, adverse, crosschecks
 
 KIND = "clearance"
 
@@ -94,7 +94,7 @@ def run_request(db, req, sources, params=None):
 
     CHECK_OF = {"identify": "exists", "profile": "active", "director": "director_match", "adverse": "adverse_media"}
     def final():
-        checks = policy.evaluate(sig, p, tier)
+        checks = crosschecks.apply(policy.evaluate(sig, p, tier), sig.get("adverse"), p)
         for st, c in CHECK_OF.items():
             if state.get(st) == "unreachable":
                 checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}

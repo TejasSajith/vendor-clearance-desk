@@ -1,0 +1,79 @@
+{
+ "status": "done",
+ "run_id": "r_fbefd4775294",
+ "verdict": "CLEARED",
+ "overall": "Cleared",
+ "checks": [
+  {
+   "check": "exists",
+   "title": "Company exists",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "single matching record",
+   "sources": [
+    "crustdata:/company/identify"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "active",
+   "title": "Company is active",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "3 activity signals: headcount, jobs, traffic",
+   "sources": [
+    "demo:synthetic/company/enrich"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "director_match",
+   "title": "Claimed director",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "listed at this company per profile data (not a director of record)",
+   "sources": [
+    "demo:synthetic/person/search"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "adverse_media",
+   "title": "Adverse media",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "no adverse reports found in 2 searches (limited coverage); 18 results scanned",
+   "sources": [
+    "demo:synthetic/web/search"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  }
+ ],
+ "missing": [],
+ "memo": "Verdict: Cleared.\n\nThis is a recommendation. Nothing happens until a person approves or rejects it.\n\nReasons:\n- Company exists: Passed. single matching record. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).\n- Company is active: Passed. 3 activity signals: headcount, jobs, traffic. Source: demo:synthetic/company/enrich (record date not stated by the source; retrieved 2026-11-22).\n- Claimed director: Passed. listed at this company per profile data (not a director of record). Source: demo:synthetic/person/search (record date not stated by the source; retrieved 2026-11-22).\n- Adverse media: Passed. no adverse reports found in 2 searches (limited coverage); 18 results scanned. Source: demo:synthetic/web/search (record date not stated by the source; retrieved 2026-11-22).\n\nWhat is missing:\n- nothing\n\nCost: 0 credits (rupee cost not set yet), 0 s.",
+ "memo_writer": "template",
+ "credits": 0.0,
+ "seconds": 0.01,
+ "action": {
+  "key": "035afaf48b8b3259",
+  "kind": "onboard_vendor",
+  "status": "pending"
+ },
+ "request": {
+  "vendor_name": "Acme Logistics Pvt Ltd",
+  "domain": "acmelogistics.in",
+  "risk_tier": "low",
+  "claimed_director": "provided (not stored)",
+  "registry_ids": {}
+ },
+ "id": "cleared",
+ "kind": "Cleared, waiting for a person's approval",
+ "origin": "synthetic",
+ "origin_note": "Synthetic demo case (app/demo.py): no live run produced this verdict.",
+ "input": "Check Acme Logistics Pvt Ltd, website acmelogistics.in, director [placeholder name], low risk.",
+ "input_note": "A director name was typed; it is used at run time only and never stored or shown."
+}

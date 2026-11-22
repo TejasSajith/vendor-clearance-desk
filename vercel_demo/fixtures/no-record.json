@@ -1,0 +1,78 @@
+{
+ "status": "done",
+ "run_id": "r_8bebb5eca2f8",
+ "verdict": "CANNOT_VERIFY",
+ "overall": "Can't verify",
+ "checks": [
+  {
+   "check": "exists",
+   "title": "Company exists",
+   "label": "Can't verify",
+   "status": "unknown",
+   "reason": "No record found. The vendor may be too new or too small for the data source",
+   "sources": [
+    "crustdata:/company/identify"
+   ],
+   "missing": [
+    "independent registry evidence (CIN/GSTIN/incorporation certificate)"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "active",
+   "title": "Company is active",
+   "label": "Can't verify",
+   "status": "unknown",
+   "reason": "no activity data",
+   "sources": [],
+   "missing": [
+    "Company is active: no activity data"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "director_match",
+   "title": "Claimed director",
+   "label": "Can't verify",
+   "status": "unknown",
+   "reason": "claimed director not found at this company",
+   "sources": [],
+   "missing": [
+    "Claimed director: claimed director not found at this company"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "adverse_media",
+   "title": "Adverse media",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "no adverse reports found in 2 searches (limited coverage); 10 results scanned",
+   "sources": [
+    "crustdata:/web/search/live"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  }
+ ],
+ "missing": [
+  "exists",
+  "active",
+  "director_match",
+  "independent registry evidence (CIN/GSTIN/incorporation certificate)"
+ ],
+ "memo": "Verdict: Can't verify.\n\nReasons:\n- Company exists: Can't verify. No record found. The vendor may be too new or too small for the data source. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).\n- Company is active: Can't verify. no activity data. Source: no source (record date not stated by the source; retrieved 2026-11-22).\n- Claimed director: Can't verify. claimed director not found at this company. Source: no source (record date not stated by the source; retrieved 2026-11-22).\n- Adverse media: Passed. no adverse reports found in 2 searches (limited coverage); 10 results scanned. Source: crustdata:/web/search/live (record date not stated by the source; retrieved 2026-11-22).\n\nWhat is missing:\n- exists\n- active\n- director_match\n- independent registry evidence (CIN/GSTIN/incorporation certificate)\n\nCost: 1.2 credits (rupee cost not set yet).",
+ "memo_writer": "template",
+ "credits": 1.2,
+ "seconds": null,
+ "action": null,
+ "id": "no-record",
+ "kind": "Can't verify: no company record",
+ "origin": "recorded",
+ "origin_note": "Recorded live run (Crustdata) from the live validation; replayed, not run again.",
+ "input": "Check Zentrovia Cargo Solutions Pvt Ltd, director [name not stored], low risk.",
+ "input_note": "Written from the recorded structured request."
+}

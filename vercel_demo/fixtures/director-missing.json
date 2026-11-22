@@ -1,0 +1,73 @@
+{
+ "status": "done",
+ "run_id": "r_a00cae49c494",
+ "verdict": "CANNOT_VERIFY",
+ "overall": "Can't verify",
+ "checks": [
+  {
+   "check": "exists",
+   "title": "Company exists",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "single matching record",
+   "sources": [
+    "crustdata:/company/identify"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "active",
+   "title": "Company is active",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "2 activity signals: headcount, traffic",
+   "sources": [
+    "crustdata:/company/enrich",
+    "crustdata:/job/search"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "director_match",
+   "title": "Claimed director",
+   "label": "Can't verify",
+   "status": "unknown",
+   "reason": "no claimed director in the request",
+   "sources": [],
+   "missing": [
+    "claimed_director (not supplied in the request)"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "adverse_media",
+   "title": "Adverse media",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "searched, no relevant adverse report",
+   "sources": [
+    "crustdata:/web/search/live"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  }
+ ],
+ "missing": [
+  "director_match",
+  "claimed_director (not supplied in the request)"
+ ],
+ "memo": "Verdict: Can't verify.\n\nReasons:\n- Company exists: Passed. single matching record. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).\n- Company is active: Passed. 2 activity signals: headcount, traffic. Source: crustdata:/company/enrich, crustdata:/job/search (record date not stated by the source; retrieved 2026-11-22).\n- Claimed director: Can't verify. no claimed director in the request. Source: no source (record date not stated by the source; retrieved 2026-11-22).\n- Adverse media: Passed. searched, no relevant adverse report. Source: crustdata:/web/search/live (record date not stated by the source; retrieved 2026-11-22).\n\nWhat is missing:\n- director_match\n- claimed_director (not supplied in the request)\n\nCost: 3.4 credits (rupee cost not set yet).",
+ "memo_writer": "template",
+ "credits": 3.4,
+ "seconds": null,
+ "action": null,
+ "id": "director-missing",
+ "kind": "Can't verify: director not supplied",
+ "origin": "recorded",
+ "origin_note": "Recorded live run (Crustdata) from the live validation; replayed, not run again.",
+ "input": "Check LorryCare, website lorrycare.com, low risk. (No director given.)",
+ "input_note": "Written from the recorded structured request."
+}

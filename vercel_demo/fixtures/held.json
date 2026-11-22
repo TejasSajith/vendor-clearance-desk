@@ -1,0 +1,78 @@
+{
+ "status": "held",
+ "run_id": "r_abda07464922",
+ "verdict": "HOLD_FOR_APPROVAL",
+ "overall": "Held for approval",
+ "checks": [
+  {
+   "check": "exists",
+   "title": "Company exists",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "single matching record",
+   "sources": [
+    "crustdata:/company/identify"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "active",
+   "title": "Company is active",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "3 activity signals: headcount, jobs, traffic",
+   "sources": [
+    "demo:synthetic/company/enrich"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "director_match",
+   "title": "Claimed director",
+   "label": "Passed",
+   "status": "pass",
+   "reason": "listed at this company per profile data (not a director of record)",
+   "sources": [
+    "demo:synthetic/person/search"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  },
+  {
+   "check": "adverse_media",
+   "title": "Adverse media",
+   "label": "Couldn't reach the source",
+   "status": "unreachable",
+   "reason": "source unreachable after retries; retry or send to a person",
+   "sources": [],
+   "missing": [
+    "adverse_media (source unreachable, retry or person)"
+   ],
+   "record_date": "not stated by the source",
+   "retrieved": "2026-11-22"
+  }
+ ],
+ "missing": [
+  "adverse_media (source unreachable, retry or person)"
+ ],
+ "memo": "Verdict: Held for approval.\n\nReasons:\n- Company exists: Passed. single matching record. Source: crustdata:/company/identify (record date not stated by the source; retrieved 2026-11-22).\n- Company is active: Passed. 3 activity signals: headcount, jobs, traffic. Source: demo:synthetic/company/enrich (record date not stated by the source; retrieved 2026-11-22).\n- Claimed director: Passed. listed at this company per profile data (not a director of record). Source: demo:synthetic/person/search (record date not stated by the source; retrieved 2026-11-22).\n- Adverse media: Couldn't reach the source. source unreachable after retries; retry or send to a person. Source: no source (record date not stated by the source; retrieved 2026-11-22).\n\nWhat is missing:\n- adverse_media (source unreachable, retry or person)\n\nCost: 0 credits (rupee cost not set yet), 14 s.",
+ "memo_writer": "template",
+ "credits": 0.0,
+ "seconds": 14.02,
+ "action": null,
+ "request": {
+  "vendor_name": "Slowpoke Freight Pvt Ltd",
+  "domain": null,
+  "risk_tier": "medium",
+  "claimed_director": "provided (not stored)",
+  "registry_ids": {}
+ },
+ "id": "held",
+ "kind": "Held for approval: a source timed out",
+ "origin": "synthetic",
+ "origin_note": "Synthetic demo case (app/demo.py): no live run produced this verdict.",
+ "input": "Check Slowpoke Freight Pvt Ltd, director [placeholder name], medium risk.",
+ "input_note": "A director name was typed; it is used at run time only and never stored or shown."
+}

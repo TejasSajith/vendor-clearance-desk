@@ -13,12 +13,38 @@
     "_status": "PROPOSED (D53): 200 matches the model-field limit in nl.py; 253 is the DNS maximum for a domain name; 100 for a person name is a placeholder"
   },
   "size_bands": [
-    {"label": "no headcount data", "min": null, "max": null},
-    {"label": "1-10", "min": 1, "max": 10},
-    {"label": "11-50", "min": 11, "max": 50},
-    {"label": "51-200", "min": 51, "max": 200},
-    {"label": "201-1000", "min": 201, "max": 1000},
-    {"label": "1001+", "min": 1001, "max": null}
+    {
+      "label": "no headcount data",
+      "min": null,
+      "max": null
+    },
+    {
+      "label": "1-10",
+      "min": 1,
+      "max": 10
+    },
+    {
+      "label": "11-50",
+      "min": 11,
+      "max": 50
+    },
+    {
+      "label": "51-200",
+      "min": 51,
+      "max": 200
+    },
+    {
+      "label": "201-1000",
+      "min": 201,
+      "max": 1000
+    },
+    {
+      "label": "1001+",
+      "min": 1001,
+      "max": null
+    }
   ],
-  "_size_bands_status": "PROPOSED (D54): headcount bands for the fairness report"
+  "_size_bands_status": "PROPOSED (D54): headcount bands for the fairness report",
+  "fairness_min_cases_per_band": 10,
+  "_fairness_min_status": "PROPOSED (D54): a size band needs at least this many cases before the fairness report states a rate for it"
 }
