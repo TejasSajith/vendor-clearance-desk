@@ -1,0 +1,294 @@
+{
+ "c001": {
+  "stratum": "large_legit",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795350100.7080278,
+    "hits": [
+     {
+      "url_id": "f61e95ff91",
+      "url_host": "sg.finance.yahoo.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "d61719534e",
+      "url_host": "www.google.com",
+      "severity": 3,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "3986c47c87",
+      "url_host": "www.google.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "ea1003ad3f",
+      "url_host": "www.google.com",
+      "severity": 2,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "65457265f7",
+      "url_host": "www.jagran.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "news"
+     },
+     {
+      "url_id": "10398ac575",
+      "url_host": "www.zeebiz.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "news"
+     }
+    ],
+    "searches_run": 4,
+    "results_scanned": 11
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c002": {
+  "stratum": "large_legit",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795350130.8762434,
+    "hits": [],
+    "searches_run": 4,
+    "results_scanned": 9
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c015": {
+  "stratum": "mid",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795351000.817695,
+    "hits": [],
+    "searches_run": 4,
+    "results_scanned": 11
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c016": {
+  "stratum": "mid",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795351026.2835793,
+    "hits": [
+     {
+      "url_id": "49ec512b60",
+      "url_host": "www.google.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "1f5d581ed6",
+      "url_host": "cms.rajyasabha.nic.in",
+      "severity": 1,
+      "dated": true,
+      "date_text": "14 अग॰ 2014",
+      "query_src": "web"
+     },
+     {
+      "url_id": "9031c54f98",
+      "url_host": "www.facebook.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     }
+    ],
+    "searches_run": 4,
+    "results_scanned": 15
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c027": {
+  "stratum": "small_real",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795351683.8775828,
+    "hits": [
+     {
+      "url_id": "40af0ed3b6",
+      "url_host": "www.google.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     }
+    ],
+    "searches_run": 4,
+    "results_scanned": 12
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c028": {
+  "stratum": "small_real",
+  "rounds": [
+   {
+    "round": 0,
+    "ts": 1795351735.9918518,
+    "hits": [
+     {
+      "url_id": "d4fad2dd98",
+      "url_host": "www.google.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "cc2638fd4f",
+      "url_host": "www.google.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "0229ccf4a3",
+      "url_host": "www.google.com",
+      "severity": 3,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "6d2274b267",
+      "url_host": "www.justdial.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     },
+     {
+      "url_id": "0f9656c1b1",
+      "url_host": "www.justdial.com",
+      "severity": 1,
+      "dated": false,
+      "date_text": null,
+      "query_src": "web"
+     }
+    ],
+    "searches_run": 4,
+    "results_scanned": 11
+   }
+  ],
+  "summary": {
+   "rounds_measured": 1,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c043": {
+  "stratum": "shut_down",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c044": {
+  "stratum": "shut_down",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c051": {
+  "stratum": "invented",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c052": {
+  "stratum": "invented",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c061": {
+  "stratum": "lookalike_or_wrong_domain",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ },
+ "c062": {
+  "stratum": "lookalike_or_wrong_domain",
+  "rounds": [],
+  "summary": {
+   "rounds_measured": 0,
+   "hitset_identical_all_rounds": true,
+   "jaccard_stability": 1.0,
+   "dates_identical_all_rounds": true
+  }
+ }
+}
