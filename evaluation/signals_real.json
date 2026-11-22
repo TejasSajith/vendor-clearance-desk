@@ -10149,6 +10149,4721 @@
    "adverse": null,
    "credits": 60.63,
    "seconds": 395.9
+  },
+  "c028": {
+   "case_id": "c028",
+   "stratum": "small_real",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "boxigo.in",
+   "identify": {
+    "candidates": [
+     {
+      "id": 610182,
+      "name": "",
+      "sim": 1.0,
+      "domain": "boxigo.in"
+     },
+     {
+      "id": 20737647,
+      "name": "",
+      "sim": 1.0,
+      "domain": null
+     },
+     {
+      "id": 21330996,
+      "name": "",
+      "sim": 0.387,
+      "domain": "boxigopackersandmovers.com"
+     },
+     {
+      "id": 67416403,
+      "name": "",
+      "sim": 0.316,
+      "domain": null
+     },
+     {
+      "id": 1378058,
+      "name": "",
+      "sim": 0.667,
+      "domain": "boxito.com"
+     },
+     {
+      "id": 9052162,
+      "name": "",
+      "sim": 0.833,
+      "domain": "bofigo.com"
+     },
+     {
+      "id": 28996615,
+      "name": "",
+      "sim": 0.833,
+      "domain": "bowigo.pro"
+     },
+     {
+      "id": 6271873,
+      "name": "",
+      "sim": 0.909,
+      "domain": "boxioship.com"
+     },
+     {
+      "id": 1491045,
+      "name": "",
+      "sim": 0.833,
+      "domain": "boxito.com.mx"
+     },
+     {
+      "id": 7280169,
+      "name": "",
+      "sim": 0.909,
+      "domain": null
+     },
+     {
+      "id": 17306348,
+      "name": "",
+      "sim": 0.833,
+      "domain": "bonigo.de"
+     },
+     {
+      "id": 68159046,
+      "name": "",
+      "sim": 0.833,
+      "domain": null
+     },
+     {
+      "id": 6920534,
+      "name": "",
+      "sim": 0.833,
+      "domain": null
+     },
+     {
+      "id": 20554929,
+      "name": "",
+      "sim": 0.833,
+      "domain": "botigo.io"
+     },
+     {
+      "id": 18530489,
+      "name": "",
+      "sim": 0.909,
+      "domain": "boxio.net"
+     },
+     {
+      "id": 18014223,
+      "name": "",
+      "sim": 0.909,
+      "domain": null
+     },
+     {
+      "id": 11156554,
+      "name": "",
+      "sim": 0.667,
+      "domain": "bovigo.no"
+     },
+     {
+      "id": 25022512,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 28163800,
+      "name": "",
+      "sim": 0.526,
+      "domain": "boxirosports.com"
+     },
+     {
+      "id": 65444215,
+      "name": "",
+      "sim": 0.833,
+      "domain": null
+     },
+     {
+      "id": 16213633,
+      "name": "",
+      "sim": 0.833,
+      "domain": null
+     },
+     {
+      "id": 62635257,
+      "name": "",
+      "sim": 0.833,
+      "domain": "boximo.fr"
+     },
+     {
+      "id": 30506235,
+      "name": "",
+      "sim": 0.714,
+      "domain": "boxgo.no"
+     },
+     {
+      "id": 66229667,
+      "name": "",
+      "sim": 0.909,
+      "domain": "boxio.in"
+     },
+     {
+      "id": 64982525,
+      "name": "",
+      "sim": 0.833,
+      "domain": "boxivo.in"
+     }
+    ],
+    "domain_candidate_ids": [
+     610182
+    ]
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 62.23,
+   "seconds": 419.3
+  },
+  "c040": {
+   "case_id": "c040",
+   "stratum": "small_real",
+   "split": "tune",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "speedboxapp.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 8890,
+      "name": "",
+      "sim": 1.0,
+      "domain": "speedboxapp.com"
+     },
+     {
+      "id": 20676161,
+      "name": "",
+      "sim": 1.0,
+      "domain": "speedboxinc.com"
+     },
+     {
+      "id": 71213144,
+      "name": "",
+      "sim": 1.0,
+      "domain": "speedbox.ma"
+     },
+     {
+      "id": 64892029,
+      "name": "",
+      "sim": 1.0,
+      "domain": "speedbox.in"
+     },
+     {
+      "id": 23306694,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 15304103,
+      "name": "",
+      "sim": 0.696,
+      "domain": "speedbox-tuning.com"
+     },
+     {
+      "id": 5171888,
+      "name": "",
+      "sim": 0.727,
+      "domain": "speedbox.ma"
+     },
+     {
+      "id": 6417012,
+      "name": "",
+      "sim": 0.727,
+      "domain": "speedboxtriad.com"
+     },
+     {
+      "id": 4898964,
+      "name": "",
+      "sim": 0.8,
+      "domain": "speedbox.us"
+     },
+     {
+      "id": 17020731,
+      "name": "",
+      "sim": 0.8,
+      "domain": null
+     },
+     {
+      "id": 60437871,
+      "name": "",
+      "sim": 0.444,
+      "domain": "speedbox.ae"
+     },
+     {
+      "id": 19043975,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 11796,
+      "name": "",
+      "sim": 0.857,
+      "domain": "speedo.com"
+     },
+     {
+      "id": 6571770,
+      "name": "",
+      "sim": 0.8,
+      "domain": "loves.com"
+     },
+     {
+      "id": 1061547,
+      "name": "",
+      "sim": 0.857,
+      "domain": "speedx.io"
+     },
+     {
+      "id": 1950640,
+      "name": "",
+      "sim": 0.933,
+      "domain": "seedbox.ai"
+     },
+     {
+      "id": 1031812,
+      "name": "",
+      "sim": 0.5,
+      "domain": "seedbox.com"
+     },
+     {
+      "id": 690852,
+      "name": "",
+      "sim": 0.875,
+      "domain": "hispeedfox.com"
+     },
+     {
+      "id": 2069235,
+      "name": "",
+      "sim": 0.538,
+      "domain": "speedfox.in"
+     },
+     {
+      "id": 825058,
+      "name": "",
+      "sim": 0.8,
+      "domain": "speedio.com.br"
+     },
+     {
+      "id": 3982865,
+      "name": "",
+      "sim": 0.75,
+      "domain": "speedioo.com"
+     },
+     {
+      "id": 11814212,
+      "name": "",
+      "sim": 0.56,
+      "domain": "speedbot.com"
+     },
+     {
+      "id": 903609,
+      "name": "",
+      "sim": 0.75,
+      "domain": "speedeondata.com"
+     },
+     {
+      "id": 11921186,
+      "name": "",
+      "sim": 0.875,
+      "domain": "speedbol.com.br"
+     },
+     {
+      "id": 5109274,
+      "name": "",
+      "sim": 0.667,
+      "domain": "speedpox.com"
+     }
+    ],
+    "domain_candidate_ids": [
+     8890
+    ]
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 31,
+    "headcount_trend_pct": 10.7,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 30,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 11.6,
+   "seconds": 121.4
+  },
+  "c046": {
+   "case_id": "c046",
+   "stratum": "shut_down",
+   "split": "tune",
+   "state": "ambiguous",
+   "run_status": "done",
+   "input_domain": "pricollogistics.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 14768294,
+      "name": "",
+      "sim": 1.0,
+      "domain": "pricollogistics.com"
+     },
+     {
+      "id": 5898661,
+      "name": "",
+      "sim": 1.0,
+      "domain": "pricollogistics.com"
+     },
+     {
+      "id": 3787,
+      "name": "",
+      "sim": 0.545,
+      "domain": "pricol.com"
+     },
+     {
+      "id": 31662,
+      "name": "",
+      "sim": 0.545,
+      "domain": "khaitanlogistics.com"
+     },
+     {
+      "id": 1106064,
+      "name": "",
+      "sim": 0.529,
+      "domain": "goodrich.co"
+     },
+     {
+      "id": 4589563,
+      "name": "",
+      "sim": 0.581,
+      "domain": "casbygroup.com"
+     },
+     {
+      "id": 4133441,
+      "name": "",
+      "sim": 0.667,
+      "domain": "maxwelllogistics.net"
+     },
+     {
+      "id": 5819537,
+      "name": "",
+      "sim": 0.6,
+      "domain": "eximlogistics.com"
+     },
+     {
+      "id": 3837839,
+      "name": "",
+      "sim": 0.629,
+      "domain": "vakrangeelogistics.in"
+     },
+     {
+      "id": 9406491,
+      "name": "",
+      "sim": 0.828,
+      "domain": "rcilogistics.co.in"
+     },
+     {
+      "id": 9210429,
+      "name": "",
+      "sim": 0.743,
+      "domain": null
+     },
+     {
+      "id": 10538041,
+      "name": "",
+      "sim": 0.69,
+      "domain": null
+     },
+     {
+      "id": 5360426,
+      "name": "",
+      "sim": 0.529,
+      "domain": "hiveloopcapital.com"
+     },
+     {
+      "id": 2109006,
+      "name": "",
+      "sim": 0.488,
+      "domain": "pricolprecision.com"
+     },
+     {
+      "id": 3141026,
+      "name": "",
+      "sim": 0.621,
+      "domain": "jwrlogic.com"
+     },
+     {
+      "id": 8464567,
+      "name": "",
+      "sim": 0.529,
+      "domain": "airmountlogistics.com"
+     },
+     {
+      "id": 3913762,
+      "name": "",
+      "sim": 0.69,
+      "domain": "mtslogistics.co.in"
+     },
+     {
+      "id": 3937177,
+      "name": "",
+      "sim": 0.529,
+      "domain": "alpl.net.in"
+     },
+     {
+      "id": 14400204,
+      "name": "",
+      "sim": 0.722,
+      "domain": "stardollarlogistics.com"
+     },
+     {
+      "id": 16384821,
+      "name": "",
+      "sim": 0.759,
+      "domain": "yotlogistics.com"
+     },
+     {
+      "id": 27400,
+      "name": "",
+      "sim": 0.562,
+      "domain": "conboxlogistics.com"
+     },
+     {
+      "id": 3964380,
+      "name": "",
+      "sim": 0.706,
+      "domain": "xclpl.com"
+     },
+     {
+      "id": 14392242,
+      "name": "",
+      "sim": 0.621,
+      "domain": "gsjlogistics.com"
+     },
+     {
+      "id": 71962835,
+      "name": "",
+      "sim": 0.486,
+      "domain": "crystallinelogistics.com"
+     },
+     {
+      "id": 2030681,
+      "name": "",
+      "sim": 0.514,
+      "domain": "kvlpl.com"
+     }
+    ],
+    "domain_candidate_ids": [
+     5898661
+    ]
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 19,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 4,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 5,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 4.6,
+   "seconds": 54.1
+  },
+  "c038": {
+   "case_id": "c038",
+   "stratum": "small_real",
+   "split": "holdout",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "rhyno.in",
+   "identify": {
+    "candidates": [],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 40.0,
+   "seconds": 327.4
+  },
+  "c039": {
+   "case_id": "c039",
+   "stratum": "small_real",
+   "split": "holdout",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "smartgcpro.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 748196,
+      "name": "",
+      "sim": 1.0,
+      "domain": "smartgcpro.com"
+     },
+     {
+      "id": 13768845,
+      "name": "",
+      "sim": 0.286,
+      "domain": "pttgcgroup.com"
+     },
+     {
+      "id": 676929,
+      "name": "",
+      "sim": 0.571,
+      "domain": "99jobs.com"
+     },
+     {
+      "id": 1522319,
+      "name": "",
+      "sim": 0.583,
+      "domain": "smart-tbk.com"
+     },
+     {
+      "id": 14420114,
+      "name": "",
+      "sim": 0.286,
+      "domain": null
+     },
+     {
+      "id": 610081,
+      "name": "",
+      "sim": 0.56,
+      "domain": "batterysmart.in"
+     },
+     {
+      "id": 1225935,
+      "name": "",
+      "sim": 0.519,
+      "domain": "smartandfinal.com"
+     },
+     {
+      "id": 1252082,
+      "name": "",
+      "sim": 0.583,
+      "domain": "smartdesignworldwide.com"
+     },
+     {
+      "id": 6217595,
+      "name": "",
+      "sim": 0.5,
+      "domain": "smart.com.kh"
+     },
+     {
+      "id": 1230899,
+      "name": "",
+      "sim": 0.5,
+      "domain": "pldt.com.ph"
+     },
+     {
+      "id": 1082342,
+      "name": "",
+      "sim": 0.37,
+      "domain": "smartz.com"
+     },
+     {
+      "id": 2569598,
+      "name": "",
+      "sim": 0.2,
+      "domain": "gcbiopharma.com"
+     },
+     {
+      "id": 2759414,
+      "name": "",
+      "sim": 0.571,
+      "domain": "thesmartschools.edu.pk"
+     },
+     {
+      "id": 6055826,
+      "name": "",
+      "sim": 0.519,
+      "domain": "arx.ing"
+     },
+     {
+      "id": 1371716,
+      "name": "",
+      "sim": 0.412,
+      "domain": "smart.edu.co"
+     },
+     {
+      "id": 892902,
+      "name": "",
+      "sim": 0.467,
+      "domain": "sew.ai"
+     },
+     {
+      "id": 1272389,
+      "name": "",
+      "sim": 0.588,
+      "domain": "smartmea.com"
+     },
+     {
+      "id": 1675138,
+      "name": "",
+      "sim": 0.324,
+      "domain": null
+     },
+     {
+      "id": 2035204,
+      "name": "",
+      "sim": 0.324,
+      "domain": "tytconsultores.com.ar"
+     },
+     {
+      "id": 2667306,
+      "name": "",
+      "sim": 0.324,
+      "domain": null
+     },
+     {
+      "id": 1050686,
+      "name": "",
+      "sim": 0.4,
+      "domain": "smartworking.io"
+     },
+     {
+      "id": 6427220,
+      "name": "",
+      "sim": 0.438,
+      "domain": "gcu.edu.pk"
+     },
+     {
+      "id": 5436512,
+      "name": "",
+      "sim": 0.545,
+      "domain": "smartls.ru"
+     },
+     {
+      "id": 31712093,
+      "name": "",
+      "sim": 0.774,
+      "domain": null
+     },
+     {
+      "id": 1378381,
+      "name": "",
+      "sim": 0.345,
+      "domain": "disfarma.com.co"
+     }
+    ],
+    "domain_candidate_ids": [
+     748196
+    ]
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 38.4,
+   "seconds": 307.9
+  },
+  "c044": {
+   "case_id": "c044",
+   "stratum": "shut_down",
+   "split": "tune",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "jsw.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 2114153,
+      "name": "",
+      "sim": 1.0,
+      "domain": "jsw.com"
+     },
+     {
+      "id": 2096629,
+      "name": "",
+      "sim": 0.852,
+      "domain": "lankaship.lk"
+     },
+     {
+      "id": 4417685,
+      "name": "",
+      "sim": 0.786,
+      "domain": "seagulls.com.pk"
+     },
+     {
+      "id": 2074297,
+      "name": "",
+      "sim": 0.846,
+      "domain": "sklshipping.in"
+     },
+     {
+      "id": 16809601,
+      "name": "",
+      "sim": 0.846,
+      "domain": null
+     },
+     {
+      "id": 17560585,
+      "name": "",
+      "sim": 0.863,
+      "domain": null
+     },
+     {
+      "id": 5224473,
+      "name": "",
+      "sim": 0.83,
+      "domain": "vastshipping.com"
+     },
+     {
+      "id": 14722894,
+      "name": "",
+      "sim": 0.863,
+      "domain": "mylogisticspk.com"
+     },
+     {
+      "id": 75075352,
+      "name": "",
+      "sim": 0.815,
+      "domain": "surge-sl.com"
+     },
+     {
+      "id": 68136671,
+      "name": "",
+      "sim": 0.828,
+      "domain": "brightwayshipping.co.in"
+     },
+     {
+      "id": 69459575,
+      "name": "",
+      "sim": 0.836,
+      "domain": "galaxy-shipping.com"
+     },
+     {
+      "id": 30989461,
+      "name": "",
+      "sim": 0.83,
+      "domain": "soraship.com"
+     },
+     {
+      "id": 29804786,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 2239525,
+      "name": "",
+      "sim": 0.774,
+      "domain": "cslpak.com"
+     },
+     {
+      "id": 17124017,
+      "name": "",
+      "sim": 0.786,
+      "domain": "skylineshipping.com"
+     },
+     {
+      "id": 16555072,
+      "name": "",
+      "sim": 0.857,
+      "domain": "hanshin.solutions"
+     },
+     {
+      "id": 14822522,
+      "name": "",
+      "sim": 0.8,
+      "domain": "accentshipping.com"
+     },
+     {
+      "id": 3946079,
+      "name": "",
+      "sim": 0.824,
+      "domain": "hardipshipping.com"
+     },
+     {
+      "id": 17327438,
+      "name": "",
+      "sim": 0.8,
+      "domain": null
+     },
+     {
+      "id": 74489585,
+      "name": "",
+      "sim": 0.846,
+      "domain": "mskshipping.com"
+     },
+     {
+      "id": 14936538,
+      "name": "",
+      "sim": 0.863,
+      "domain": null
+     },
+     {
+      "id": 27972532,
+      "name": "",
+      "sim": 0.8,
+      "domain": "pslpak.com"
+     },
+     {
+      "id": 28285043,
+      "name": "",
+      "sim": 0.889,
+      "domain": "boostshipping.in"
+     },
+     {
+      "id": 7959479,
+      "name": "",
+      "sim": 0.8,
+      "domain": "ameerashipping.com"
+     },
+     {
+      "id": 4818859,
+      "name": "",
+      "sim": 0.846,
+      "domain": "agegroup.in"
+     }
+    ],
+    "domain_candidate_ids": [
+     2114153
+    ]
+   },
+   "profile": {
+    "status": "deleted",
+    "headcount_total": 34,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 426,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 21,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 1,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 23.0,
+   "seconds": 199.1
+  },
+  "c045": {
+   "case_id": "c045",
+   "stratum": "shut_down",
+   "split": "holdout",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "kushallimited.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 2703,
+      "name": "",
+      "sim": 1.0,
+      "domain": "kushallimited.com"
+     },
+     {
+      "id": 28859975,
+      "name": "",
+      "sim": 0.706,
+      "domain": null
+     },
+     {
+      "id": 28418327,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 5705780,
+      "name": "",
+      "sim": 0.522,
+      "domain": "kkfashionhangers.co.in"
+     },
+     {
+      "id": 7883730,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 18653549,
+      "name": "",
+      "sim": 0.6,
+      "domain": "kushaluniform.com"
+     },
+     {
+      "id": 25927153,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 19106838,
+      "name": "",
+      "sim": 0.632,
+      "domain": null
+     },
+     {
+      "id": 27630515,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 66015703,
+      "name": "",
+      "sim": 0.632,
+      "domain": null
+     },
+     {
+      "id": 28466797,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 32290441,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 18878069,
+      "name": "",
+      "sim": 0.414,
+      "domain": "kushalmultidevelopers.com"
+     },
+     {
+      "id": 26795631,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 65718684,
+      "name": "",
+      "sim": 0.48,
+      "domain": null
+     },
+     {
+      "id": 18116958,
+      "name": "",
+      "sim": 0.387,
+      "domain": null
+     },
+     {
+      "id": 15153504,
+      "name": "",
+      "sim": 0.48,
+      "domain": null
+     },
+     {
+      "id": 12594838,
+      "name": "",
+      "sim": 0.387,
+      "domain": null
+     },
+     {
+      "id": 16820934,
+      "name": "",
+      "sim": 0.462,
+      "domain": null
+     },
+     {
+      "id": 67706825,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 24140518,
+      "name": "",
+      "sim": 0.632,
+      "domain": null
+     },
+     {
+      "id": 24857738,
+      "name": "",
+      "sim": 0.429,
+      "domain": null
+     },
+     {
+      "id": 19670813,
+      "name": "",
+      "sim": 0.632,
+      "domain": "timberparadise.com"
+     },
+     {
+      "id": 66186743,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 30799921,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": [
+     2703
+    ]
+   },
+   "profile": {
+    "status": "deleted",
+    "headcount_total": 68,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 545,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 32,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "9 \u0938\u093f\u0924\u0970 2026",
+      "rank": 5,
+      "url_id": "4a97049c0c"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 2,
+      "url_host": "www.google.com",
+      "date_text": "29 \u0926\u093f\u0938\u0970 2022",
+      "rank": 7,
+      "url_id": "1bb53cbeed"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "find-and-update.company-information.service.gov.uk",
+      "date_text": null,
+      "rank": 2,
+      "url_id": "8ba29190a4"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "14 \u092b\u093c\u0930\u0970 2021",
+      "rank": 3,
+      "url_id": "15e4d27693"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "28 \u092e\u093e\u0930\u094d\u091a 2025",
+      "rank": 1,
+      "url_id": "437e9e4b46"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 2,
+      "url_id": "c4613ed252"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "22 \u0928\u0935\u0970 2022",
+      "rank": 3,
+      "url_id": "f837235867"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "cbi.gov.in",
+      "date_text": "9 \u0938\u093f\u0924\u0970 2026",
+      "rank": 5,
+      "url_id": "6a10712262"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 6,
+      "url_id": "65daaa200c"
+     },
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "28 \u091c\u0928\u0970 2026",
+      "rank": 7,
+      "url_id": "5810cdcf0f"
+     }
+    ],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 9,
+      "hits": [
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "9 \u0938\u093f\u0924\u0970 2026",
+        "rank": 5,
+        "url_id": "4a97049c0c"
+       },
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 2,
+        "url_host": "www.google.com",
+        "date_text": "29 \u0926\u093f\u0938\u0970 2022",
+        "rank": 7,
+        "url_id": "1bb53cbeed"
+       }
+      ]
+     },
+     {
+      "source": "news",
+      "n_results": 3,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": [
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "find-and-update.company-information.service.gov.uk",
+        "date_text": null,
+        "rank": 2,
+        "url_id": "8ba29190a4"
+       },
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "14 \u092b\u093c\u0930\u0970 2021",
+        "rank": 3,
+        "url_id": "15e4d27693"
+       }
+      ]
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": [
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "28 \u092e\u093e\u0930\u094d\u091a 2025",
+        "rank": 1,
+        "url_id": "437e9e4b46"
+       },
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 2,
+        "url_id": "c4613ed252"
+       },
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "22 \u0928\u0935\u0970 2022",
+        "rank": 3,
+        "url_id": "f837235867"
+       },
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "cbi.gov.in",
+        "date_text": "9 \u0938\u093f\u0924\u0970 2026",
+        "rank": 5,
+        "url_id": "6a10712262"
+       },
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 6,
+        "url_id": "65daaa200c"
+       },
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "28 \u091c\u0928\u0970 2026",
+        "rank": 7,
+        "url_id": "5810cdcf0f"
+       }
+      ]
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 23.4,
+   "seconds": 197.9
+  },
+  "c037": {
+   "case_id": "c037",
+   "stratum": "small_real",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "maplepackers.com",
+   "identify": {
+    "candidates": [],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 50.4,
+   "seconds": 384.1
+  },
+  "c048": {
+   "case_id": "c048",
+   "stratum": "shut_down",
+   "split": "holdout",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "ulaindia.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 623007,
+      "name": "",
+      "sim": 1.0,
+      "domain": "ula.app"
+     },
+     {
+      "id": 9354385,
+      "name": "",
+      "sim": 1.0,
+      "domain": "ulasurf.com"
+     },
+     {
+      "id": 16622139,
+      "name": "",
+      "sim": 1.0,
+      "domain": null
+     },
+     {
+      "id": 63051872,
+      "name": "",
+      "sim": 1.0,
+      "domain": "newwie.com"
+     },
+     {
+      "id": 6756416,
+      "name": "",
+      "sim": 1.0,
+      "domain": "ulaindia.com"
+     },
+     {
+      "id": 3587120,
+      "name": "",
+      "sim": 0.857,
+      "domain": "ulas.fr"
+     },
+     {
+      "id": 8717275,
+      "name": "",
+      "sim": 0.316,
+      "domain": "ulaulasorvetes.com.br"
+     },
+     {
+      "id": 1382283,
+      "name": "",
+      "sim": 0.429,
+      "domain": "ulaidiomas.edu.co"
+     },
+     {
+      "id": 664708,
+      "name": "",
+      "sim": 0.207,
+      "domain": "ulalaunch.com"
+     },
+     {
+      "id": 16409936,
+      "name": "",
+      "sim": 0.353,
+      "domain": "ulaula-studio.com"
+     },
+     {
+      "id": 4439108,
+      "name": "",
+      "sim": 0.5,
+      "domain": "ulagroup.com"
+     },
+     {
+      "id": 8640824,
+      "name": "",
+      "sim": 0.545,
+      "domain": "ulasoft.com.ar"
+     },
+     {
+      "id": 4440705,
+      "name": "",
+      "sim": 0.545,
+      "domain": "form-ula.com"
+     },
+     {
+      "id": 69894876,
+      "name": "",
+      "sim": 0.429,
+      "domain": null
+     },
+     {
+      "id": 15180267,
+      "name": "",
+      "sim": 0.462,
+      "domain": "ulabianca.it"
+     },
+     {
+      "id": 16319012,
+      "name": "",
+      "sim": 0.375,
+      "domain": null
+     },
+     {
+      "id": 16917257,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 29308780,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 1535762,
+      "name": "",
+      "sim": 0.545,
+      "domain": "ulacafe.com"
+     },
+     {
+      "id": 66594176,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 15945374,
+      "name": "",
+      "sim": 0.545,
+      "domain": "ulajeem.com"
+     },
+     {
+      "id": 12102366,
+      "name": "",
+      "sim": 0.353,
+      "domain": "ularchitects.com"
+     },
+     {
+      "id": 15476472,
+      "name": "",
+      "sim": 0.462,
+      "domain": null
+     },
+     {
+      "id": 18050481,
+      "name": "",
+      "sim": 0.462,
+      "domain": "ulabuffet.com.br"
+     },
+     {
+      "id": 22379087,
+      "name": "",
+      "sim": 0.333,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": [
+     1282727
+    ]
+   },
+   "profile": {
+    "status": "deleted",
+    "headcount_total": 1098,
+    "headcount_trend_pct": 0.6,
+    "series_age_days": 300,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 27,
+    "hits": [
+     {
+      "dated": true,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": "3 \u0905\u0915\u094d\u091f\u0942\u0970 2023",
+      "rank": 5,
+      "url_id": "ee74edf580"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 1,
+      "url_id": "63a915da0e"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 3,
+      "url_id": "caa66c5ba5"
+     }
+    ],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 1,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": [
+       {
+        "dated": true,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": "3 \u0905\u0915\u094d\u091f\u0942\u0970 2023",
+        "rank": 5,
+        "url_id": "ee74edf580"
+       }
+      ]
+     },
+     {
+      "source": "web",
+      "n_results": 6,
+      "hits": [
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 1,
+        "url_id": "63a915da0e"
+       },
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 3,
+        "url_id": "caa66c5ba5"
+       }
+      ]
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 21.0,
+   "seconds": 132.2
+  },
+  "c041": {
+   "case_id": "c041",
+   "stratum": "small_real",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "trucknetic.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 610774,
+      "name": "",
+      "sim": 1.0,
+      "domain": "trucknetic.com"
+     },
+     {
+      "id": 19379454,
+      "name": "",
+      "sim": 0.857,
+      "domain": "tracknetics.co.za"
+     },
+     {
+      "id": 2694932,
+      "name": "",
+      "sim": 0.889,
+      "domain": "trucknet.nl"
+     },
+     {
+      "id": 19220786,
+      "name": "",
+      "sim": 0.8,
+      "domain": "truckistic.com"
+     },
+     {
+      "id": 904673,
+      "name": "",
+      "sim": 0.552,
+      "domain": "trucknet.io"
+     },
+     {
+      "id": 612727,
+      "name": "",
+      "sim": 0.41,
+      "domain": "trucknet.digital"
+     },
+     {
+      "id": 8505142,
+      "name": "",
+      "sim": 0.857,
+      "domain": null
+     },
+     {
+      "id": 62778706,
+      "name": "",
+      "sim": 0.727,
+      "domain": "trucknet.hu"
+     },
+     {
+      "id": 22693705,
+      "name": "",
+      "sim": 0.8,
+      "domain": "truckmedic.ca"
+     },
+     {
+      "id": 70111495,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 7679408,
+      "name": "",
+      "sim": 0.593,
+      "domain": "truneticinfotech.com"
+     },
+     {
+      "id": 68349235,
+      "name": "",
+      "sim": 0.762,
+      "domain": "trucknetuk.com"
+     }
+    ],
+    "domain_candidate_ids": [
+     610774
+    ]
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 35.6,
+   "seconds": 348.4
+  },
+  "c049": {
+   "case_id": "c049",
+   "stratum": "shut_down",
+   "split": "tune",
+   "state": "ambiguous",
+   "run_status": "done",
+   "input_domain": "vaaaninfra.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 15453671,
+      "name": "",
+      "sim": 1.0,
+      "domain": "vaaaninfra.com"
+     },
+     {
+      "id": 27393,
+      "name": "",
+      "sim": 1.0,
+      "domain": "vaaaninfra.com"
+     },
+     {
+      "id": 27001839,
+      "name": "",
+      "sim": 1.0,
+      "domain": "vaaaninfra.com"
+     },
+     {
+      "id": 6502517,
+      "name": "",
+      "sim": 1.0,
+      "domain": "vaaaninfra.com"
+     },
+     {
+      "id": 2107447,
+      "name": "",
+      "sim": 0.6,
+      "domain": "kccinfra.in"
+     },
+     {
+      "id": 9498658,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 8266273,
+      "name": "",
+      "sim": 0.435,
+      "domain": null
+     },
+     {
+      "id": 2919734,
+      "name": "",
+      "sim": 0.56,
+      "domain": "keystoneinfra.com"
+     },
+     {
+      "id": 4683085,
+      "name": "",
+      "sim": 0.7,
+      "domain": "vbbinfra.com"
+     },
+     {
+      "id": 9232425,
+      "name": "",
+      "sim": 0.6,
+      "domain": "tbrinfra.com"
+     },
+     {
+      "id": 4717520,
+      "name": "",
+      "sim": 0.429,
+      "domain": "srccompany.in"
+     },
+     {
+      "id": 5574946,
+      "name": "",
+      "sim": 0.462,
+      "domain": "spkpowerinfra.com"
+     },
+     {
+      "id": 2308882,
+      "name": "",
+      "sim": 0.636,
+      "domain": "onessinfra.com"
+     },
+     {
+      "id": 15870790,
+      "name": "",
+      "sim": 0.435,
+      "domain": "dwizzyinfra.com"
+     },
+     {
+      "id": 30047165,
+      "name": "",
+      "sim": 0.455,
+      "domain": null
+     },
+     {
+      "id": 9896943,
+      "name": "",
+      "sim": 0.609,
+      "domain": "ramoseinfra.in"
+     },
+     {
+      "id": 16827759,
+      "name": "",
+      "sim": 0.609,
+      "domain": "torobuild.co.in"
+     },
+     {
+      "id": 16553222,
+      "name": "",
+      "sim": 0.609,
+      "domain": "silicainfra.com"
+     },
+     {
+      "id": 3227465,
+      "name": "",
+      "sim": 0.526,
+      "domain": "gainfra.com"
+     },
+     {
+      "id": 2087589,
+      "name": "",
+      "sim": 0.522,
+      "domain": "kotech.in"
+     },
+     {
+      "id": 4007666,
+      "name": "",
+      "sim": 0.435,
+      "domain": "georoof.com"
+     },
+     {
+      "id": 9574966,
+      "name": "",
+      "sim": 0.476,
+      "domain": "gind.in"
+     },
+     {
+      "id": 619394,
+      "name": "",
+      "sim": 0.455,
+      "domain": "avils-infra.com"
+     },
+     {
+      "id": 18671388,
+      "name": "",
+      "sim": 0.417,
+      "domain": "altviewinfra.com"
+     },
+     {
+      "id": 4718607,
+      "name": "",
+      "sim": 0.452,
+      "domain": "wtil.in"
+     }
+    ],
+    "domain_candidate_ids": [
+     27001839
+    ]
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 14,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.justdial.com",
+      "date_text": null,
+      "rank": 2,
+      "url_id": "1ef642d8a1"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 3,
+      "url_id": "620e3ece7e"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "rank": 4,
+      "url_id": "089943c4d2"
+     }
+    ],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 9,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 1,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 4,
+      "hits": [
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.justdial.com",
+        "date_text": null,
+        "rank": 2,
+        "url_id": "1ef642d8a1"
+       },
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 3,
+        "url_id": "620e3ece7e"
+       },
+       {
+        "dated": false,
+        "names_target": true,
+        "discriminator": false,
+        "source_ok": false,
+        "severity": 1,
+        "url_host": "www.google.com",
+        "date_text": null,
+        "rank": 4,
+        "url_id": "089943c4d2"
+       }
+      ]
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 14.0,
+   "seconds": 97.7
+  },
+  "c043": {
+   "case_id": "c043",
+   "stratum": "shut_down",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "abhigroup.co.in",
+   "identify": {
+    "candidates": [
+     {
+      "id": 5867503,
+      "name": "",
+      "sim": 1.0,
+      "domain": "abhigroupofcompanies.com"
+     },
+     {
+      "id": 29877318,
+      "name": "",
+      "sim": 1.0,
+      "domain": "abhigroup.co.in"
+     },
+     {
+      "id": 4410744,
+      "name": "",
+      "sim": 1.0,
+      "domain": "abhigroup.co.in"
+     },
+     {
+      "id": 24804886,
+      "name": "",
+      "sim": 0.606,
+      "domain": null
+     },
+     {
+      "id": 1051443,
+      "name": "",
+      "sim": 0.667,
+      "domain": "shopriteholdings.co.za"
+     },
+     {
+      "id": 1271303,
+      "name": "",
+      "sim": 0.766,
+      "domain": "limak.com.tr"
+     },
+     {
+      "id": 1135127,
+      "name": "",
+      "sim": 0.8,
+      "domain": "etaascon.com"
+     },
+     {
+      "id": 1274432,
+      "name": "",
+      "sim": 0.783,
+      "domain": "incogroup.com"
+     },
+     {
+      "id": 1041314,
+      "name": "",
+      "sim": 0.735,
+      "domain": "dilawri.ca"
+     },
+     {
+      "id": 1041966,
+      "name": "",
+      "sim": 0.766,
+      "domain": "flynncompanies.com"
+     },
+     {
+      "id": 1273996,
+      "name": "",
+      "sim": 0.735,
+      "domain": "hassanigroup.com"
+     },
+     {
+      "id": 1912589,
+      "name": "",
+      "sim": 0.692,
+      "domain": "veyseloglu.az"
+     },
+     {
+      "id": 614657,
+      "name": "",
+      "sim": 0.917,
+      "domain": "alhind.com"
+     },
+     {
+      "id": 1277168,
+      "name": "",
+      "sim": 0.766,
+      "domain": "derbygroup.ae"
+     },
+     {
+      "id": 6536939,
+      "name": "",
+      "sim": 0.75,
+      "domain": "primergrp.com"
+     },
+     {
+      "id": 6229981,
+      "name": "",
+      "sim": 0.833,
+      "domain": "brandt.ca"
+     },
+     {
+      "id": 1182799,
+      "name": "",
+      "sim": 0.75,
+      "domain": "hilonggroup.com"
+     },
+     {
+      "id": 1361185,
+      "name": "",
+      "sim": 0.75,
+      "domain": "orient.global"
+     },
+     {
+      "id": 1956204,
+      "name": "",
+      "sim": 0.735,
+      "domain": "palawanpawnshop.com"
+     },
+     {
+      "id": 2700208,
+      "name": "",
+      "sim": 0.889,
+      "domain": "adr-group.com"
+     },
+     {
+      "id": 929600,
+      "name": "",
+      "sim": 0.8,
+      "domain": null
+     },
+     {
+      "id": 6062205,
+      "name": "",
+      "sim": 0.735,
+      "domain": "cosmote.gr"
+     },
+     {
+      "id": 1961466,
+      "name": "",
+      "sim": 0.75,
+      "domain": "melcomgroup.com"
+     },
+     {
+      "id": 8403397,
+      "name": "",
+      "sim": 0.783,
+      "domain": null
+     },
+     {
+      "id": 1163123,
+      "name": "",
+      "sim": 0.296,
+      "domain": "abhi.org.uk"
+     }
+    ],
+    "domain_candidate_ids": [
+     29877318
+    ]
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 37.0,
+   "seconds": 328.3
+  },
+  "c051": {
+   "case_id": "c051",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 1268881,
+      "name": "",
+      "sim": 0.474,
+      "domain": "teamglobal.in"
+     },
+     {
+      "id": 721613,
+      "name": "",
+      "sim": 0.703,
+      "domain": "capricornlogistics.com"
+     },
+     {
+      "id": 14556,
+      "name": "",
+      "sim": 0.529,
+      "domain": "spoton.co.in"
+     },
+     {
+      "id": 1933199,
+      "name": "",
+      "sim": 0.71,
+      "domain": "akalogistics.com"
+     },
+     {
+      "id": 1136330,
+      "name": "",
+      "sim": 0.5,
+      "domain": "seashellgroup.in"
+     },
+     {
+      "id": 6325122,
+      "name": "",
+      "sim": 0.514,
+      "domain": "scootsy.com"
+     },
+     {
+      "id": 5124951,
+      "name": "",
+      "sim": 0.667,
+      "domain": "attarlogistics.com"
+     },
+     {
+      "id": 1133547,
+      "name": "",
+      "sim": 0.686,
+      "domain": "coldman.in"
+     },
+     {
+      "id": 1277817,
+      "name": "",
+      "sim": 0.649,
+      "domain": "carryfastlogistics.com"
+     },
+     {
+      "id": 1135896,
+      "name": "",
+      "sim": 0.629,
+      "domain": "dexters.co.in"
+     },
+     {
+      "id": 6625792,
+      "name": "",
+      "sim": 0.562,
+      "domain": "rcpl.net.in"
+     },
+     {
+      "id": 4621007,
+      "name": "",
+      "sim": 0.514,
+      "domain": "veritaslogistics.com"
+     },
+     {
+      "id": 3195865,
+      "name": "",
+      "sim": 0.514,
+      "domain": "mileagelogistics.com"
+     },
+     {
+      "id": 10296124,
+      "name": "",
+      "sim": 0.5,
+      "domain": "nlpl.net"
+     },
+     {
+      "id": 2048628,
+      "name": "",
+      "sim": 0.774,
+      "domain": "isalogistics.in"
+     },
+     {
+      "id": 1957847,
+      "name": "",
+      "sim": 0.545,
+      "domain": "velex.in"
+     },
+     {
+      "id": 3017678,
+      "name": "",
+      "sim": 0.545,
+      "domain": "nitcologistics.com"
+     },
+     {
+      "id": 4933614,
+      "name": "",
+      "sim": 0.462,
+      "domain": "mahalakshmilogistics.com"
+     },
+     {
+      "id": 9245439,
+      "name": "",
+      "sim": 0.727,
+      "domain": "atlaslogistics.co.in"
+     },
+     {
+      "id": 921,
+      "name": "",
+      "sim": 0.703,
+      "domain": "chettinad.com"
+     },
+     {
+      "id": 5617363,
+      "name": "",
+      "sim": 0.686,
+      "domain": "biforst.com"
+     },
+     {
+      "id": 1977940,
+      "name": "",
+      "sim": 0.5,
+      "domain": "starlinklogistics.com"
+     },
+     {
+      "id": 1277319,
+      "name": "",
+      "sim": 0.511,
+      "domain": "robinsonsglobal.com"
+     },
+     {
+      "id": 1265327,
+      "name": "",
+      "sim": 0.468,
+      "domain": "warehousingexpress.com"
+     },
+     {
+      "id": 2096629,
+      "name": "",
+      "sim": 0.522,
+      "domain": "lankaship.lk"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 10,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 16.6,
+   "seconds": 154.5
+  },
+  "c050": {
+   "case_id": "c050",
+   "stratum": "shut_down",
+   "split": "holdout",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "westwindindia.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 4619491,
+      "name": "",
+      "sim": 1.0,
+      "domain": "westwindindia.com"
+     },
+     {
+      "id": 13618636,
+      "name": "",
+      "sim": 0.714,
+      "domain": "igreensl.in"
+     },
+     {
+      "id": 15892817,
+      "name": "",
+      "sim": 0.759,
+      "domain": "arioshipping.com"
+     },
+     {
+      "id": 2775085,
+      "name": "",
+      "sim": 0.721,
+      "domain": "admiral.lk"
+     },
+     {
+      "id": 17077777,
+      "name": "",
+      "sim": 0.842,
+      "domain": "sklshipping.in"
+     },
+     {
+      "id": 10523970,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 30831939,
+      "name": "",
+      "sim": 0.759,
+      "domain": null
+     },
+     {
+      "id": 65810210,
+      "name": "",
+      "sim": 0.733,
+      "domain": null
+     },
+     {
+      "id": 4543996,
+      "name": "",
+      "sim": 0.733,
+      "domain": "jaguarship.com"
+     },
+     {
+      "id": 13268207,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 13569710,
+      "name": "",
+      "sim": 0.772,
+      "domain": "ascshipping.co.in"
+     },
+     {
+      "id": 19176226,
+      "name": "",
+      "sim": 0.82,
+      "domain": null
+     },
+     {
+      "id": 18282572,
+      "name": "",
+      "sim": 0.842,
+      "domain": null
+     },
+     {
+      "id": 21586476,
+      "name": "",
+      "sim": 0.825,
+      "domain": null
+     },
+     {
+      "id": 29429279,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 11964885,
+      "name": "",
+      "sim": 0.812,
+      "domain": null
+     },
+     {
+      "id": 17969020,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 29820319,
+      "name": "",
+      "sim": 0.688,
+      "domain": null
+     },
+     {
+      "id": 18962403,
+      "name": "",
+      "sim": 0.839,
+      "domain": null
+     },
+     {
+      "id": 28448361,
+      "name": "",
+      "sim": 0.793,
+      "domain": null
+     },
+     {
+      "id": 11455518,
+      "name": "",
+      "sim": 0.814,
+      "domain": null
+     },
+     {
+      "id": 15082059,
+      "name": "",
+      "sim": 0.688,
+      "domain": null
+     },
+     {
+      "id": 23976388,
+      "name": "",
+      "sim": 0.787,
+      "domain": null
+     },
+     {
+      "id": 24787916,
+      "name": "",
+      "sim": 0.772,
+      "domain": null
+     },
+     {
+      "id": 12157313,
+      "name": "",
+      "sim": 0.71,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": [
+     17576739
+    ]
+   },
+   "profile": {
+    "status": "deleted",
+    "headcount_total": 50,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 209,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 16,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 7,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 1,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 8,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 18.8,
+   "seconds": 163.5
+  },
+  "c047": {
+   "case_id": "c047",
+   "stratum": "shut_down",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "seasky.co.in",
+   "identify": {
+    "candidates": [],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 39.0,
+   "seconds": 356.3
+  },
+  "c054": {
+   "case_id": "c054",
+   "stratum": "invented",
+   "split": "holdout",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 1137232,
+      "name": "",
+      "sim": 0.667,
+      "domain": "continentalgroup.com"
+     },
+     {
+      "id": 5620720,
+      "name": "",
+      "sim": 0.645,
+      "domain": "geeteecarriers.com"
+     },
+     {
+      "id": 2582874,
+      "name": "",
+      "sim": 0.643,
+      "domain": null
+     },
+     {
+      "id": 15869148,
+      "name": "",
+      "sim": 0.643,
+      "domain": "cfccarriers.com"
+     },
+     {
+      "id": 28518487,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 14143564,
+      "name": "",
+      "sim": 0.533,
+      "domain": null
+     },
+     {
+      "id": 5857338,
+      "name": "",
+      "sim": 0.733,
+      "domain": "rapidcarriers.net"
+     },
+     {
+      "id": 63347511,
+      "name": "",
+      "sim": 0.71,
+      "domain": null
+     },
+     {
+      "id": 1266961,
+      "name": "",
+      "sim": 0.462,
+      "domain": "babajishivram.com"
+     },
+     {
+      "id": 69944486,
+      "name": "",
+      "sim": 0.688,
+      "domain": null
+     },
+     {
+      "id": 15116401,
+      "name": "",
+      "sim": 0.552,
+      "domain": null
+     },
+     {
+      "id": 32162081,
+      "name": "",
+      "sim": 0.733,
+      "domain": null
+     },
+     {
+      "id": 14971514,
+      "name": "",
+      "sim": 0.733,
+      "domain": null
+     },
+     {
+      "id": 20552274,
+      "name": "",
+      "sim": 0.733,
+      "domain": null
+     },
+     {
+      "id": 6743535,
+      "name": "",
+      "sim": 0.645,
+      "domain": null
+     },
+     {
+      "id": 60450768,
+      "name": "",
+      "sim": 0.733,
+      "domain": "dhakacarriers.com"
+     },
+     {
+      "id": 69259327,
+      "name": "",
+      "sim": 0.714,
+      "domain": null
+     },
+     {
+      "id": 3909707,
+      "name": "",
+      "sim": 0.595,
+      "domain": "prcpl.com"
+     },
+     {
+      "id": 17910331,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 26939561,
+      "name": "",
+      "sim": 0.471,
+      "domain": null
+     },
+     {
+      "id": 19374720,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 5615457,
+      "name": "",
+      "sim": 0.8,
+      "domain": "deltagroupindia.com"
+     },
+     {
+      "id": 4002373,
+      "name": "",
+      "sim": 0.649,
+      "domain": "ercindia.com"
+     },
+     {
+      "id": 16161324,
+      "name": "",
+      "sim": 0.645,
+      "domain": "softencarriers.com"
+     },
+     {
+      "id": 21391206,
+      "name": "",
+      "sim": 0.647,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 10,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 17.2,
+   "seconds": 195.2
+  },
+  "c055": {
+   "case_id": "c055",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 610895,
+      "name": "",
+      "sim": 0.652,
+      "domain": "omlogisticssupplychain.com"
+     },
+     {
+      "id": 12121126,
+      "name": "",
+      "sim": 0.632,
+      "domain": "apexshipping.in"
+     },
+     {
+      "id": 9314417,
+      "name": "",
+      "sim": 0.571,
+      "domain": "velocitysupplychain.in"
+     },
+     {
+      "id": 8942854,
+      "name": "",
+      "sim": 0.571,
+      "domain": "celerity.com.pk"
+     },
+     {
+      "id": 1971637,
+      "name": "",
+      "sim": 0.615,
+      "domain": "accexscs.com"
+     },
+     {
+      "id": 15422504,
+      "name": "",
+      "sim": 0.718,
+      "domain": "rhilo.co.in"
+     },
+     {
+      "id": 12562675,
+      "name": "",
+      "sim": 0.732,
+      "domain": "dynamicsupplychain.net"
+     },
+     {
+      "id": 1971870,
+      "name": "",
+      "sim": 0.571,
+      "domain": "trustech.me"
+     },
+     {
+      "id": 4535809,
+      "name": "",
+      "sim": 0.649,
+      "domain": "yntsupplychain.in"
+     },
+     {
+      "id": 5222322,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 26790514,
+      "name": "",
+      "sim": 0.7,
+      "domain": "yugsupplychain.com"
+     },
+     {
+      "id": 14958931,
+      "name": "",
+      "sim": 0.769,
+      "domain": null
+     },
+     {
+      "id": 17582917,
+      "name": "",
+      "sim": 0.727,
+      "domain": "storekraft.in"
+     },
+     {
+      "id": 27998946,
+      "name": "",
+      "sim": 0.722,
+      "domain": "gkscpl.com"
+     },
+     {
+      "id": 10344284,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 754885,
+      "name": "",
+      "sim": 0.566,
+      "domain": "inextlogistics.com"
+     },
+     {
+      "id": 20331650,
+      "name": "",
+      "sim": 0.649,
+      "domain": "tejsupplychain.com"
+     },
+     {
+      "id": 65394713,
+      "name": "",
+      "sim": 0.811,
+      "domain": "pmrsupplychain.com"
+     },
+     {
+      "id": 4920282,
+      "name": "",
+      "sim": 0.78,
+      "domain": "stringssupplychain.com"
+     },
+     {
+      "id": 12244375,
+      "name": "",
+      "sim": 0.769,
+      "domain": "manassupplychain.com"
+     },
+     {
+      "id": 69165077,
+      "name": "",
+      "sim": 0.571,
+      "domain": "andhrolascpl.com"
+     },
+     {
+      "id": 70383425,
+      "name": "",
+      "sim": 0.585,
+      "domain": "aditiyasupplychain.com"
+     },
+     {
+      "id": 67336388,
+      "name": "",
+      "sim": 0.757,
+      "domain": "rscpl.net"
+     },
+     {
+      "id": 64341991,
+      "name": "",
+      "sim": 0.585,
+      "domain": null
+     },
+     {
+      "id": 8367496,
+      "name": "",
+      "sim": 0.582,
+      "domain": "shipconlogistics.com"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 29,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 9,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 16.6,
+   "seconds": 159.8
+  },
+  "c042": {
+   "case_id": "c042",
+   "stratum": "small_real",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": "warehousity.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 10584,
+      "name": "",
+      "sim": 1.0,
+      "domain": "warehousity.com"
+     },
+     {
+      "id": 1282048,
+      "name": "",
+      "sim": 0.429,
+      "domain": null
+     },
+     {
+      "id": 1133927,
+      "name": "",
+      "sim": 0.621,
+      "domain": "varuna.net"
+     },
+     {
+      "id": 892903,
+      "name": "",
+      "sim": 0.643,
+      "domain": "smartwarehousing.com"
+     },
+     {
+      "id": 1279689,
+      "name": "",
+      "sim": 0.257,
+      "domain": "tippmanngroup.com"
+     },
+     {
+      "id": 8792563,
+      "name": "",
+      "sim": 0.474,
+      "domain": null
+     },
+     {
+      "id": 4606577,
+      "name": "",
+      "sim": 0.462,
+      "domain": "v5logistics.com"
+     },
+     {
+      "id": 6310537,
+      "name": "",
+      "sim": 0.429,
+      "domain": "cewacor.nic.in"
+     },
+     {
+      "id": 1265327,
+      "name": "",
+      "sim": 0.45,
+      "domain": "warehousingexpress.com"
+     },
+     {
+      "id": 2170977,
+      "name": "",
+      "sim": 0.409,
+      "domain": "hmiw.net"
+     },
+     {
+      "id": 1904707,
+      "name": "",
+      "sim": 0.514,
+      "domain": "autowc.com"
+     },
+     {
+      "id": 4305179,
+      "name": "",
+      "sim": 0.621,
+      "domain": "accessbizindia.com"
+     },
+     {
+      "id": 11738342,
+      "name": "",
+      "sim": 0.909,
+      "domain": "warehousify.us"
+     },
+     {
+      "id": 4043193,
+      "name": "",
+      "sim": 0.562,
+      "domain": "footprintwarehousing.com"
+     },
+     {
+      "id": 8894695,
+      "name": "",
+      "sim": 0.545,
+      "domain": "transworldwarehousing.com"
+     },
+     {
+      "id": 2101016,
+      "name": "",
+      "sim": 0.273,
+      "domain": "fit3pl.in"
+     },
+     {
+      "id": 19132844,
+      "name": "",
+      "sim": 0.581,
+      "domain": "onelogix.com"
+     },
+     {
+      "id": 827044,
+      "name": "",
+      "sim": 0.643,
+      "domain": "olimpwarehousing.com"
+     },
+     {
+      "id": 1132988,
+      "name": "",
+      "sim": 0.6,
+      "domain": "ashwikawarehousing.com"
+     },
+     {
+      "id": 2427975,
+      "name": "",
+      "sim": 0.692,
+      "domain": "soswarehousing.com"
+     },
+     {
+      "id": 3791354,
+      "name": "",
+      "sim": 0.621,
+      "domain": "join-portal.com"
+     },
+     {
+      "id": 1676388,
+      "name": "",
+      "sim": 0.621,
+      "domain": "beyondwarehousing.com"
+     },
+     {
+      "id": 9349993,
+      "name": "",
+      "sim": 0.692,
+      "domain": "eafit.edu.co"
+     },
+     {
+      "id": 1310995,
+      "name": "",
+      "sim": 0.486,
+      "domain": null
+     },
+     {
+      "id": 8076886,
+      "name": "",
+      "sim": 0.545,
+      "domain": "gogginwarehousing.com"
+     }
+    ],
+    "domain_candidate_ids": [
+     10584
+    ]
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 51.2,
+   "seconds": 494.1
+  },
+  "c059": {
+   "case_id": "c059",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 4534215,
+      "name": "",
+      "sim": 0.679,
+      "domain": "swiftlinecargo.com"
+     },
+     {
+      "id": 23029037,
+      "name": "",
+      "sim": 0.679,
+      "domain": null
+     },
+     {
+      "id": 10512802,
+      "name": "",
+      "sim": 0.698,
+      "domain": "mutspl.com"
+     },
+     {
+      "id": 914948,
+      "name": "",
+      "sim": 0.419,
+      "domain": "koenig-solutions.com"
+     },
+     {
+      "id": 9866,
+      "name": "",
+      "sim": 0.571,
+      "domain": "tallysolutions.com"
+     },
+     {
+      "id": 11100,
+      "name": "",
+      "sim": 0.419,
+      "domain": "geminisolutions.com"
+     },
+     {
+      "id": 1134343,
+      "name": "",
+      "sim": 0.4,
+      "domain": "smartsocs.com"
+     },
+     {
+      "id": 1072200,
+      "name": "",
+      "sim": 0.409,
+      "domain": "imarque.com"
+     },
+     {
+      "id": 2148796,
+      "name": "",
+      "sim": 0.745,
+      "domain": "klog.pt"
+     },
+     {
+      "id": 899051,
+      "name": "",
+      "sim": 0.679,
+      "domain": "addsecure.com"
+     },
+     {
+      "id": 1948982,
+      "name": "",
+      "sim": 0.704,
+      "domain": "nucleartransportsolutions.com"
+     },
+     {
+      "id": 788045,
+      "name": "",
+      "sim": 0.36,
+      "domain": "minosha.in"
+     },
+     {
+      "id": 1088019,
+      "name": "",
+      "sim": 0.346,
+      "domain": "myndsolution.com"
+     },
+     {
+      "id": 13704,
+      "name": "",
+      "sim": 0.305,
+      "domain": "joulestowatts.com"
+     },
+     {
+      "id": 1109503,
+      "name": "",
+      "sim": 0.464,
+      "domain": "technotaskglobal.com"
+     },
+     {
+      "id": 5925,
+      "name": "",
+      "sim": 0.394,
+      "domain": "xpressbees.com"
+     },
+     {
+      "id": 1049743,
+      "name": "",
+      "sim": 0.409,
+      "domain": "cadmaxx.com"
+     },
+     {
+      "id": 1267850,
+      "name": "",
+      "sim": 0.45,
+      "domain": "anbglobal.com"
+     },
+     {
+      "id": 616137,
+      "name": "",
+      "sim": 0.391,
+      "domain": "microlink.co.in"
+     },
+     {
+      "id": 38294,
+      "name": "",
+      "sim": 0.367,
+      "domain": "digitaltracksolutions.com"
+     },
+     {
+      "id": 36093,
+      "name": "",
+      "sim": 0.462,
+      "domain": "rvsolutions.in"
+     },
+     {
+      "id": 16650181,
+      "name": "",
+      "sim": 0.731,
+      "domain": "tsindia.co.in"
+     },
+     {
+      "id": 9157,
+      "name": "",
+      "sim": 0.316,
+      "domain": "aizant.com"
+     },
+     {
+      "id": 1248959,
+      "name": "",
+      "sim": 0.316,
+      "domain": "onitygroup.com"
+     },
+     {
+      "id": 1268771,
+      "name": "",
+      "sim": 0.429,
+      "domain": "irqs.co.in"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 10,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 9.0,
+   "seconds": 116.8
+  },
+  "c052": {
+   "case_id": "c052",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 1980762,
+      "name": "",
+      "sim": 0.741,
+      "domain": "everfastfreight.in"
+     },
+     {
+      "id": 15508159,
+      "name": "",
+      "sim": 0.735,
+      "domain": "onefreight.in"
+     },
+     {
+      "id": 5970044,
+      "name": "",
+      "sim": 0.735,
+      "domain": "ktslogis.com"
+     },
+     {
+      "id": 4763813,
+      "name": "",
+      "sim": 0.712,
+      "domain": "bharatifrt.com"
+     },
+     {
+      "id": 12316957,
+      "name": "",
+      "sim": 0.857,
+      "domain": null
+     },
+     {
+      "id": 12791327,
+      "name": "",
+      "sim": 0.61,
+      "domain": "khimjipoonja.com"
+     },
+     {
+      "id": 16737124,
+      "name": "",
+      "sim": 0.679,
+      "domain": null
+     },
+     {
+      "id": 19208217,
+      "name": "",
+      "sim": 0.857,
+      "domain": "askfreight.in"
+     },
+     {
+      "id": 29440861,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 31192224,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 71933946,
+      "name": "",
+      "sim": 0.735,
+      "domain": "sslfreight.in"
+     },
+     {
+      "id": 73386878,
+      "name": "",
+      "sim": 0.735,
+      "domain": "rnfreight.com"
+     },
+     {
+      "id": 3908431,
+      "name": "",
+      "sim": 0.764,
+      "domain": "scffpl.in"
+     },
+     {
+      "id": 8555714,
+      "name": "",
+      "sim": 0.712,
+      "domain": "mbff.co.in"
+     },
+     {
+      "id": 21651288,
+      "name": "",
+      "sim": 0.6,
+      "domain": "savitrifreight.com"
+     },
+     {
+      "id": 31597590,
+      "name": "",
+      "sim": 0.632,
+      "domain": "idealfreight.com"
+     },
+     {
+      "id": 12630710,
+      "name": "",
+      "sim": 0.792,
+      "domain": null
+     },
+     {
+      "id": 20231962,
+      "name": "",
+      "sim": 0.679,
+      "domain": null
+     },
+     {
+      "id": 63910650,
+      "name": "",
+      "sim": 0.824,
+      "domain": null
+     },
+     {
+      "id": 65429192,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 66639387,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 25136821,
+      "name": "",
+      "sim": 0.646,
+      "domain": "aakarshfreight.com"
+     },
+     {
+      "id": 9764314,
+      "name": "",
+      "sim": 0.712,
+      "domain": "sndas.in"
+     },
+     {
+      "id": 4267591,
+      "name": "",
+      "sim": 0.735,
+      "domain": "ksrindia.net"
+     },
+     {
+      "id": 7793491,
+      "name": "",
+      "sim": 0.526,
+      "domain": "sagroupindia.com"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 27.4,
+   "seconds": 315.6
+  },
+  "c053": {
+   "case_id": "c053",
+   "stratum": "invented",
+   "split": "holdout",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 8751734,
+      "name": "",
+      "sim": 0.467,
+      "domain": null
+     },
+     {
+      "id": 60835675,
+      "name": "",
+      "sim": 0.588,
+      "domain": "tom-haulage.com"
+     },
+     {
+      "id": 26067,
+      "name": "",
+      "sim": 0.133,
+      "domain": "shahi.co.in"
+     },
+     {
+      "id": 6324551,
+      "name": "",
+      "sim": 0.353,
+      "domain": "myvestige.com"
+     },
+     {
+      "id": 722620,
+      "name": "",
+      "sim": 0.275,
+      "domain": "honda2wheelersindia.com"
+     },
+     {
+      "id": 1109633,
+      "name": "",
+      "sim": 0.182,
+      "domain": "2coms.com"
+     },
+     {
+      "id": 2164078,
+      "name": "",
+      "sim": 0.207,
+      "domain": "indus-pharma.com"
+     },
+     {
+      "id": 1131737,
+      "name": "",
+      "sim": 0.258,
+      "domain": "renewsysworld.com"
+     },
+     {
+      "id": 610665,
+      "name": "",
+      "sim": 0.3,
+      "domain": "lifestylestores.com"
+     },
+     {
+      "id": 1521707,
+      "name": "",
+      "sim": 0.214,
+      "domain": "hilalfoods.com.pk"
+     },
+     {
+      "id": 1961311,
+      "name": "",
+      "sim": 0.062,
+      "domain": "interwood.pk"
+     },
+     {
+      "id": 1287789,
+      "name": "",
+      "sim": 0.303,
+      "domain": "piaggio-cv.co.in"
+     },
+     {
+      "id": 11100,
+      "name": "",
+      "sim": 0.424,
+      "domain": "geminisolutions.com"
+     },
+     {
+      "id": 18654,
+      "name": "",
+      "sim": 0.294,
+      "domain": "bikanervala.com"
+     },
+     {
+      "id": 19946,
+      "name": "",
+      "sim": 0.194,
+      "domain": "monginis.net"
+     },
+     {
+      "id": 737529,
+      "name": "",
+      "sim": 0.133,
+      "domain": "hettich.com"
+     },
+     {
+      "id": 1257413,
+      "name": "",
+      "sim": 0.231,
+      "domain": "tapaltea.com"
+     },
+     {
+      "id": 16455,
+      "name": "",
+      "sim": 0.222,
+      "domain": "parleagro.com"
+     },
+     {
+      "id": 1967101,
+      "name": "",
+      "sim": 0.229,
+      "domain": "soorty.com"
+     },
+     {
+      "id": 914948,
+      "name": "",
+      "sim": 0.242,
+      "domain": "koenig-solutions.com"
+     },
+     {
+      "id": 1131934,
+      "name": "",
+      "sim": 0.258,
+      "domain": "apcoinfra.com"
+     },
+     {
+      "id": 610212,
+      "name": "",
+      "sim": 0.207,
+      "domain": "parleproducts.com"
+     },
+     {
+      "id": 6570445,
+      "name": "",
+      "sim": 0.231,
+      "domain": "tuv-nord.com"
+     },
+     {
+      "id": 1132077,
+      "name": "",
+      "sim": 0.211,
+      "domain": "bisleri.com"
+     },
+     {
+      "id": 16746,
+      "name": "",
+      "sim": 0.214,
+      "domain": "goldisolar.com"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 25.2,
+   "seconds": 302.4
+  },
+  "c056": {
+   "case_id": "c056",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 1143849,
+      "name": "",
+      "sim": 0.163,
+      "domain": "tv9hindi.com"
+     },
+     {
+      "id": 2165308,
+      "name": "",
+      "sim": 0.125,
+      "domain": "baurs.com"
+     },
+     {
+      "id": 2001823,
+      "name": "",
+      "sim": 0.303,
+      "domain": "supreme.in"
+     },
+     {
+      "id": 2192375,
+      "name": "",
+      "sim": 0.611,
+      "domain": "arrowtrucking.com"
+     },
+     {
+      "id": 1140279,
+      "name": "",
+      "sim": 0.364,
+      "domain": "jmitra.co.in"
+     },
+     {
+      "id": 8608731,
+      "name": "",
+      "sim": 0.7,
+      "domain": null
+     },
+     {
+      "id": 1860843,
+      "name": "",
+      "sim": 0.706,
+      "domain": null
+     },
+     {
+      "id": 9070102,
+      "name": "",
+      "sim": 0.41,
+      "domain": "maxop.com"
+     },
+     {
+      "id": 4535406,
+      "name": "",
+      "sim": 0.375,
+      "domain": "metalseam.com"
+     },
+     {
+      "id": 1606270,
+      "name": "",
+      "sim": 0.706,
+      "domain": "jsgtrucking.com"
+     },
+     {
+      "id": 4027625,
+      "name": "",
+      "sim": 0.667,
+      "domain": "palomaturnedparts.com"
+     },
+     {
+      "id": 2084935,
+      "name": "",
+      "sim": 0.39,
+      "domain": "decopl.com"
+     },
+     {
+      "id": 2058892,
+      "name": "",
+      "sim": 0.444,
+      "domain": "honda.lk"
+     },
+     {
+      "id": 1663427,
+      "name": "",
+      "sim": 0.647,
+      "domain": "bdjtrucking.com"
+     },
+     {
+      "id": 64427860,
+      "name": "",
+      "sim": 0.323,
+      "domain": null
+     },
+     {
+      "id": 2191839,
+      "name": "",
+      "sim": 0.757,
+      "domain": "klapectruckingcompany.com"
+     },
+     {
+      "id": 2671720,
+      "name": "",
+      "sim": 0.684,
+      "domain": "timmonstruck.com"
+     },
+     {
+      "id": 5789842,
+      "name": "",
+      "sim": 0.722,
+      "domain": "tahoetrucking.com"
+     },
+     {
+      "id": 8401190,
+      "name": "",
+      "sim": 0.722,
+      "domain": "royaltruck.com"
+     },
+     {
+      "id": 11991652,
+      "name": "",
+      "sim": 0.686,
+      "domain": null
+     },
+     {
+      "id": 12949992,
+      "name": "",
+      "sim": 0.703,
+      "domain": "lcglogistics.com"
+     },
+     {
+      "id": 13042052,
+      "name": "",
+      "sim": 0.667,
+      "domain": null
+     },
+     {
+      "id": 14974792,
+      "name": "",
+      "sim": 0.8,
+      "domain": null
+     },
+     {
+      "id": 15539223,
+      "name": "",
+      "sim": 0.579,
+      "domain": null
+     },
+     {
+      "id": 18709463,
+      "name": "",
+      "sim": 0.722,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 15,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 5,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 27.4,
+   "seconds": 278.3
+  },
+  "c058": {
+   "case_id": "c058",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 2150887,
+      "name": "",
+      "sim": 0.703,
+      "domain": "rkvcargomovers.com"
+     },
+     {
+      "id": 5189041,
+      "name": "",
+      "sim": 0.615,
+      "domain": "imagecargo.in"
+     },
+     {
+      "id": 3808387,
+      "name": "",
+      "sim": 0.571,
+      "domain": "abhishekshipping.com"
+     },
+     {
+      "id": 3960135,
+      "name": "",
+      "sim": 0.737,
+      "domain": "premcargo.com"
+     },
+     {
+      "id": 12132979,
+      "name": "",
+      "sim": 0.762,
+      "domain": "nationalcargomovers.in"
+     },
+     {
+      "id": 14567003,
+      "name": "",
+      "sim": 0.545,
+      "domain": "iglgroup.in"
+     },
+     {
+      "id": 2085118,
+      "name": "",
+      "sim": 0.732,
+      "domain": "shipape.in"
+     },
+     {
+      "id": 2837207,
+      "name": "",
+      "sim": 0.649,
+      "domain": "acmcargo.com"
+     },
+     {
+      "id": 5812995,
+      "name": "",
+      "sim": 0.667,
+      "domain": "cpcargomovers.net"
+     },
+     {
+      "id": 5874190,
+      "name": "",
+      "sim": 0.714,
+      "domain": "trimurticargo.com"
+     },
+     {
+      "id": 8439317,
+      "name": "",
+      "sim": 0.757,
+      "domain": "ascargo.co.in"
+     },
+     {
+      "id": 15428213,
+      "name": "",
+      "sim": 0.7,
+      "domain": "smoothcargomovers.com"
+     },
+     {
+      "id": 23804027,
+      "name": "",
+      "sim": 0.649,
+      "domain": "jdrcargo.in"
+     },
+     {
+      "id": 26261821,
+      "name": "",
+      "sim": 0.737,
+      "domain": null
+     },
+     {
+      "id": 66812606,
+      "name": "",
+      "sim": 0.75,
+      "domain": null
+     },
+     {
+      "id": 73032148,
+      "name": "",
+      "sim": 0.6,
+      "domain": "balunicargo.com"
+     },
+     {
+      "id": 74620546,
+      "name": "",
+      "sim": 0.769,
+      "domain": "rheincargo.co.in"
+     },
+     {
+      "id": 74685814,
+      "name": "",
+      "sim": 0.649,
+      "domain": "jsb.in"
+     },
+     {
+      "id": 66002186,
+      "name": "",
+      "sim": 0.757,
+      "domain": "vnstrailertransportindia.com"
+     },
+     {
+      "id": 12100019,
+      "name": "",
+      "sim": 0.558,
+      "domain": "dawnduskcargo.com"
+     },
+     {
+      "id": 12672915,
+      "name": "",
+      "sim": 0.652,
+      "domain": null
+     },
+     {
+      "id": 15651114,
+      "name": "",
+      "sim": 0.649,
+      "domain": "jsb.in"
+     },
+     {
+      "id": 21172696,
+      "name": "",
+      "sim": 0.78,
+      "domain": null
+     },
+     {
+      "id": 28718635,
+      "name": "",
+      "sim": 0.545,
+      "domain": null
+     },
+     {
+      "id": 30227455,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 19,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 9,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 22.8,
+   "seconds": 225.9
+  },
+  "c064": {
+   "case_id": "c064",
+   "stratum": "lookalike_or_wrong_domain",
+   "split": "holdout",
+   "state": "done",
+   "run_status": "done",
+   "input_domain": "atkexp.com",
+   "identify": {
+    "candidates": [
+     {
+      "id": 2729796,
+      "name": "",
+      "sim": 1.0,
+      "domain": "atkexp.com"
+     },
+     {
+      "id": 2037562,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 6394343,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 15469538,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 5325757,
+      "name": "",
+      "sim": 0.444,
+      "domain": "dtdchyderabad.com"
+     },
+     {
+      "id": 6417138,
+      "name": "",
+      "sim": 0.636,
+      "domain": "dtdcaustralia.com.au"
+     },
+     {
+      "id": 16678897,
+      "name": "",
+      "sim": 0.533,
+      "domain": null
+     },
+     {
+      "id": 12315546,
+      "name": "",
+      "sim": 0.444,
+      "domain": "dtdcqatar.com"
+     },
+     {
+      "id": 3559660,
+      "name": "",
+      "sim": 0.3,
+      "domain": "atkinsrealis.com"
+     },
+     {
+      "id": 24239281,
+      "name": "",
+      "sim": 0.32,
+      "domain": null
+     },
+     {
+      "id": 9418722,
+      "name": "",
+      "sim": 0.387,
+      "domain": null
+     },
+     {
+      "id": 18167615,
+      "name": "",
+      "sim": 0.632,
+      "domain": null
+     },
+     {
+      "id": 1975277,
+      "name": "",
+      "sim": 0.636,
+      "domain": null
+     },
+     {
+      "id": 22975516,
+      "name": "",
+      "sim": 0.258,
+      "domain": null
+     },
+     {
+      "id": 25300696,
+      "name": "",
+      "sim": 0.667,
+      "domain": "dtdc.com"
+     },
+     {
+      "id": 69196308,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 29708475,
+      "name": "",
+      "sim": 0.244,
+      "domain": null
+     },
+     {
+      "id": 4381565,
+      "name": "",
+      "sim": 0.25,
+      "domain": null
+     },
+     {
+      "id": 2832296,
+      "name": "",
+      "sim": 0.632,
+      "domain": "dtdcbarrie.com"
+     },
+     {
+      "id": 1112559,
+      "name": "",
+      "sim": 0.429,
+      "domain": "atkinsglobal.com"
+     },
+     {
+      "id": 5162711,
+      "name": "",
+      "sim": 0.421,
+      "domain": "myclickgenie.com"
+     },
+     {
+      "id": 27780292,
+      "name": "",
+      "sim": 0.32,
+      "domain": null
+     },
+     {
+      "id": 3872377,
+      "name": "",
+      "sim": 0.357,
+      "domain": null
+     },
+     {
+      "id": 73854867,
+      "name": "",
+      "sim": 0.364,
+      "domain": "dtdc.in"
+     },
+     {
+      "id": 8182791,
+      "name": "",
+      "sim": 0.4,
+      "domain": "hariharpackers.in"
+     }
+    ],
+    "domain_candidate_ids": [
+     2729796,
+     5360467
+    ]
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 47,
+    "headcount_trend_pct": 0.0,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 20,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 15.0,
+   "seconds": 133.9
+  },
+  "c057": {
+   "case_id": "c057",
+   "stratum": "invented",
+   "split": "tune",
+   "state": "stopped_at_cap",
+   "run_status": "stopped_at_cap",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 6277312,
+      "name": "",
+      "sim": 0.645,
+      "domain": "galaxyfreight.com"
+     },
+     {
+      "id": 32560683,
+      "name": "",
+      "sim": 0.571,
+      "domain": "ktrfreight.com"
+     },
+     {
+      "id": 8171007,
+      "name": "",
+      "sim": 0.621,
+      "domain": "starfreight.com.pk"
+     },
+     {
+      "id": 8101823,
+      "name": "",
+      "sim": 0.424,
+      "domain": "combinedfreight.com"
+     },
+     {
+      "id": 3899574,
+      "name": "",
+      "sim": 0.562,
+      "domain": "vrrddhifreight.co.in"
+     },
+     {
+      "id": 5834254,
+      "name": "",
+      "sim": 0.5,
+      "domain": "asbcmb.com"
+     },
+     {
+      "id": 16654599,
+      "name": "",
+      "sim": 0.645,
+      "domain": null
+     },
+     {
+      "id": 15403167,
+      "name": "",
+      "sim": 0.452,
+      "domain": "coglogfreight.com"
+     },
+     {
+      "id": 73465016,
+      "name": "",
+      "sim": 0.6,
+      "domain": "hazirfreight.com"
+     },
+     {
+      "id": 13581333,
+      "name": "",
+      "sim": 0.645,
+      "domain": "tritonfreights.com"
+     },
+     {
+      "id": 8724955,
+      "name": "",
+      "sim": 0.588,
+      "domain": "kingstarfreight.com"
+     },
+     {
+      "id": 21241094,
+      "name": "",
+      "sim": 0.621,
+      "domain": "jaysfreight.com.au"
+     },
+     {
+      "id": 26654313,
+      "name": "",
+      "sim": 0.6,
+      "domain": "powerfreight.lk"
+     },
+     {
+      "id": 4598581,
+      "name": "",
+      "sim": 0.645,
+      "domain": "samsonfreight.com"
+     },
+     {
+      "id": 69883603,
+      "name": "",
+      "sim": 0.389,
+      "domain": "pinkeagleh.com"
+     },
+     {
+      "id": 10364011,
+      "name": "",
+      "sim": 0.467,
+      "domain": null
+     },
+     {
+      "id": 21230421,
+      "name": "",
+      "sim": 0.69,
+      "domain": "lexafreight.co.zw"
+     },
+     {
+      "id": 65337996,
+      "name": "",
+      "sim": 0.467,
+      "domain": "excelfreight.net"
+     },
+     {
+      "id": 26621087,
+      "name": "",
+      "sim": 0.467,
+      "domain": "anayefreight.co.zw"
+     },
+     {
+      "id": 8108861,
+      "name": "",
+      "sim": 0.629,
+      "domain": "middleportfreight.co.zw"
+     },
+     {
+      "id": 64012412,
+      "name": "",
+      "sim": 0.621,
+      "domain": "jaxofreight.com"
+     },
+     {
+      "id": 15263967,
+      "name": "",
+      "sim": 0.643,
+      "domain": null
+     },
+     {
+      "id": 22844676,
+      "name": "",
+      "sim": 0.6,
+      "domain": "greenfreight.in"
+     },
+     {
+      "id": 9386116,
+      "name": "",
+      "sim": 0.645,
+      "domain": null
+     },
+     {
+      "id": 16908786,
+      "name": "",
+      "sim": 0.647,
+      "domain": "proactivefreight.com"
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": null,
+   "credits": 31.6,
+   "seconds": 301.4
+  },
+  "c060": {
+   "case_id": "c060",
+   "stratum": "invented",
+   "split": "holdout",
+   "state": "no_record",
+   "run_status": "done",
+   "input_domain": null,
+   "identify": {
+    "candidates": [
+     {
+      "id": 29031070,
+      "name": "",
+      "sim": 0.735,
+      "domain": null
+     },
+     {
+      "id": 3700715,
+      "name": "",
+      "sim": 0.762,
+      "domain": "expresscarriers.org"
+     },
+     {
+      "id": 1137232,
+      "name": "",
+      "sim": 0.522,
+      "domain": "continentalgroup.com"
+     },
+     {
+      "id": 5472904,
+      "name": "",
+      "sim": 0.784,
+      "domain": "nationalexp.com"
+     },
+     {
+      "id": 23066031,
+      "name": "",
+      "sim": 0.762,
+      "domain": null
+     },
+     {
+      "id": 18089979,
+      "name": "",
+      "sim": 0.615,
+      "domain": null
+     },
+     {
+      "id": 11082944,
+      "name": "",
+      "sim": 0.75,
+      "domain": null
+     },
+     {
+      "id": 5620720,
+      "name": "",
+      "sim": 0.585,
+      "domain": "geeteecarriers.com"
+     },
+     {
+      "id": 2582874,
+      "name": "",
+      "sim": 0.474,
+      "domain": null
+     },
+     {
+      "id": 15869148,
+      "name": "",
+      "sim": 0.474,
+      "domain": "cfccarriers.com"
+     },
+     {
+      "id": 68371551,
+      "name": "",
+      "sim": 0.739,
+      "domain": "m4dexpress.co.za"
+     },
+     {
+      "id": 28518487,
+      "name": "",
+      "sim": 0.522,
+      "domain": null
+     },
+     {
+      "id": 14143564,
+      "name": "",
+      "sim": 0.4,
+      "domain": null
+     },
+     {
+      "id": 5857338,
+      "name": "",
+      "sim": 0.55,
+      "domain": "rapidcarriers.net"
+     },
+     {
+      "id": 66636637,
+      "name": "",
+      "sim": 0.731,
+      "domain": "fleetlive.net"
+     },
+     {
+      "id": 63347511,
+      "name": "",
+      "sim": 0.488,
+      "domain": null
+     },
+     {
+      "id": 1266961,
+      "name": "",
+      "sim": 0.452,
+      "domain": "babajishivram.com"
+     },
+     {
+      "id": 69944486,
+      "name": "",
+      "sim": 0.571,
+      "domain": null
+     },
+     {
+      "id": 15116401,
+      "name": "",
+      "sim": 0.41,
+      "domain": null
+     },
+     {
+      "id": 32162081,
+      "name": "",
+      "sim": 0.6,
+      "domain": null
+     },
+     {
+      "id": 14971514,
+      "name": "",
+      "sim": 0.5,
+      "domain": null
+     },
+     {
+      "id": 20552274,
+      "name": "",
+      "sim": 0.55,
+      "domain": null
+     },
+     {
+      "id": 6743535,
+      "name": "",
+      "sim": 0.537,
+      "domain": null
+     },
+     {
+      "id": 60450768,
+      "name": "",
+      "sim": 0.55,
+      "domain": "dhakacarriers.com"
+     },
+     {
+      "id": 69259327,
+      "name": "",
+      "sim": 0.526,
+      "domain": null
+     }
+    ],
+    "domain_candidate_ids": null
+   },
+   "profile": null,
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 12,
+    "hits": [],
+    "per_search": [
+     {
+      "source": "web",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "news",
+      "n_results": 0,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 10,
+      "hits": []
+     },
+     {
+      "source": "web",
+      "n_results": 2,
+      "hits": []
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   },
+   "credits": 33.4,
+   "seconds": 245.0
   }
  },
  "repeats": {}
