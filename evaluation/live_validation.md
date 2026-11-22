@@ -71,3 +71,19 @@ The account balance moved from 15083.65 to 15040.39: 43.26, which matches the le
 ## 8. Nothing tuned
 
 No parameter or rule was changed for this run. Fill in the blank column and I can run `evaluation/run_eval.py` against these labels.
+
+
+## 9. Re-check after M1 to M4 (22 Nov, fresh database, 2 vendors, 4.6 credits)
+
+Same pipeline with our own candidate matching (`candidate_name_sim_floor` 0.85, token-sort similarity on normalised names; Crustdata's confidence is ignored), full-name adverse relevance, and the limited-coverage wording. Nothing else changed. Raw: `probe/raw/live/` (gitignored); results: `probe/live/mcheck_results.json`.
+
+| Vendor | Verdict | exists | active | director | adverse | Calls (paid) | Credits | Before (section 1) |
+|---|---|---|---|---|---|---|---|---|
+| Ecom Express Limited (domain ecomexpress.in) | CANNOT_VERIFY | pass | pass | unknown | unknown | 6 | 3.4 | n/a (earlier run used "Ecom Express Ltd": exists unknown, wrong record enriched, 4.4) |
+| Zentrovia Cargo Solutions Pvt Ltd (invented) | CANNOT_VERIFY | unknown | unknown | unknown | pass | 3 | 1.2 | exists unknown "several records tie", unrelated company enriched, 3.2 |
+
+- **Invented vendor:** all 25 Identify candidates were below the floor, so `exists` is `unknown` with "No record found. The vendor may be too new or too small for the data source", and the missing list includes "independent registry evidence (CIN/GSTIN/incorporation certificate)". **No enrich or jobs call was made** (3 calls, 1.2 credits instead of 3.2). Adverse: "no adverse reports found in 2 searches (limited coverage); 10 results scanned". The 10 scam-checker pages for look-alike domains are no longer counted as hits.
+- **Ecom Express Limited:** the single record above the floor was chosen on the supplied domain, `exists` passes, and the right record was profiled (2 activity signals). Adverse is still `unknown`: 4 possible reports name the company, none can be resolved to it or verified, so nothing here can reject. The earlier wrong-record problem ("Ecom Express Ltd" resolving to "Ecom Express Pvt Ltd") is covered by the recorded-fixture test, not re-run live here.
+- **Leftover found in this run and fixed (`76a8f52`):** for the invented vendor the director check said "claimed director not found at this company" although no director was supplied and there was no company. It now says "no claimed director in the request" (or "no company record to look for the claimed director in" when one is supplied).
+- **Credits:** 4.6 for this check (budget 8). The account balance went 15040.39 to 15035.79.
+- **Still true:** no claimed director was supplied, so no vendor can be `CLEARED`; the live director lookup (Person Search by name and employer) is written but has **not** been validated against the live API.
