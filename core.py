@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS calls(id INTEGER PRIMARY KEY, run_id TEXT, endpoint T
 CREATE UNIQUE INDEX IF NOT EXISTS facts_uniq ON facts(run_id,subject,claim,source_url,passage);
 CREATE TABLE IF NOT EXISTS cache(key TEXT PRIMARY KEY, response TEXT, ts REAL);
 CREATE TABLE IF NOT EXISTS request_keys(key TEXT PRIMARY KEY, run_id TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS meta(k TEXT PRIMARY KEY, v TEXT);
+CREATE TABLE IF NOT EXISTS sensitive_keys(run_id TEXT, key TEXT, PRIMARY KEY(run_id,key));
+CREATE TABLE IF NOT EXISTS director_checks(run_id TEXT PRIMARY KEY, salted_hash TEXT NOT NULL, result TEXT NOT NULL);  -- never the name
 CREATE TABLE IF NOT EXISTS actions(key TEXT PRIMARY KEY, run_id TEXT, kind TEXT, payload TEXT,
   status TEXT, created REAL);  -- pending -> approved -> executing -> done | rejected
 """
@@ -30,6 +33,7 @@ class RateLimited(Exception):                      # HTTP 429: raise this from f
 
 def connect(path="clearance.db"):
     db = sqlite3.connect(path, isolation_level=None)  # autocommit; each write is durable
+    db.execute("PRAGMA secure_delete=ON")             # purged personal data is overwritten, not left in free pages
     db.executescript(SCHEMA)
     return db
 
@@ -188,10 +192,16 @@ def _ttl(endpoint):
     t = CONFIG.get("cache_ttl_seconds") or {}
     return t.get(endpoint, t.get(_group(endpoint), t.get("default")))
 
-def cached_call(db, run_id, endpoint, params, fn, credits_from=None):
+def cached_call(db, run_id, endpoint, params, fn, credits_from=None, sensitive=False):
     """Same request is never paid for twice (also across restarts), unless it is older than the TTL (off by default).
-    fn must return only successful responses and raise RateLimited / TransientError for 429 / timeout / 5xx."""
-    key = hashlib.sha256(json.dumps([endpoint, params], sort_keys=True).encode()).hexdigest()
+    fn must return only successful responses and raise RateLimited / TransientError for 429 / timeout / 5xx.
+    sensitive=True (person data): the call log keeps only a salted hash of the params, and purge_sensitive removes the cached response."""
+    logged = params
+    if sensitive:
+        key = hashlib.sha256((salt(db) + json.dumps([endpoint, params], sort_keys=True)).encode()).hexdigest()
+        logged = {"redacted": key[:16]}
+    else:
+        key = hashlib.sha256(json.dumps([endpoint, params], sort_keys=True).encode()).hexdigest()
     row = db.execute("SELECT response, ts FROM cache WHERE key=?", (key,)).fetchone()
     ttl = _ttl(endpoint)
     if row and not (ttl and _clock["now"]() - row[1] > ttl): return json.loads(row[0])
@@ -200,10 +210,35 @@ def cached_call(db, run_id, endpoint, params, fn, credits_from=None):
             throttle(endpoint, db)
             return fn()
         return call_with_retry(attempt)
-    out = tracked_call(db, run_id, endpoint, params, go, credits_from=credits_from)
+    out = tracked_call(db, run_id, endpoint, logged, go, credits_from=credits_from)
     db.execute("INSERT OR REPLACE INTO cache VALUES(?,?,?)", (key, json.dumps(out), _clock["now"]()))
+    if sensitive: db.execute("INSERT OR IGNORE INTO sensitive_keys VALUES(?,?)", (run_id, key))
     return out
 
 def purge_cache(db, older_than_seconds=0):
     """Delete cached responses older than the given age (0 = everything). For privacy and freshness. Returns the count."""
     return db.execute("DELETE FROM cache WHERE ts<=?", (_clock["now"]() - older_than_seconds,)).rowcount
+
+
+# ---------- personal data: salted hashes, redacted call logs, purge ----------
+def salt(db):
+    """Per-database random salt (kept in the database, never in a file we commit)."""
+    row = db.execute("SELECT v FROM meta WHERE k='salt'").fetchone()
+    if row: return row[0]
+    v = uuid.uuid4().hex + uuid.uuid4().hex
+    db.execute("INSERT OR IGNORE INTO meta VALUES('salt',?)", (v,))
+    return db.execute("SELECT v FROM meta WHERE k='salt'").fetchone()[0]
+
+def salted_hash(db, text):
+    return hashlib.sha256((salt(db) + " ".join(str(text).lower().split())).encode()).hexdigest()
+
+def record_director_check(db, run_id, claimed_name, result):
+    """Store only a salted hash of the claimed name and the match result."""
+    db.execute("INSERT OR REPLACE INTO director_checks VALUES(?,?,?)", (run_id, salted_hash(db, claimed_name), result))
+
+def purge_sensitive(db, run_id):
+    """Delete the raw responses of sensitive calls (person data) once the run is finished. Returns how many were purged."""
+    keys = [r[0] for r in db.execute("SELECT key FROM sensitive_keys WHERE run_id=?", (run_id,))]
+    for k in keys: db.execute("DELETE FROM cache WHERE key=?", (k,))
+    db.execute("DELETE FROM sensitive_keys WHERE run_id=?", (run_id,))
+    return len(keys)

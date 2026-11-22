@@ -30,8 +30,9 @@ def name_similarity(a, b):
     if not na or not nb: return 0.0
     return round(SequenceMatcher(None, na, nb).ratio(), 3)
 
-def request_key(kind, name=None, domain=None, company_id=None):
+def request_key(kind, name=None, domain=None, company_id=None, extra=""):
     """Idempotency key. After resolution: the crustdata company id plus the request kind.
     Before resolution: the normalised name plus the normalised domain."""
     basis = ["id", company_id] if company_id is not None else ["name", normalize_name(name), normalize_domain(domain)]
+    if extra: basis.append(extra)           # e.g. a salted fingerprint of the claimed director: a different claim is a different question
     return hashlib.sha256(json.dumps([kind, *basis]).encode()).hexdigest()

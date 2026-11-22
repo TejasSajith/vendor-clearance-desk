@@ -13,16 +13,19 @@ class FakeSources:
                                          "sources": ["crustdata:/person/enrich"]}
         self.adverse_sig = adverse or {"state": "searched", "searches_run": 3, "hits": [], "sources": ["crustdata:/web/search/live"]}
         self.calls = []
-    def _call(self, ctx, endpoint, params, value):
+    def _call(self, ctx, endpoint, params, value, sensitive=False, extra=None):
         def fn():
             self.calls.append(endpoint)
             if self.identify_exc and endpoint == "/company/identify": raise self.identify_exc
-            return {"credits": self.cost, "value": value}
-        return ctx.call(endpoint, params, fn, credits_from=lambda o: o["credits"])["value"]
+            return {"credits": self.cost, "value": value, "person": extra}
+        return ctx.call(endpoint, params, fn, credits_from=lambda o: o["credits"], sensitive=sensitive)["value"]
     def identify(self, ctx, name, domain):
         v = self._call(ctx, "/company/identify", {"name": name, "domain": domain},
                        {"candidates": self.candidates, "status": self.status, "domain_candidate_ids": self.domain_ids})
         return v
     def profile(self, ctx, cid): return self._call(ctx, "/company/enrich", {"id": cid}, self.profile_sig)
-    def director(self, ctx, cid, claimed): return self._call(ctx, "/person/enrich", {"id": cid, "claimed": claimed}, self.director_sig)
+    def director(self, ctx, cid, claimed):
+        # the raw person response and the request params both contain the claimed name; the engine must keep neither
+        return self._call(ctx, "/person/enrich", {"company_id": cid, "name": claimed}, self.director_sig, sensitive=True,
+                          extra={"name": claimed, "headline": f"{claimed}, director"})
     def adverse(self, ctx, name, domain=None): return self._call(ctx, "/web/search/live", {"q": name}, self.adverse_sig)

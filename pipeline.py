@@ -27,8 +27,8 @@ def validate_request(req):
 
 class Ctx:
     def __init__(self, db, run_id): self.db, self.run_id = db, run_id
-    def call(self, endpoint, params, fn, credits_from=None):
-        return core.cached_call(self.db, self.run_id, endpoint, params, fn, credits_from=credits_from)
+    def call(self, endpoint, params, fn, credits_from=None, sensitive=False):
+        return core.cached_call(self.db, self.run_id, endpoint, params, fn, credits_from=credits_from, sensitive=sensitive)
 
 def identify_signals(name, domain, ident, params=None):
     """Our own matching (checks/exists.py); Crustdata's confidence score is not used for the choice."""
@@ -51,7 +51,8 @@ def run_request(db, req, sources):
     except ValidationError as e:                           # a clean result, not a crash
         return {"status": "invalid", "verdict": None, "field": e.field, "message": str(e)}
     name, domain, tier, claimed = v["vendor_name"], v["domain"], v["risk_tier"], v["claimed_director"]
-    pk = normalize.request_key(KIND, name, domain)
+    fp = core.salted_hash(db, claimed)[:16] if claimed else ""     # the claimed name itself is never stored, logged or keyed
+    pk = normalize.request_key(KIND, name, domain, extra=fp)
     run = "r_" + pk[:12]
     existed = db.execute("SELECT 1 FROM runs WHERE id=?", (run,)).fetchone() is not None
     core.start_run(db, json.dumps({"vendor_name": name, "website": domain, "risk_tier": tier}), run_id=run)
@@ -68,7 +69,7 @@ def run_request(db, req, sources):
     sig = {"identify": identify_signals(name, domain, ident) if ident is not None else {}}
     cid = sig["identify"].get("company_id")
     if cid is not None:
-        owner = core.claim_request(db, normalize.request_key(KIND, company_id=cid), run)
+        owner = core.claim_request(db, normalize.request_key(KIND, company_id=cid, extra=fp), run)
         if owner != run:                                   # same company already requested under another spelling
             core.set_run_status(db, run, f"duplicate_of:{owner}")
             return {**_existing_result(db, owner), "existing": True, "duplicate_of": owner}
@@ -87,6 +88,7 @@ def run_request(db, req, sources):
                 checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}
             elif state.get(st) == "not_run":
                 checks[c] = {"status": "not_run", "reason": "cost or time cap reached before this check ran", "sources": []}
+        if claimed and state.get("director") == "ok": core.record_director_check(db, run, claimed, checks["director_match"]["status"])
         started = db.execute("SELECT started FROM runs WHERE id=?", (run,)).fetchone()[0]
         d = decision.decide(checks, core.run_cost(db, run), time.time() - started); d.cost_credits = core.run_cost(db, run)
         key = core.finalize(db, run, d)
@@ -98,4 +100,29 @@ def run_request(db, req, sources):
     else:
         res = core.run_step(db, run, "final", final)
     core.set_run_status(db, run, res["status"])
+    core.purge_sensitive(db, run)                          # raw person responses do not outlive the run
     return {**res, "existing": existed}
+
+
+def main(argv=None, sources=None):
+    """CLI: python pipeline.py run --vendor NAME [--website URL] [--tier low|medium|high] [--db PATH]
+              [--claimed-director NAME | --claimed-director-env VAR | --claimed-director-prompt]
+    The claimed director is taken at runtime only: it is never written to a file, log or the database (only a salted hash and the match result)."""
+    import argparse, getpass, os, sys
+    ap = argparse.ArgumentParser(prog="pipeline.py"); sub = ap.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("run"); r.add_argument("--vendor", required=True); r.add_argument("--website"); r.add_argument("--tier", default="low")
+    r.add_argument("--db", default="clearance.db")
+    g = r.add_mutually_exclusive_group()
+    g.add_argument("--claimed-director"); g.add_argument("--claimed-director-env"); g.add_argument("--claimed-director-prompt", action="store_true")
+    a = ap.parse_args(argv)
+    claimed = a.claimed_director or (os.environ.get(a.claimed_director_env) if a.claimed_director_env else None) \
+        or (getpass.getpass("Claimed director (not echoed, not stored): ") if a.claimed_director_prompt else None)
+    if sources is None:
+        from checks import live
+        sources = live.LiveSources()
+    db = core.connect(a.db)
+    res = run_request(db, {"vendor_name": a.vendor, "website": a.website, "risk_tier": a.tier, "claimed_director": claimed}, sources)
+    print(json.dumps(res, indent=1, ensure_ascii=False))
+    return 0 if res.get("status") != "invalid" else 2
+
+if __name__ == "__main__": raise SystemExit(main())
