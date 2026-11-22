@@ -110,7 +110,8 @@ def create_app(db_path=None, mode=None, sources=None, password=None, llm_provide
         s = session(request); d = db()
         try:
             opts, notes = controls.options(candidate_path)
-            return {"mode": mode, "demo_label": _demo_label(mode), "model": "on" if provider else "off (template parsing and memos)",
+            return {"mode": mode, "demo_label": _demo_label(mode), "model": (f"{provider.model}; templates if it fails or is slow" if provider and hasattr(provider, "model") else "on") if provider
+                    else "off (template parsing and memos)",
                     "caps": {"credits_per_run": per_run_cap, "seconds_per_run": seconds_cap, "credits_per_session": session_cap,
                              "session_spent": spent(d, s)},
                     "controls": opts, "control_notes": notes}
@@ -125,6 +126,7 @@ def create_app(db_path=None, mode=None, sources=None, password=None, llm_provide
             finally: d.close()
 
     def _run(d, s, body):
+        t_request = time.time()
         used = spent(d, s)
         if used + per_run_cap > session_cap:
             raise HTTPException(402, f"Session credit cap reached: {used:g} of {session_cap:g} credits used; "
@@ -148,7 +150,7 @@ def create_app(db_path=None, mode=None, sources=None, password=None, llm_provide
         card = _card(d, run_id, res, seconds, ledger)
         card.update({"request": echo, "parser": parsed["parser"], "questions": parsed["questions"], "controls": ctl["controls"],
                      "control_notes": ctl["notes"], "existing": bool(res.get("existing") or res.get("duplicate_of")),
-                     "session_spent": spent(d, s)})
+                     "session_spent": spent(d, s), "total_seconds": round(time.time() - t_request, 2)})
         return card
 
     def _card(d, run_id, res, seconds=None, ledger=None):

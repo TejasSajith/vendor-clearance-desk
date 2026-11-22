@@ -30,19 +30,20 @@ def load_dotenv(path=ROOT / ".env"):
         os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 def settings():
-    s = {"provider": "none", "model": None, "timeout_seconds": 20, "attempts": 2}
+    s = {"provider": "none", "model": None, "timeout_seconds": 20, "attempts": 2, "cooldown_seconds": 0, "thinking_level": None}
     s.update({k: v for k, v in (core.CONFIG.get("llm") or {}).items() if not k.startswith("_")})
     return s
 
 class GeminiProvider:
     name = "gemini"
-    def __init__(self, model, key, timeout):
-        self.model, self._key, self.timeout = model, key, timeout
+    def __init__(self, model, key, timeout, thinking_level=None):
+        self.model, self._key, self.timeout, self.thinking_level = model, key, timeout, thinking_level
     def __repr__(self): return f"GeminiProvider(model={self.model!r})"      # never shows the key
     def generate(self, system, text, schema):
         body = {"systemInstruction": {"parts": [{"text": system}]},
                 "contents": [{"role": "user", "parts": [{"text": text}]}],
                 "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0}}
+        if self.thinking_level: body["generationConfig"]["thinkingConfig"] = {"thinkingLevel": self.thinking_level}
         try:
             r = requests.post(f"{API}/models/{self.model}:generateContent", json=body, timeout=self.timeout,
                               headers={"x-goog-api-key": self._key, "content-type": "application/json"})
@@ -65,11 +66,16 @@ def get_provider():
     load_dotenv()
     key = os.environ.get("GEMINI_API_KEY")
     if not key or not s.get("model"): return None
-    return GeminiProvider(s["model"], key, s["timeout_seconds"])
+    return GeminiProvider(s["model"], key, s["timeout_seconds"], s.get("thinking_level"))
 
 def ledger_run(db, label="llm"):
     """A fresh ledger run for model calls made outside a vendor run (parsing a sentence, writing a memo)."""
     return core.start_run(db, json.dumps({"kind": label}), run_id=f"{label}_{uuid.uuid4().hex[:10]}")
+
+_down_until = {}     # model -> clock time: after a timeout or 5xx, skip the model for cooldown_seconds (templates answer at once)
+
+def available(provider):
+    return provider is not None and core._clock["now"]() >= _down_until.get(getattr(provider, "model", provider.name), 0)
 
 def extract(text, schema, system, db, run_id, provider="config", task="extract"):
     """Ask the model for JSON matching `schema`. Returns the parsed dict or raises LLMUnavailable.
@@ -78,12 +84,16 @@ def extract(text, schema, system, db, run_id, provider="config", task="extract")
     if provider is None: raise LLMUnavailable("no model provider configured")
     s = settings()
     model = getattr(provider, "model", provider.name)
+    if not available(provider): raise LLMUnavailable("model API cooling down after a failure; using templates")
     params = {"model": model, "task": task, "input_sha": hashlib.sha256((system + "\n" + text).encode()).hexdigest()[:16]}
     try:
         out = core.cached_call(db, run_id, ENDPOINT, params, lambda: provider.generate(system, text, schema),
                                credits_from=lambda o: 0.0, attempts=s["attempts"],
                                log_from=lambda o: {"tokens_in": o.get("tokens_in"), "tokens_out": o.get("tokens_out")})
-    except (core.SourceUnreachable, core.LimitExceeded, LLMUnavailable) as e:
+    except core.SourceUnreachable as e:          # timeouts or 5xx after the retry: cool down so the next call does not wait again
+        _down_until[model] = core._clock["now"]() + (s.get("cooldown_seconds") or 0)
+        raise LLMUnavailable(str(e))
+    except (core.LimitExceeded, LLMUnavailable) as e:
         raise LLMUnavailable(str(e))
     except Exception as e:                       # anything unexpected from the provider: fall back, never crash the run
         raise LLMUnavailable(type(e).__name__)

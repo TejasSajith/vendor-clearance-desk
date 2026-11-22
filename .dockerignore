@@ -1,0 +1,12 @@
+.env
+.env.*
+*.db
+.venv/
+venv/
+.git/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+probe/raw/
+devconsole/console.db
+.DS_Store

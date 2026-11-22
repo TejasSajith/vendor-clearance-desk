@@ -89,7 +89,7 @@ function render(r) {
   for (const c of r.checks || []) for (const s of c.sources) src.push(`${c.title}: ${s} (record date ${c.record_date}; retrieved ${c.retrieved || "not recorded"})`);
   box.append(el("h3", {}, "Sources"), src.length ? list(src) : el("p", { class: "note" }, "No sources."));
   box.append(el("h3", {}, "Missing evidence"), (r.missing || []).length ? list(r.missing) : el("p", { class: "note" }, "Nothing missing."));
-  box.append(el("p", { class: "note" }, `Spent: ${r.credits} credits` + (r.seconds != null ? `, ${r.seconds} s` : "") + `. Run ${r.run_id}.`));
+  box.append(el("p", { class: "note" }, `Spent: ${r.credits} credits` + (r.seconds != null ? `, checks ${r.seconds} s` : "") + (r.total_seconds != null ? `, total ${r.total_seconds} s` : "") + `. Run ${r.run_id}.`));
   if ((r.control_notes || []).length) box.append(el("p", { class: "note" }, r.control_notes.join(" · ")));
   if (r.action) {
     const row = el("div", { class: "actions" });
