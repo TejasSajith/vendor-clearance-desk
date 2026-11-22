@@ -269,11 +269,13 @@ def write_presets(rows, results, path=ROOT / "evaluation" / "presets_candidate.j
     sw = results["sweep"]
     bal = {p: r["best"] for p, r in sw.items() if r["best"] != D[p] and r["kind"] in ("plateau", "narrow", "edge") and not r["overfit"]
            and p in ("candidate_name_sim_floor", "min_headcount", "max_decline_pct", "max_series_age_days", "min_jobs_90d", "active_min_signals", "min_searches", "adverse_min_severity")}
-    out = {"approved": False, "note": "Candidate presets for the owner to review. Nothing here is applied. Invariants kept by every preset: no unsourced fail, unreachable leads to HOLD, no CANNOT_VERIFY to CLEARED when a required check is unknown, no rejection on one undated source (tests/test_preset_invariants.py).",
+    out = {"approved": False, "strictness": {}, "note": "Candidate presets for the owner to review. Nothing here is applied. Invariants kept by every preset: no unsourced fail, unreachable leads to HOLD, no CANNOT_VERIFY to CLEARED when a required check is unknown, no rejection on one undated source (tests/test_preset_invariants.py).",
            "defaults": {"params": {p: D[p] for p in GRID}, **evaluate_preset(rows, D)}, "presets": {}}
     for name in ("lenient", "balanced", "strict"):
         par = preset_params(name, bal); ev = evaluate_preset(rows, par)
-        out["presets"][name] = {"params_changed": {p: v for p, v in par.items() if D.get(p) != v}, **ev, "customer_description": DESCRIPTIONS[name]}
+        changed = {p: v for p, v in par.items() if D.get(p) != v}
+        out["strictness"][name] = changed             # the shape controls.py reads (only used once "approved" is set to true by the owner)
+        out["presets"][name] = {"params_changed": changed, **ev, "customer_description": DESCRIPTIONS[name]}
     path.write_text(json.dumps(out, indent=1) + "\n"); return out
 
 def main(argv=None):

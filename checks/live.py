@@ -88,9 +88,10 @@ class LiveSources:
                 "sources": ["crustdata:/person/search"]}
 
     def adverse(self, ctx, name, domain=""):
-        hits, ran, scanned = [], 0, 0
+        """2 searches (web and news). Returns per-result FEATURES (checks/adverse.py); the pipeline derives the policy signals from them."""
+        per = []
         for q, src in ((f"{name} fraud OR scam OR default OR FIR OR blacklisted", "web"), (f"{name} fraud OR default OR FIR", "news")):
-            res = call(ctx, "/web/search/live", {"query": q, "sources": [src], "location": "IN"}); ran += 1
-            rs = res.get("results") or []; scanned += len(rs)
-            hits += adverse.build_hits(rs, name, domain)
-        return {"state": "searched", "searches_run": ran, "results_scanned": scanned, "hits": hits, "sources": ["crustdata:/web/search/live"]}
+            res = call(ctx, "/web/search/live", {"query": q, "sources": [src], "location": "IN"})
+            rs = res.get("results") or []
+            per.append({"source": src, "n_results": len(rs), "results": [adverse.result_features(r, name, domain) for r in rs]})
+        return {"per_search": per, "sources": ["crustdata:/web/search/live"]}

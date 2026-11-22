@@ -72,3 +72,16 @@ def test_presets_file_is_unapproved_and_descriptions_name_no_parameters():
     for n, p in doc["presets"].items():
         text = p["customer_description"].lower()
         assert text and not any(k in text for k in names) and "_" not in text and "threshold" not in text
+
+
+def test_presets_file_works_through_controls_when_approved(tmp_path):
+    if not PRESET_FILE.exists(): pytest.skip("presets_candidate.json is written by phase 6")
+    import controls
+    doc = json.loads(PRESET_FILE.read_text()); doc["approved"] = True
+    f = tmp_path / "approved.json"; f.write_text(json.dumps(doc))
+    for name in ("lenient", "balanced", "strict"):
+        r = controls.resolve({"strictness": name}, candidate_path=str(f))
+        assert r["params"]["reject_require_dated"] is True and r["params"]["reject_min_sources"] >= 1 and r["params"]["min_searches"] >= 1
+        for k, v in doc["strictness"][name].items(): assert r["params"][k] == v, (name, k)
+    unapproved = controls.resolve({"strictness": "strict"}, candidate_path=str(PRESET_FILE))
+    assert unapproved["params"] == policy.PROPOSED_PARAMS and any("not approved" in n for n in unapproved["notes"])

@@ -4,7 +4,7 @@ must go through ctx.call, which is core.cached_call (throttle, cache, limits, le
 Verdicts are recommendations: CLEARED and REJECTED become pending actions that a person approves (core.finalize)."""
 import json, time
 import core, decision, policy
-from checks import normalize, exists
+from checks import normalize, exists, adverse
 
 KIND = "clearance"
 
@@ -86,7 +86,10 @@ def run_request(db, req, sources, params=None):
         if claimed: sig["director"] = stage("director", lambda: sources.director(ctx, cid, claimed))
     if "director" not in sig:                              # nothing to check, or nothing to check it against
         sig["director"] = {"not_requested": True, "sources": []} if not claimed else {"no_company": True, "sources": []}
-    sig["adverse"] = stage("adverse", lambda: sources.adverse(ctx, name, domain))
+    adv = stage("adverse", lambda: sources.adverse(ctx, name, domain))
+    if adv and adv.get("per_search") and "results" in adv["per_search"][0]:        # features in, policy signals out (rules in checks/adverse.py)
+        adv = adverse.derive_signals(adv["per_search"], name, p, (sig.get("profile") or {}).get("headcount_total"), sources=adv.get("sources"))
+    sig["adverse"] = adv
     sig = {k: v for k, v in sig.items() if v is not None}
 
     CHECK_OF = {"identify": "exists", "profile": "active", "director": "director_match", "adverse": "adverse_media"}
@@ -97,13 +100,20 @@ def run_request(db, req, sources, params=None):
                 checks[c] = {"status": "unreachable", "reason": "source unreachable after retries; retry or send to a person", "sources": []}
             elif state.get(st) == "not_run":
                 checks[c] = {"status": "not_run", "reason": "cost or time cap reached before this check ran", "sources": []}
+        a = sig.get("adverse") or {}
+        notes = []
+        if a.get("chatter"): notes.append(f"{a['chatter']} result(s) were unverified chatter (forums, review or scam-checker pages, social posts): shown, not counted")
+        if a.get("suppressed_established"): notes.append("an established company: a single reputable source is not enough to raise a concern")
+        if notes and "adverse_media" in checks: checks["adverse_media"]["notes"] = notes
         if claimed and state.get("director") == "ok": core.record_director_check(db, run, claimed, checks["director_match"]["status"])
         started = db.execute("SELECT started FROM runs WHERE id=?", (run,)).fetchone()[0]
         d = decision.decide(checks, core.run_cost(db, run), time.time() - started); d.cost_credits = core.run_cost(db, run)
         key = core.finalize(db, run, d)
         status = "stopped_at_cap" if "not_run" in state.values() else "held" if d.verdict == decision.HOLD else "done"
         return {"run_id": run, "status": status, "verdict": d.verdict, "missing_inputs": [k for k, x in (("website", domain), ("claimed_director", claimed)) if not x],
-                "decision": d.to_dict(), "checks": checks, "action_key": key}
+                "decision": d.to_dict(), "checks": checks, "action_key": key,
+                # the director check only ever says match / no match / can't verify (never leadership evidence from Crustdata's people lists)
+                "director_state": {"pass": "match", "fail": "no match"}.get(checks["director_match"]["status"], "can't verify")}
     if "unreachable" in state.values():                    # do not cache: a later retry must be able to re-run the stage
         res = final()
     else:

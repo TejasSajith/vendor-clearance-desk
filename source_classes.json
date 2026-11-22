@@ -1,0 +1,28 @@
+{
+  "version": "2026-11-22.1",
+  "_status": "PROPOSED. Host lists are starting points for the owner to extend. Only regulator_or_court and news_outlet hits can count toward Suspicious or Failed; aggregator_or_ugc is shown as unverified chatter and not counted; unknown counts toward Suspicious only, never Failed.",
+  "classes": {
+    "regulator_or_court": {
+      "host_suffixes": ["gov.in", "nic.in", "sebi.gov.in", "mca.gov.in", "nclt.gov.in", "nclat.gov.in", "ecourts.gov.in", "rbi.org.in", "gst.gov.in", "indiankanoon.org",
+                        "sec.gov", "justice.gov", "ftc.gov", "gov.uk", "courtlistener.com", "supremecourt.gov.in", "cci.gov.in"]
+    },
+    "news_outlet": {
+      "host_suffixes": ["economictimes.indiatimes.com", "timesofindia.indiatimes.com", "indiatimes.com", "livemint.com", "business-standard.com", "thehindu.com",
+                        "thehindubusinessline.com", "moneycontrol.com", "financialexpress.com", "hindustantimes.com", "indianexpress.com", "ndtv.com", "reuters.com",
+                        "bloomberg.com", "forbes.com", "wsj.com", "ft.com", "cnbc.com", "bbc.com", "bbc.co.uk", "theguardian.com", "nytimes.com", "techcrunch.com",
+                        "business-standard.in", "outlookindia.com", "news18.com", "firstpost.com", "theprint.in", "scroll.in", "thewire.in", "inc42.com", "yourstory.com",
+                        "entrackr.com", "bhaskar.com", "jagran.com", "abplive.com", "livehindustan.com", "dnaindia.com", "tribuneindia.com", "deccanherald.com"]
+    },
+    "aggregator_or_ugc": {
+      "host_suffixes": ["reddit.com", "quora.com", "facebook.com", "fb.com", "instagram.com", "twitter.com", "x.com", "linkedin.com", "youtube.com", "youtu.be", "medium.com",
+                        "trustpilot.com", "mouthshut.com", "consumercomplaints.in", "complaintsboard.com", "pissedconsumer.com", "sitejabber.com", "glassdoor.com", "ambitionbox.com",
+                        "scamadviser.com", "scam-detector.com", "gridinsoft.com", "islegitsite.com", "change.org", "tiktok.com", "pinterest.com", "telegram.me", "t.me"],
+      "host_keywords": ["scam", "complaint", "legit", "review", "forum", "trust", "fraudcheck", "checker"]
+    }
+  },
+  "obituary_terms": ["obituary", "obituaries", "passed away", "condolence", "condolences", "funeral", "rest in peace", "r.i.p", "survived by", "memorial service", "in loving memory", "cremation"],
+  "person_page_url_patterns": ["linkedin.com/in/", "linkedin.com/pub/", "facebook.com/people/", "instagram.com/", "twitter.com/", "x.com/"],
+  "legal_suffixes": ["inc", "incorporated", "pvt", "private", "ltd", "limited", "llp", "llc", "corp", "corporation", "co", "gmbh", "plc"],
+  "industry_terms": ["logistics", "freight", "courier", "cargo", "shipping", "supply chain", "transport", "trucking", "warehouse", "warehousing", "express",
+                     "payments", "payment", "merchant", "merchants", "fintech", "checkout", "e-commerce", "ecommerce", "delivery", "fleet", "haulage"]
+}
