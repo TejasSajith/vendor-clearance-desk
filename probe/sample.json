@@ -1,0 +1,12 @@
+[
+ {"id":5798,"name":"Delhivery","domain":"delhivery.com","bucket":"large"},
+ {"id":5967,"name":"Ecom Express Limited","domain":"ecomexpress.in","bucket":"large"},
+ {"id":2037562,"name":"DTDC Express Limited","domain":null,"bucket":"large"},
+ {"id":8276,"name":"Everest Fleet Pvt. Ltd.","domain":"everestfleet.com","bucket":"mid"},
+ {"id":1552,"name":"Future Supply Chain Solutions Limited","domain":"futuresupplychains.com","bucket":"mid"},
+ {"id":20487,"name":"ProConnect Supply Chain Solutions Ltd","domain":"proconnect.co.in","bucket":"mid"},
+ {"id":6100573,"name":"Xtrans Logistics Pvt Ltd","domain":"xtrans.in","bucket":"small"},
+ {"id":3917119,"name":"LorryCare","domain":"lorrycare.com","bucket":"small"},
+ {"id":13006146,"name":"Ecom Express Delivery Center","domain":null,"bucket":"lookalike of Ecom Express Limited"},
+ {"id":11584,"name":"Rapid Delivery","domain":"rapiddelivery.co","bucket":"lookalike of Delhivery"}
+]
