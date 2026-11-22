@@ -2121,5 +2121,595 @@
    }
   },
   "ts": 1795351371.2309968
+ },
+ "c024": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 5051,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 1773,
+    "headcount_trend_pct": 9.2,
+    "series_age_days": 20,
+    "jobs_90d": 9,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 19,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351511.7775998
+ },
+ "c025": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 652676,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 1716,
+    "headcount_trend_pct": 0.4,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 28,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351577.7146173
+ },
+ "c026": {
+  "state": "done",
+  "stratum": "mid",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 609970,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 337,
+    "headcount_trend_pct": 2.7,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": false,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 12,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351658.0265982
+ },
+ "c027": {
+  "state": "done",
+  "stratum": "small_real",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 45608,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 11,
+    "headcount_trend_pct": 10.0,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 12,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "40af0ed3b6",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351683.8775828
+ },
+ "c028": {
+  "state": "done",
+  "stratum": "small_real",
+  "split": "tune",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 610182,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 42,
+    "headcount_trend_pct": -2.3,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 11,
+    "hits": [
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "d4fad2dd98",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "cc2638fd4f",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 3,
+      "url_host": "www.google.com",
+      "date_text": null,
+      "url_id": "0229ccf4a3",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.justdial.com",
+      "date_text": null,
+      "url_id": "6d2274b267",
+      "query_src": "web"
+     },
+     {
+      "dated": false,
+      "names_target": true,
+      "discriminator": false,
+      "source_ok": false,
+      "severity": 1,
+      "url_host": "www.justdial.com",
+      "date_text": null,
+      "url_id": "0f9656c1b1",
+      "query_src": "web"
+     }
+    ],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351735.9918518
+ },
+ "c029": {
+  "state": "done",
+  "stratum": "small_real",
+  "split": "holdout",
+  "stages": {
+   "identify": "ok",
+   "profile": "ok",
+   "adverse": "ok"
+  },
+  "signals": {
+   "identify": {
+    "sources": [
+     "crustdata:/company/identify"
+    ],
+    "status": "active",
+    "domain_mismatch_note": null,
+    "found": true,
+    "company_id": 38019,
+    "name_similarity": 1.0,
+    "top_ties": 1,
+    "domain_match": true
+   },
+   "profile": {
+    "status": "active",
+    "headcount_total": 34,
+    "headcount_trend_pct": 3.0,
+    "series_age_days": 20,
+    "jobs_90d": 0,
+    "traffic_present": true,
+    "sources": [
+     "crustdata:/company/enrich",
+     "crustdata:/job/search"
+    ]
+   },
+   "director": {
+    "not_requested": true,
+    "sources": []
+   },
+   "adverse": {
+    "state": "searched",
+    "searches_run": 4,
+    "results_scanned": 18,
+    "hits": [],
+    "sources": [
+     "crustdata:/web/search/live"
+    ]
+   }
+  },
+  "ts": 1795351824.9473667
+ },
+ "c030": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.951209,
+  "note": "cap reached before this row ran"
+ },
+ "c031": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.951359,
+  "note": "cap reached before this row ran"
+ },
+ "c032": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9515164,
+  "note": "cap reached before this row ran"
+ },
+ "c033": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9516642,
+  "note": "cap reached before this row ran"
+ },
+ "c034": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9518056,
+  "note": "cap reached before this row ran"
+ },
+ "c035": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9519465,
+  "note": "cap reached before this row ran"
+ },
+ "c036": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.952086,
+  "note": "cap reached before this row ran"
+ },
+ "c037": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9522455,
+  "note": "cap reached before this row ran"
+ },
+ "c038": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9523904,
+  "note": "cap reached before this row ran"
+ },
+ "c039": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9525728,
+  "note": "cap reached before this row ran"
+ },
+ "c040": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9527159,
+  "note": "cap reached before this row ran"
+ },
+ "c041": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9528565,
+  "note": "cap reached before this row ran"
+ },
+ "c042": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.952996,
+  "note": "cap reached before this row ran"
+ },
+ "c043": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.953135,
+  "note": "cap reached before this row ran"
+ },
+ "c044": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9532795,
+  "note": "cap reached before this row ran"
+ },
+ "c045": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9534185,
+  "note": "cap reached before this row ran"
+ },
+ "c046": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9536283,
+  "note": "cap reached before this row ran"
+ },
+ "c047": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9537716,
+  "note": "cap reached before this row ran"
+ },
+ "c048": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9539304,
+  "note": "cap reached before this row ran"
+ },
+ "c049": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9540706,
+  "note": "cap reached before this row ran"
+ },
+ "c050": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9542108,
+  "note": "cap reached before this row ran"
+ },
+ "c051": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9543495,
+  "note": "cap reached before this row ran"
+ },
+ "c052": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9545112,
+  "note": "cap reached before this row ran"
+ },
+ "c053": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.954655,
+  "note": "cap reached before this row ran"
+ },
+ "c054": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9547932,
+  "note": "cap reached before this row ran"
+ },
+ "c055": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9549325,
+  "note": "cap reached before this row ran"
+ },
+ "c056": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9550722,
+  "note": "cap reached before this row ran"
+ },
+ "c057": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9552119,
+  "note": "cap reached before this row ran"
+ },
+ "c058": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.95535,
+  "note": "cap reached before this row ran"
+ },
+ "c059": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9555037,
+  "note": "cap reached before this row ran"
+ },
+ "c060": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9556475,
+  "note": "cap reached before this row ran"
+ },
+ "c061": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9557886,
+  "note": "cap reached before this row ran"
+ },
+ "c062": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.955928,
+  "note": "cap reached before this row ran"
+ },
+ "c063": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9560664,
+  "note": "cap reached before this row ran"
+ },
+ "c064": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9562058,
+  "note": "cap reached before this row ran"
+ },
+ "c065": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9563456,
+  "note": "cap reached before this row ran"
+ },
+ "c066": {
+  "state": "stopped_at_cap",
+  "signals": {},
+  "ts": 1795351824.9565258,
+  "note": "cap reached before this row ran"
  }
 }
